@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BO.FE - Nền Tảng Tài Chính Tiên Phong</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandGreen: '#10B981',
+                        brandRed: '#EF4444',
+                        darkBg: '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; }
+        .hidden-section { display: none; }
+        .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #10B981; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- HEADER -->
+    <header class="bg-brandGreen text-white p-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-extrabold tracking-wider"><i class="fa-solid fa-leaf"></i> BO.FE</h1>
+            <div id="user-info" class="hidden-section flex items-center gap-4">
+                <span id="display-username" class="font-bold"></span>
+                <span class="bg-white text-brandGreen px-3 py-1 rounded-full font-bold text-sm">Số dư: <span id="display-balance">0</span> VNĐ</span>
+                <button onclick="logout()" class="text-white hover:text-red-200"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- AUTH SECTION (ĐĂNG NHẬP / ĐĂNG KÝ) -->
+    <main id="auth-section" class="max-w-md mx-auto mt-20 glass-panel p-8 rounded-2xl">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-brandGreen">CỔNG ĐĂNG NHẬP</h2>
+            <p class="text-sm text-gray-500 mt-2">Vui lòng đăng nhập hoặc tạo tài khoản BO.FE</p>
+        </div>
+
+        <!-- Form Đăng ký -->
+        <div id="register-form" class="hidden-section space-y-4">
+            <div>
+                <label class="block text-sm font-semibold mb-1">Tên tài khoản</label>
+                <input type="text" id="reg-username" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-brandGreen" placeholder="VD: NguyenvanA123!">
+                <p class="text-xs text-brandRed mt-1">* Viết hoa chữ đầu, tối thiểu 12 ký tự, gồm chữ, số và ký tự đặc biệt.</p>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Mật khẩu</label>
+                <input type="password" id="reg-password" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-brandGreen">
+                <p class="text-xs text-brandRed mt-1">* Không được trùng với tên tài khoản.</p>
+            </div>
+            <button onclick="register()" class="w-full bg-brandGreen text-white py-2 rounded font-bold hover:bg-green-600 transition">Tạo Tài Khoản</button>
+            <p class="text-center text-sm">Đã có tài khoản? <a href="#" onclick="toggleAuth()" class="text-brandGreen font-bold">Đăng nhập</a></p>
+        </div>
+
+        <!-- Form Đăng nhập -->
+        <div id="login-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-semibold mb-1">Tên tài khoản</label>
+                <input type="text" id="log-username" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-brandGreen">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold mb-1">Mật khẩu</label>
+                <input type="password" id="log-password" class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-brandGreen">
+            </div>
+            <button onclick="login()" class="w-full bg-brandGreen text-white py-2 rounded font-bold hover:bg-green-600 transition">Đăng Nhập</button>
+            <p class="text-center text-sm">Chưa có tài khoản? <a href="#" onclick="toggleAuth()" class="text-brandGreen font-bold">Đăng ký ngay</a></p>
+        </div>
+    </main>
+
+    <!-- DASHBOARD SECTION -->
+    <main id="dashboard-section" class="max-w-6xl mx-auto mt-8 hidden-section pb-20">
+        <!-- TABS Navigation -->
+        <div class="flex flex-wrap gap-2 mb-6 bg-white p-2 rounded-xl shadow">
+            <button onclick="switchTab('tab-tinchap')" class="tab-btn flex-1 py-3 rounded-lg font-bold bg-brandGreen text-white transition"><i class="fa-solid fa-user-check"></i> Vay Tín Chấp</button>
+            <button onclick="switchTab('tab-thechap')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-gray-500 hover:bg-gray-100 transition"><i class="fa-solid fa-car"></i> Vay Thế Chấp</button>
+            <button onclick="switchTab('tab-ruttien')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-gray-500 hover:bg-gray-100 transition"><i class="fa-solid fa-money-bill-transfer"></i> Rút Tiền</button>
+            <button onclick="switchTab('tab-thanhtoan')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-brandRed hover:bg-red-50 transition"><i class="fa-solid fa-qrcode"></i> Thanh Toán</button>
+        </div>
+
+        <!-- TAB: Vay Tín Chấp -->
+        <div id="tab-tinchap" class="tab-content glass-panel p-6 rounded-2xl">
+            <h2 class="text-2xl font-bold text-brandGreen mb-6 border-b pb-2">VAY TÍN CHẤP (Lãi suất 30%)</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-semibold mb-2">Số tiền muốn vay (VNĐ): <span id="tc-amount-display" class="text-brandGreen font-bold text-xl">5,000,000</span></label>
+                        <input type="range" id="tc-amount" min="500000" max="50000000" step="500000" value="5000000" class="w-full accent-brandGreen" oninput="calculateTC()">
+                        <div class="flex justify-between text-xs text-gray-500 mt-1"><span>500.000</span><span>50.000.000</span></div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-2">Kỳ hạn thanh toán:</label>
+                        <select id="tc-term" class="w-full border p-3 rounded-lg focus:ring-2 focus:ring-brandGreen" onchange="calculateTC()">
+                            <option value="3">3 Tháng</option>
+                            <option value="6">6 Tháng</option>
+                            <option value="12">12 Tháng</option>
+                        </select>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                        <p>Tổng tiền phải trả (Gốc + 30% Lãi): <strong id="tc-total" class="text-brandRed text-lg">6,500,000</strong> VNĐ</p>
+                        <p>Số tiền mỗi kỳ: <strong id="tc-monthly" class="text-brandGreen text-lg">2,166,667</strong> VNĐ/tháng</p>
+                    </div>
+                    <button onclick="startLoanProcess('tinchap')" class="w-full bg-brandGreen text-white py-3 rounded-xl font-bold text-lg shadow-lg hover:bg-green-600">ĐĂNG KÝ VAY NGAY</button>
+                </div>
+                <!-- Camera Section -->
+                <div id="tc-camera-box" class="bg-gray-800 rounded-xl flex items-center justify-center relative overflow-hidden h-[300px]">
+                    <p class="text-white absolute z-10 text-center px-4">Hệ thống sẽ bật Camera nhận diện khuôn mặt khi Đăng ký</p>
+                    <video id="tc-video" autoplay class="w-full h-full object-cover hidden-section z-20"></video>
+                    <canvas id="tc-canvas" class="hidden"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Vay Thế Chấp -->
+        <div id="tab-thechap" class="tab-content hidden-section glass-panel p-6 rounded-2xl">
+            <h2 class="text-2xl font-bold text-brandGreen mb-6 border-b pb-2">VAY THẾ CHẤP (Lãi suất 40%)</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-semibold mb-2">Số tiền muốn vay (VNĐ): <span id="thc-amount-display" class="text-brandGreen font-bold text-xl">50,000,000</span></label>
+                        <input type="range" id="thc-amount" min="10000000" max="100000000" step="1000000" value="50000000" class="w-full accent-brandGreen" oninput="calculateTHC()">
+                        <div class="flex justify-between text-xs text-gray-500 mt-1"><span>10.000.000</span><span>100.000.000</span></div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-2">Kỳ hạn thanh toán:</label>
+                        <select id="thc-term" class="w-full border p-3 rounded-lg focus:ring-2 focus:ring-brandGreen" onchange="calculateTHC()">
+                            <option value="6">6 Tháng</option>
+                            <option value="12">12 Tháng</option>
+                            <option value="48">48 Tháng</option>
+                        </select>
+                    </div>
+                    <div class="bg-green-50 p-4 rounded-xl border border-green-100">
+                        <p>Tổng tiền phải trả (Gốc + 40% Lãi): <strong id="thc-total" class="text-brandRed text-lg">70,000,000</strong> VNĐ</p>
+                        <p>Số tiền mỗi kỳ: <strong id="thc-monthly" class="text-brandGreen text-lg">11,666,667</strong> VNĐ/tháng</p>
+                    </div>
+                    <button onclick="startLoanProcess('thechap')" class="w-full bg-brandGreen text-white py-3 rounded-xl font-bold text-lg shadow-lg hover:bg-green-600">ĐĂNG KÝ VAY NGAY</button>
+                </div>
+                <!-- Camera Section -->
+                <div id="thc-camera-box" class="bg-gray-800 rounded-xl flex items-center justify-center relative overflow-hidden h-[300px]">
+                    <p class="text-white absolute z-10 text-center px-4">Hệ thống sẽ bật Camera nhận diện tài sản thế chấp khi Đăng ký</p>
+                    <video id="thc-video" autoplay class="w-full h-full object-cover hidden-section z-20"></video>
+                    <canvas id="thc-canvas" class="hidden"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Rút Tiền -->
+        <div id="tab-ruttien" class="tab-content hidden-section glass-panel p-6 rounded-2xl max-w-2xl mx-auto">
+            <h2 class="text-2xl font-bold text-brandGreen mb-6 border-b pb-2">RÚT TIỀN VỀ NGÂN HÀNG</h2>
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-lg text-center mb-4">
+                    <p>Số dư có thể rút: <strong id="withdraw-balance" class="text-2xl text-brandGreen">0</strong> VNĐ</p>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Chọn Ngân hàng:</label>
+                    <select id="bank-name" class="w-full border p-3 rounded focus:ring-2 focus:ring-brandGreen">
+                        <option>Vietcombank</option>
+                        <option>MB Bank</option>
+                        <option>Techcombank</option>
+                        <option>BIDV</option>
+                        <option>Agribank</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Số tài khoản:</label>
+                    <input type="text" id="bank-acc" class="w-full border p-3 rounded focus:ring-2 focus:ring-brandGreen" placeholder="Nhập số tài khoản...">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Số tiền cần rút (VNĐ):</label>
+                    <input type="number" id="withdraw-amount" class="w-full border p-3 rounded focus:ring-2 focus:ring-brandGreen" placeholder="Nhập số tiền...">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Mã Captcha xác nhận:</label>
+                    <div class="flex gap-4 items-center">
+                        <div id="captcha-display" class="bg-gray-200 px-6 py-3 rounded font-mono font-bold text-xl tracking-widest line-through">ABCD12</div>
+                        <i class="fa-solid fa-rotate cursor-pointer text-gray-500 hover:text-brandGreen" onclick="generateCaptcha()"></i>
+                    </div>
+                    <input type="text" id="captcha-input" class="w-full border p-3 rounded mt-2 focus:ring-2 focus:ring-brandGreen" placeholder="Nhập mã Captcha ở trên...">
+                </div>
+                <button onclick="processWithdraw()" class="w-full bg-brandGreen text-white py-3 rounded font-bold text-lg hover:bg-green-600 mt-4">XÁC NHẬN RÚT TIỀN</button>
+            </div>
+        </div>
+
+        <!-- TAB: Thanh Toán -->
+        <div id="tab-thanhtoan" class="tab-content hidden-section glass-panel p-6 rounded-2xl max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold text-brandRed mb-6 border-b pb-2">THANH TOÁN KHOẢN VAY</h2>
+            <div id="loan-list" class="space-y-4">
+                <!-- Danh sách kỳ hạn sẽ được tạo qua JS -->
+                <p class="text-gray-500 text-center">Hiện tại bạn chưa có khoản vay nào cần thanh toán.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL DUYỆT HỒ SƠ -->
+    <div id="processing-modal" class="hidden-section fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white p-8 rounded-2xl text-center max-w-sm w-full mx-4">
+            <div class="loader mb-4"></div>
+            <h3 class="text-xl font-bold text-brandGreen mb-2">Đang Duyệt Hồ Sơ</h3>
+            <p id="process-msg" class="text-gray-600 text-sm mb-4">Hệ thống đang phân tích ảnh và tính toán...</p>
+            <p class="font-mono text-2xl font-bold text-brandRed"><span id="countdown">60</span>s</p>
+        </div>
+    </div>
+
+    <!-- MODAL QR THANH TOÁN -->
+    <div id="qr-modal" class="hidden-section fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white p-8 rounded-2xl text-center max-w-sm w-full mx-4">
+            <h3 class="text-2xl font-bold text-brandRed mb-4">QUÉT MÃ THANH TOÁN</h3>
+            <img id="qr-image" src="" alt="QR Code" class="mx-auto mb-4 border-4 border-brandGreen rounded-lg p-2">
+            <div class="bg-gray-100 p-4 rounded-lg text-left text-sm space-y-2 mb-4 font-mono">
+                <p><strong>Ngân hàng:</strong> Tự động</p>
+                <p><strong>STK:</strong> 7783863107</p>
+                <p><strong>Tên:</strong> NGUYEN CHI THANH DAT</p>
+                <p><strong>Nội dung:</strong> thanhtoankhoanvay</p>
+                <p><strong>Số tiền:</strong> <span id="qr-amount-display" class="text-brandRed font-bold"></span> VNĐ</p>
+            </div>
+            <button onclick="confirmPayment()" class="w-full bg-brandGreen text-white py-3 rounded-xl font-bold text-lg shadow-lg hover:bg-green-600">ĐÃ THANH TOÁN</button>
+            <button onclick="closeQrModal()" class="w-full bg-gray-200 text-gray-700 py-2 rounded-xl font-bold mt-2 hover:bg-gray-300">Hủy bỏ</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DỮ LIỆU CỤC BỘ ---
+        let users = JSON.parse(localStorage.getItem('bofe_users')) || [];
+        let currentUser = null;
+        let currentCaptcha = '';
+        let currentPayingLoanId = null;
+
+        // --- CÁC HÀM TIỆN ÍCH ---
+        const formatMoney = (amount) => new Intl.NumberFormat('vi-VN').format(Math.round(amount));
+        const parseMoney = (str) => parseInt(str.replace(/,/g, ''));
+
+        // --- GIAO DIỆN & AUTH ---
+        function toggleAuth() {
+            document.getElementById('login-form').classList.toggle('hidden-section');
+            document.getElementById('register-form').classList.toggle('hidden-section');
+        }
+
+        function register() {
+            const user = document.getElementById('reg-username').value;
+            const pass = document.getElementById('reg-password').value;
+
+            // Chữ cái đầu viết hoa, tối thiểu 12 ký tự, gồm chữ, số, ký tự đặc biệt
+            const regex = /^[A-Z](?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{11,}$/;
+            
+            if (!regex.test(user)) {
+                alert("Tên tài khoản không hợp lệ! Chữ đầu in hoa, ít nhất 12 ký tự, có đủ chữ, số và ký tự đặc biệt.");
+                return;
+            }
+            if (pass === user || pass.length < 6) {
+                alert("Mật khẩu không được trùng với tài khoản và phải từ 6 ký tự!");
+                return;
+            }
+            if (users.find(u => u.username === user)) {
+                alert("Tài khoản này đã tồn tại!");
+                return;
+            }
+
+            users.push({ username: user, password: pass, balance: 0, loans: [], history: [] });
+            localStorage.setItem('bofe_users', JSON.stringify(users));
+            alert("Tạo tài khoản thành công! Vui lòng đăng nhập.");
+            toggleAuth();
+        }
+
+        function login() {
+            const user = document.getElementById('log-username').value;
+            const pass = document.getElementById('log-password').value;
+
+            const found = users.find(u => u.username === user && u.password === pass);
+            if (found) {
+                currentUser = found;
+                document.getElementById('auth-section').classList.add('hidden-section');
+                document.getElementById('dashboard-section').classList.remove('hidden-section');
+                document.getElementById('user-info').classList.remove('hidden-section');
+                document.getElementById('display-username').innerText = "Xin chào, " + currentUser.username;
+                updateBalanceDisplay();
+                generateCaptcha();
+                renderLoans();
+            } else {
+                alert("Sai tên đăng nhập hoặc mật khẩu!");
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('auth-section').classList.remove('hidden-section');
+            document.getElementById('dashboard-section').classList.add('hidden-section');
+            document.getElementById('user-info').classList.add('hidden-section');
+            document.getElementById('log-password').value = '';
+        }
+
+        function updateBalanceDisplay() {
+            const balStr = formatMoney(currentUser.balance);
+            document.getElementById('display-balance').innerText = balStr;
+            document.getElementById('withdraw-balance').innerText = balStr;
+            // Lưu data
+            const idx = users.findIndex(u => u.username === currentUser.username);
+            users[idx] = currentUser;
+            localStorage.setItem('bofe_users', JSON.stringify(users));
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden-section'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('bg-brandGreen', 'text-white', 'text-brandRed', 'bg-red-50');
+                el.classList.add('text-gray-500');
+            });
+            document.getElementById(tabId).classList.remove('hidden-section');
+            
+            const activeBtn = event.currentTarget;
+            if(tabId === 'tab-thanhtoan') {
+                activeBtn.classList.remove('text-gray-500');
+                activeBtn.classList.add('
