@@ -93,7 +93,14 @@
 
     <!-- 1. Đăng nhập / Tạo tài khoản -->
     <div id="auth-screen" class="screen active">
-        <h2 class="text-center" style="color: var(--green);">Đăng Nhập / Đăng Ký</h2>
+        <h2 class="text-center" style="color: var(--green);">XIN CHÀO!</h2>
+        
+        <!-- Tab Đăng nhập / Đăng ký -->
+        <div style="display: flex; margin-bottom: 20px; border-radius: 8px; overflow: hidden; border: 1px solid var(--green);">
+            <button id="tab-login" style="flex:1; padding: 12px; background: var(--green); color: white; border: none; font-weight: bold; cursor: pointer;" onclick="switchTab('login')">Đăng Nhập</button>
+            <button id="tab-register" style="flex:1; padding: 12px; background: white; color: var(--green); border: none; font-weight: bold; cursor: pointer;" onclick="switchTab('register')">Đăng Ký</button>
+        </div>
+
         <div class="input-group">
             <label>Tên tài khoản (Tối thiểu 6 ký tự)</label>
             <input type="text" id="username" placeholder="Nhập tên tài khoản">
@@ -102,12 +109,12 @@
             <label>Mật khẩu</label>
             <input type="password" id="password" placeholder="Nhập mật khẩu">
         </div>
-        <div class="input-group">
-            <label>Xác nhận mật khẩu (Chỉ dành cho Đăng ký)</label>
+        <div class="input-group" id="repass-group" style="display: none;">
+            <label>Xác nhận mật khẩu</label>
             <input type="password" id="repassword" placeholder="Nhập lại mật khẩu">
         </div>
-        <button class="btn" onclick="authenticate()">Đăng Nhập / Đăng Ký</button>
-        <p style="font-size: 12px; text-align: center; color: #777;">Hệ thống sẽ tự tạo tài khoản nếu chưa tồn tại.</p>
+        
+        <button class="btn" id="auth-btn" onclick="processLogin()">Đăng Nhập</button>
     </div>
 
     <!-- 2. Trang Chính -->
@@ -215,14 +222,10 @@
     <!-- Thanh toán khoản vay -->
     <div id="thanh-toan-screen" class="screen">
         <h2 style="color: var(--green);">Thanh Toán Khoản Vay</h2>
-        <div id="repay-list">
-            <!-- Danh sách khoản vay nạp bằng JS -->
-        </div>
+        <div id="repay-list"></div>
         
-        <!-- Khung QR (ẩn mặc định) -->
         <div id="qr-section" style="display:none; margin-top: 20px; border-top: 2px solid #ccc; padding-top: 20px;" class="text-center">
             <h3 style="color: var(--red);">Quét mã QR để thanh toán</h3>
-            <!-- Dùng ảnh QR mẫu từ API -->
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=STK:7783863107_NGUYEN_CHI_THANH_DAT" alt="QR Code" style="margin: 15px 0; border: 5px solid var(--green); border-radius: 10px;">
             <p><strong>Ngân hàng thụ hưởng:</strong> Vietcombank</p>
             <p><strong>Số tài khoản:</strong> <span style="font-size: 20px; color: var(--red); font-weight: bold;">7783863107</span></p>
@@ -236,9 +239,7 @@
     <!-- Lịch sử vay -->
     <div id="lich-su-screen" class="screen">
         <h2 style="color: var(--green);">Lịch Sử Vay</h2>
-        <div id="history-list">
-            <!-- Dữ liệu nạp bằng JS -->
-        </div>
+        <div id="history-list"></div>
     </div>
 
     <!-- Cảnh báo -->
@@ -246,13 +247,22 @@
 </div>
 
 <script>
+    // --- KIỂM TRA LỖI TRÌNH DUYỆT CHẶN LƯU TRỮ (Ẩn danh) ---
+    try {
+        localStorage.setItem('bofe_test', '1');
+        localStorage.removeItem('bofe_test');
+    } catch(e) {
+        alert("CẢNH BÁO: Trình duyệt của bạn đang chặn lưu trữ dữ liệu (có thể do dùng chế độ Ẩn danh). Vui lòng mở bằng Tab bình thường thì mới đăng nhập được nhé!");
+    }
+
     // --- BIẾN TRẠNG THÁI ---
     let currentUser = null;
     let userData = { balance: 0, loans: [] };
     let tempLoanData = null; 
     let activePaymentId = null;
+    let authMode = 'login'; // login hoặc register
 
-    // --- HỆ THỐNG FORMAT & CHUYỂN ĐỔI UI ---
+    // --- HỆ THỐNG UI ---
     const formatMoney = (amount) => amount.toLocaleString('vi-VN') + " VNĐ";
     
     function showScreen(screenId) {
@@ -261,7 +271,6 @@
         
         document.getElementById('menuBtn').style.display = (screenId === 'auth') ? 'none' : 'block';
         
-        // Refresh data khi vào các màn hình cụ thể
         if(screenId === 'main') {
             document.getElementById('main-balance').innerText = formatMoney(userData.balance);
         } else if (screenId === 'rut-tien') {
@@ -279,36 +288,74 @@
         document.getElementById('overlay').classList.toggle('active');
     }
 
-    // --- ĐĂNG NHẬP / ĐĂNG KÝ ---
-    function authenticate() {
+    // --- LOGIC ĐĂNG NHẬP / ĐĂNG KÝ MỚI FIXED ---
+    function switchTab(mode) {
+        authMode = mode;
+        let tabLogin = document.getElementById('tab-login');
+        let tabRegister = document.getElementById('tab-register');
+        let repassGroup = document.getElementById('repass-group');
+        let authBtn = document.getElementById('auth-btn');
+
+        if(mode === 'login') {
+            tabLogin.style.background = 'var(--green)'; tabLogin.style.color = 'white';
+            tabRegister.style.background = 'white'; tabRegister.style.color = 'var(--green)';
+            repassGroup.style.display = 'none';
+            authBtn.innerText = 'Đăng Nhập';
+            authBtn.setAttribute('onclick', 'processLogin()');
+        } else {
+            tabRegister.style.background = 'var(--green)'; tabRegister.style.color = 'white';
+            tabLogin.style.background = 'white'; tabLogin.style.color = 'var(--green)';
+            repassGroup.style.display = 'block';
+            authBtn.innerText = 'Tạo Tài Khoản';
+            authBtn.setAttribute('onclick', 'processRegister()');
+        }
+    }
+
+    function processLogin() {
         const user = document.getElementById('username').value.trim();
         const pass = document.getElementById('password').value;
-        const repass = document.getElementById('repassword').value;
 
         if (user.length < 6) return alert("Tên tài khoản tối thiểu 6 ký tự!");
         if (pass.length < 1) return alert("Vui lòng nhập mật khẩu!");
 
         let usersDb = JSON.parse(localStorage.getItem('bofe_users') || '{}');
 
-        if (usersDb[user]) {
-            // Đăng nhập
-            if (usersDb[user] === pass) {
-                currentUser = user;
-                loadUserData();
-                showScreen('main');
-            } else {
-                alert("Mật khẩu không chính xác!");
-            }
-        } else {
-            // Tạo tài khoản mới
-            if (pass !== repass) return alert("Xác nhận mật khẩu không khớp!");
-            usersDb[user] = pass;
-            localStorage.setItem('bofe_users', JSON.stringify(usersDb));
-            currentUser = user;
-            loadUserData();
-            alert("Tạo tài khoản thành công!");
-            showScreen('main');
+        if (!usersDb[user]) {
+            return alert("Tài khoản chưa tồn tại! Vui lòng chuyển sang tab Đăng Ký.");
         }
+
+        if (usersDb[user] !== pass) {
+            return alert("Mật khẩu không chính xác!");
+        }
+
+        // Đăng nhập thành công
+        currentUser = user;
+        loadUserData();
+        showScreen('main');
+    }
+
+    function processRegister() {
+        const user = document.getElementById('username').value.trim();
+        const pass = document.getElementById('password').value;
+        const repass = document.getElementById('repassword').value;
+
+        if (user.length < 6) return alert("Tên tài khoản tối thiểu 6 ký tự!");
+        if (pass.length < 1) return alert("Vui lòng nhập mật khẩu!");
+        if (pass !== repass) return alert("Xác nhận mật khẩu không khớp!");
+
+        let usersDb = JSON.parse(localStorage.getItem('bofe_users') || '{}');
+
+        if (usersDb[user]) {
+            return alert("Tên tài khoản đã có người sử dụng. Vui lòng chọn tên khác!");
+        }
+
+        // Đăng ký thành công
+        usersDb[user] = pass;
+        localStorage.setItem('bofe_users', JSON.stringify(usersDb));
+        currentUser = user;
+        loadUserData(); // Tạo data trắng cho user mới
+        alert("🎉 Tạo tài khoản thành công! Đang vào trang chính...");
+        showScreen('main');
     }
 
     function loadUserData() {
@@ -327,11 +374,15 @@
     function logout() {
         currentUser = null;
         userData = { balance: 0, loans: [] };
-        toggleSidebar();
-        showScreen('auth');
+        
+        // Reset form
         document.getElementById('username').value = '';
         document.getElementById('password').value = '';
         document.getElementById('repassword').value = '';
+        switchTab('login'); 
+
+        toggleSidebar();
+        showScreen('auth');
     }
 
     // --- LOGIC VAY NHANH ---
@@ -367,65 +418,4 @@
     // --- XỬ LÝ CAMERA NHẬN DIỆN & DUYỆT ---
     let streamRef = null;
     function startCameraProcess(type, processTimeSec) {
-        // Lưu tạm thông tin gói vay
-        let amount, total, term;
-        if(type === 'Vay nhanh') {
-            amount = parseInt(document.getElementById('vn-amount').value);
-            term = document.getElementById('vn-term').value;
-            total = amount * 1.3;
-        } else {
-            amount = parseInt(document.getElementById('vnn-amount').value);
-            term = document.getElementById('vnn-term').value;
-            total = amount * 1.4;
-        }
-
-        tempLoanData = {
-            id: Date.now(),
-            type: type,
-            amount: amount,
-            repayAmount: total,
-            term: term,
-            status: 'Đang duyệt',
-            date: new Date().toLocaleDateString('vi-VN')
-        };
-
-        showScreen('camera');
-        
-        // Xin quyền Camera
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                streamRef = stream;
-                document.getElementById('video-feed').srcObject = stream;
-                runScanSequence(processTimeSec);
-            })
-            .catch(err => {
-                // Nếu lỗi (không có cam, không có https), giả lập giao diện đen
-                runScanSequence(processTimeSec, true);
-            });
-    }
-
-    function runScanSequence(processTimeSec, noCam = false) {
-        let statusEl = document.getElementById('cam-status');
-        let scanLine = document.getElementById('scan-line');
-        let spinner = document.getElementById('cam-spinner');
-        
-        statusEl.innerText = "Đang quét khuôn mặt... Vui lòng giữ yên (10s)";
-        scanLine.style.display = "block";
-        spinner.style.display = "none";
-        document.getElementById('video-container').style.display = "block";
-
-        let scanTime = 10;
-        let scanInterval = setInterval(() => {
-            scanTime--;
-            statusEl.innerText = `Đang quét khuôn mặt... Vui lòng giữ yên (${scanTime}s)`;
-            if(scanTime <= 0) {
-                clearInterval(scanInterval);
-                // Dừng camera chụp ảnh
-                if(streamRef) {
-                    streamRef.getTracks().forEach(track => track.stop());
-                }
-                
-                // Chuyển sang duyệt hồ sơ
-                scanLine.style.display = "none";
-                document.getElementById('video-container').style.display = "none";
-                spinner
+        let amount, 
