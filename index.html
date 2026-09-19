@@ -21,7 +21,10 @@
     </script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; }
-        .hidden-section { display: none; }
+        
+        /* FIX QUAN TRỌNG: Thêm !important để không bị Tailwind flex ghi đè làm hiện modal lúc mới vào */
+        .hidden-section { display: none !important; }
+        
         .glass-panel { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid #10B981; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -42,7 +45,7 @@
     </header>
 
     <!-- AUTH SECTION (ĐĂNG NHẬP / ĐĂNG KÝ) -->
-    <main id="auth-section" class="max-w-md mx-auto mt-20 glass-panel p-8 rounded-2xl">
+    <main id="auth-section" class="max-w-md mx-auto mt-20 glass-panel p-8 rounded-2xl mx-4 md:mx-auto">
         <div class="text-center mb-8">
             <h2 class="text-2xl font-bold text-brandGreen">CỔNG ĐĂNG NHẬP</h2>
             <p class="text-sm text-gray-500 mt-2">Vui lòng đăng nhập hoặc tạo tài khoản BO.FE</p>
@@ -80,13 +83,13 @@
     </main>
 
     <!-- DASHBOARD SECTION -->
-    <main id="dashboard-section" class="max-w-6xl mx-auto mt-8 hidden-section pb-20">
+    <main id="dashboard-section" class="max-w-6xl mx-auto mt-8 hidden-section pb-20 px-4 md:px-0">
         <!-- TABS Navigation -->
         <div class="flex flex-wrap gap-2 mb-6 bg-white p-2 rounded-xl shadow">
-            <button onclick="switchTab('tab-tinchap')" class="tab-btn flex-1 py-3 rounded-lg font-bold bg-brandGreen text-white transition"><i class="fa-solid fa-user-check"></i> Vay Tín Chấp</button>
-            <button onclick="switchTab('tab-thechap')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-gray-500 hover:bg-gray-100 transition"><i class="fa-solid fa-car"></i> Vay Thế Chấp</button>
-            <button onclick="switchTab('tab-ruttien')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-gray-500 hover:bg-gray-100 transition"><i class="fa-solid fa-money-bill-transfer"></i> Rút Tiền</button>
-            <button onclick="switchTab('tab-thanhtoan')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-brandRed hover:bg-red-50 transition"><i class="fa-solid fa-qrcode"></i> Thanh Toán</button>
+            <button onclick="switchTab('tab-tinchap')" class="tab-btn flex-1 py-3 rounded-lg font-bold bg-brandGreen text-white transition min-w-[140px]"><i class="fa-solid fa-user-check"></i> Vay Tín Chấp</button>
+            <button onclick="switchTab('tab-thechap')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-gray-500 hover:bg-gray-100 transition min-w-[140px]"><i class="fa-solid fa-car"></i> Vay Thế Chấp</button>
+            <button onclick="switchTab('tab-ruttien')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-gray-500 hover:bg-gray-100 transition min-w-[140px]"><i class="fa-solid fa-money-bill-transfer"></i> Rút Tiền</button>
+            <button onclick="switchTab('tab-thanhtoan')" class="tab-btn flex-1 py-3 rounded-lg font-bold text-brandRed hover:bg-red-50 transition min-w-[140px]"><i class="fa-solid fa-qrcode"></i> Thanh Toán</button>
         </div>
 
         <!-- TAB: Vay Tín Chấp -->
@@ -216,13 +219,13 @@
     <div id="qr-modal" class="hidden-section fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center backdrop-blur-sm">
         <div class="bg-white p-8 rounded-2xl text-center max-w-sm w-full mx-4">
             <h3 class="text-2xl font-bold text-brandRed mb-4">QUÉT MÃ THANH TOÁN</h3>
-            <img id="qr-image" src="" alt="QR Code" class="mx-auto mb-4 border-4 border-brandGreen rounded-lg p-2">
+            <img id="qr-image" src="" alt="QR Code" class="mx-auto mb-4 border-4 border-brandGreen rounded-lg p-2 max-w-[200px]">
             <div class="bg-gray-100 p-4 rounded-lg text-left text-sm space-y-2 mb-4 font-mono">
                 <p><strong>Ngân hàng:</strong> Tự động</p>
                 <p><strong>STK:</strong> 7783863107</p>
                 <p><strong>Tên:</strong> NGUYEN CHI THANH DAT</p>
                 <p><strong>Nội dung:</strong> thanhtoankhoanvay</p>
-                <p><strong>Số tiền:</strong> <span id="qr-amount-display" class="text-brandRed font-bold"></span> VNĐ</p>
+                <p><strong>Số tiền:</strong> <span id="qr-amount-display" class="text-brandRed font-bold text-base"></span> VNĐ</p>
             </div>
             <button onclick="confirmPayment()" class="w-full bg-brandGreen text-white py-3 rounded-xl font-bold text-lg shadow-lg hover:bg-green-600">ĐÃ THANH TOÁN</button>
             <button onclick="closeQrModal()" class="w-full bg-gray-200 text-gray-700 py-2 rounded-xl font-bold mt-2 hover:bg-gray-300">Hủy bỏ</button>
@@ -237,7 +240,7 @@
         let currentPayingLoanId = null;
 
         // --- CÁC HÀM TIỆN ÍCH ---
-        const formatMoney = (amount) => new Intl.NumberFormat('vi-VN').format(Math.round(amount));
+        const formatMoney = (amount) => new Intl.NumberFormat('vi-VN').format(Math.round(amount || 0));
         const parseMoney = (str) => parseInt(str.replace(/,/g, ''));
 
         // --- GIAO DIỆN & AUTH ---
@@ -315,9 +318,4 @@
                 el.classList.remove('bg-brandGreen', 'text-white', 'text-brandRed', 'bg-red-50');
                 el.classList.add('text-gray-500');
             });
-            document.getElementById(tabId).classList.remove('hidden-section');
-            
-            const activeBtn = event.currentTarget;
-            if(tabId === 'tab-thanhtoan') {
-                activeBtn.classList.remove('text-gray-500');
-                activeBtn.classList.add('
+            document.getElementById(tabI
