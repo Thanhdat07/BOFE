@@ -2,127 +2,135 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BO.FE - Mô phỏng app vay tiền</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #f0f2f5; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
-        #app { width: 100%; max-width: 414px; background: white; height: 100%; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+        body, html { background-color: #f0f2f5; min-height: 100vh; display: flex; justify-content: center; }
         
-        /* Màu sắc chủ đạo */
+        #app { width: 100%; max-width: 414px; background: white; min-height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 15px rgba(0,0,0,0.2); overflow-x: hidden; }
+        
+        /* Màu chủ đạo theo yêu cầu */
         .bg-green { background-color: #4CAF50; color: white; }
         .text-green { color: #4CAF50; }
         .bg-red { background-color: #F44336; color: white; }
         .text-red { color: #F44336; }
         
-        /* Header */
-        header { padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+        /* Header & Views */
+        header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .menu-btn { font-size: 24px; cursor: pointer; background: none; border: none; color: white; }
         
-        /* Views */
-        .view { display: none; padding: 20px; flex: 1; overflow-y: auto; }
-        .view.active { display: block; }
+        .view { display: none; padding: 20px; flex: 1; padding-bottom: 60px; /* Chừa chỗ cho footer */ }
+        .view.active { display: block; animation: fadeIn 0.3s; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         /* Forms */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 5px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; outline: none; transition: 0.3s; }
+        .form-control:focus { border-color: #4CAF50; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        .btn:active { transform: scale(0.98); opacity: 0.9; }
+        .btn:disabled { background-color: #ccc; cursor: not-allowed; }
         
         /* Slogan */
-        .slogan { text-align: center; margin-bottom: 20px; font-style: italic; font-weight: bold; font-size: 18px; }
+        .slogan { text-align: center; margin-bottom: 25px; font-style: italic; font-weight: 900; font-size: 18px; text-transform: uppercase; }
         
         /* Tabs */
         .tabs { display: flex; margin-bottom: 20px; border-bottom: 2px solid #eee; }
-        .tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; font-weight: bold; color: #777; }
+        .tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: bold; color: #777; transition: 0.3s; }
         .tab.active { color: #4CAF50; border-bottom: 3px solid #4CAF50; }
         
-        /* Menu Sidebar */
-        #sidebar { position: absolute; top: 0; left: -100%; width: 70%; height: 100%; background: white; z-index: 20; transition: 0.3s; box-shadow: 2px 0 5px rgba(0,0,0,0.2); }
+        /* Sidebar Menu */
+        #sidebar { position: fixed; top: 0; left: -100%; width: 280px; max-width: 80%; height: 100%; background: white; z-index: 1000; transition: left 0.3s ease; box-shadow: 2px 0 10px rgba(0,0,0,0.2); }
         #sidebar.open { left: 0; }
         .sidebar-header { padding: 20px; background: #4CAF50; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .menu-item { padding: 15px 20px; border-bottom: 1px solid #eee; cursor: pointer; font-weight: bold; color: #333; }
+        .menu-item { padding: 18px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-weight: bold; color: #333; }
         .menu-item:hover { background: #f9f9f9; }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 15; display: none; }
+        
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; display: none; }
         .overlay.active { display: block; }
 
+        /* Sliders */
+        .slider-val { font-size: 26px; font-weight: bold; text-align: center; color: #F44336; margin: 10px 0; }
+        input[type=range] { width: 100%; accent-color: #4CAF50; }
+
+        /* UI Elements */
+        .loan-card { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .qr-container { text-align: center; margin: 25px 0; }
+        .qr-container img { max-width: 220px; border-radius: 10px; border: 3px solid #4CAF50; padding: 5px; }
+
         /* Camera */
-        #video-container { width: 100%; height: 300px; background: #000; border-radius: 10px; overflow: hidden; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; color: white; }
+        #video-container { width: 100%; height: 320px; background: #222; border-radius: 12px; overflow: hidden; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; color: white; position: relative; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        #timer-text { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+        #timer-text { font-size: 22px; font-weight: bold; text-align: center; margin-bottom: 20px; }
 
-        /* QR Code & Loan items */
-        .loan-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .qr-container { text-align: center; margin: 20px 0; }
-        .qr-container img { max-width: 200px; border-radius: 10px; border: 2px solid #4CAF50; }
-
-        /* Disclaimer */
-        .disclaimer { position: absolute; bottom: 5px; width: 100%; text-align: center; font-size: 12px; color: #000; opacity: 0.5; pointer-events: none; z-index: 999; }
-        
-        .slider-val { font-size: 24px; font-weight: bold; text-align: center; color: #F44336; margin: 10px 0; }
+        /* Footer mờ 50% */
+        .disclaimer { position: absolute; bottom: 10px; left: 0; width: 100%; text-align: center; font-size: 13px; color: #000; opacity: 0.5; pointer-events: none; z-index: 5; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div id="app">
-    <!-- Header chung -->
+    <!-- Header -->
     <header class="bg-green" id="main-header" style="display:none;">
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
-        <h2>BO.FE</h2>
+        <h2 style="font-size: 22px; font-weight: 900; letter-spacing: 1px;">BO.FE</h2>
         <div style="width: 24px;"></div>
     </header>
 
-    <!-- Sidebar Menu -->
+    <!-- Overlay & Menu 3 gạch -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
     <div id="sidebar">
         <div class="sidebar-header">
-            <h3>Menu</h3>
-            <span onclick="toggleMenu()" style="cursor:pointer; font-size: 20px;">✕</span>
+            <h3>Danh Mục Quản Lý</h3>
+            <span onclick="toggleMenu()" style="cursor:pointer; font-size: 24px; font-weight: bold;">✕</span>
         </div>
-        <div class="menu-item" onclick="navigate('withdraw-view'); toggleMenu();">Rút tiền</div>
-        <div class="menu-item" onclick="navigate('repay-view'); toggleMenu();">Thanh toán khoản vay</div>
-        <div class="menu-item" onclick="navigate('history-view'); toggleMenu();">Lịch sử vay</div>
-        <div class="menu-item" onclick="logout(); toggleMenu();" style="color: #F44336;">Đăng xuất</div>
+        <div class="menu-item" onclick="navigate('withdraw-view'); toggleMenu();">💳 Rút tiền</div>
+        <div class="menu-item" onclick="navigate('repay-view'); toggleMenu();">💰 Thanh toán khoản vay</div>
+        <div class="menu-item" onclick="navigate('history-view'); toggleMenu();">📜 Lịch sử vay</div>
+        <div class="menu-item text-red" onclick="logout(); toggleMenu();">🚪 Đăng xuất</div>
     </div>
 
-    <!-- Màn hình 1: Đăng nhập / Đăng ký -->
-    <div id="auth-view" class="view active">
-        <h1 class="text-green" style="text-align: center; margin-bottom: 30px; font-size: 40px;">BO.FE</h1>
+    <!-- 1. ĐĂNG NHẬP / TẠO TÀI KHOẢN -->
+    <div id="auth-view" class="view active" style="padding-top: 50px;">
+        <h1 class="text-green" style="text-align: center; margin-bottom: 10px; font-size: 48px; font-weight: 900;">BO.FE</h1>
         <div class="slogan text-red">"Bạn cần cứu ? Đã có BoFe"</div>
         
-        <form onsubmit="handleAuth(event)">
+        <form id="auth-form" style="margin-top: 30px;">
             <div class="form-group">
                 <label>Tên tài khoản (tối thiểu 6 ký tự)</label>
-                <input type="text" id="username" class="form-control" required minlength="6">
+                <input type="text" id="username" class="form-control" placeholder="Nhập tài khoản..." required minlength="6">
             </div>
             <div class="form-group">
                 <label>Mật khẩu</label>
-                <input type="password" id="password" class="form-control" required>
+                <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu..." required>
             </div>
-            <div class="form-group" id="confirm-pwd-group">
-                <label>Xác nhận lại mật khẩu (Dành cho đăng ký)</label>
-                <input type="password" id="confirm-password" class="form-control">
+            <div class="form-group">
+                <label>Xác nhận lại mật khẩu</label>
+                <input type="password" id="confirm-password" class="form-control" placeholder="Nhập lại mật khẩu (để đăng ký)...">
             </div>
-            <button type="submit" class="btn bg-green">Đăng Nhập / Tạo Tài Khoản</button>
-            <p style="text-align: center; margin-top: 15px; font-size: 14px; color: #666;">
-                Hệ thống sẽ tự động đăng ký nếu tài khoản chưa tồn tại.
+            <button type="submit" class="btn bg-green" style="margin-top: 20px;">Đăng Nhập / Tạo Tài Khoản</button>
+            <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #666; line-height: 1.5;">
+                Hệ thống sẽ lưu lại tài khoản và tự động tạo mới nếu chưa tồn tại.
             </p>
         </form>
     </div>
 
-    <!-- Màn hình 2: Trang Chính (Vay) -->
+    <!-- 2. TRANG CHÍNH -->
     <div id="main-view" class="view">
-        <div class="slogan text-red">"Bạn cần cứu ? Đã có BoFe"</div>
+        <div class="slogan text-red" style="margin-top: 10px;">"Bạn cần cứu ? Đã có BoFe"</div>
         
         <div class="tabs">
             <div class="tab active" onclick="switchTab('vay-nhanh')" id="tab-vay-nhanh">Vay Nhanh</div>
             <div class="tab" onclick="switchTab('vay-ngan')" id="tab-vay-ngan">Vay Ngắn Ngày</div>
         </div>
 
-        <!-- Form Vay Nhanh -->
+        <!-- FORM VAY NHANH -->
         <div id="form-vay-nhanh">
             <div class="form-group">
-                <label>Số tiền muốn vay:</label>
+                <label>Số tiền muốn vay (500k - 10Tr):</label>
                 <div class="slider-val" id="val-vay-nhanh">5,000,000 VNĐ</div>
                 <input type="range" id="slider-vay-nhanh" min="500000" max="10000000" step="100000" value="5000000" class="form-control" oninput="updateFastLoan()">
             </div>
@@ -134,28 +142,28 @@
                     <option value="12">12 tháng</option>
                 </select>
             </div>
-            <div class="loan-card bg-green" style="color: white; margin-top: 20px;">
-                <p>Lãi suất: <strong>30%</strong></p>
-                <p>Tổng tiền phải thanh toán: <strong id="total-vay-nhanh" style="font-size: 18px;">6,500,000 VNĐ</strong></p>
+            <div class="loan-card bg-green" style="color: white; border:none;">
+                <p style="margin-bottom: 5px;">Lãi suất cố định: <strong style="font-size: 18px;">30%</strong></p>
+                <p>Tổng thanh toán: <strong id="total-vay-nhanh" style="font-size: 20px; display: block; margin-top: 5px;">6,500,000 VNĐ</strong></p>
             </div>
-            <button class="btn bg-red" onclick="startLoanProcess('nhanh')">Xác Nhận Vay</button>
+            <button class="btn bg-red" id="btn-vay-nhanh" onclick="startLoanProcess('nhanh')">XÁC NHẬN VAY</button>
         </div>
 
-        <!-- Form Vay Ngắn Ngày -->
+        <!-- FORM VAY NGẮN NGÀY -->
         <div id="form-vay-ngan" style="display: none;">
             <div class="form-group">
                 <label>Mục đích vay:</label>
                 <select id="category-vay-ngan" class="form-control" onchange="updateShortLoanConfig()">
-                    <option value="Sửa xe">Sửa xe (500k - 1M)</option>
-                    <option value="Học phí">Học phí (5M - 10M)</option>
-                    <option value="KTV">KTV (200k - 500k)</option>
-                    <option value="Ăn cơm Gà">Ăn cơm Gà (30k - 50k)</option>
+                    <option value="Sửa xe">Sửa xe (500.000 - 1.000.000)</option>
+                    <option value="Học phí">Học phí (5.000.000 - 10.000.000)</option>
+                    <option value="KTV">KTV (200.000 - 500.000)</option>
+                    <option value="Ăn cơm Gà">Ăn cơm Gà (30.000 - 50.000)</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Số tiền muốn vay:</label>
                 <div class="slider-val" id="val-vay-ngan">500,000 VNĐ</div>
-                <input type="range" id="slider-vay-ngan" min="500000" max="1000000" step="50000" value="500000" class="form-control" oninput="updateShortLoan()">
+                <input type="range" id="slider-vay-ngan" class="form-control" oninput="updateShortLoan()">
             </div>
             <div class="form-group">
                 <label>Kỳ hạn vay:</label>
@@ -165,37 +173,39 @@
                     <option value="30">30 ngày</option>
                 </select>
             </div>
-            <div class="loan-card bg-green" style="color: white; margin-top: 20px;">
-                <p>Lãi suất: <strong>40%</strong></p>
-                <p>Tổng tiền phải thanh toán: <strong id="total-vay-ngan" style="font-size: 18px;">700,000 VNĐ</strong></p>
+            <div class="loan-card bg-green" style="color: white; border:none;">
+                <p style="margin-bottom: 5px;">Lãi suất cố định: <strong style="font-size: 18px;">40%</strong></p>
+                <p>Tổng thanh toán: <strong id="total-vay-ngan" style="font-size: 20px; display: block; margin-top: 5px;">700,000 VNĐ</strong></p>
             </div>
-            <button class="btn bg-red" onclick="startLoanProcess('ngan')">Xác Nhận Vay</button>
+            <button class="btn bg-red" id="btn-vay-ngan" onclick="startLoanProcess('ngan')">XÁC NHẬN VAY</button>
         </div>
     </div>
 
-    <!-- Màn hình Camera & Duyệt -->
+    <!-- MÀN HÌNH CAMERA -->
     <div id="camera-view" class="view">
-        <h2 class="text-green" style="text-align: center; margin-bottom: 20px;" id="camera-title">Nhận diện khuôn mặt</h2>
+        <h2 class="text-green" style="text-align: center; margin-bottom: 20px;" id="camera-title">Xác thực khuôn mặt</h2>
         <div id="video-container">
             <video id="camera-video" autoplay playsinline></video>
-            <div id="camera-fallback" style="display: none;">[Đang truy cập Camera giả lập]</div>
+            <div id="camera-fallback" style="display: none; text-align: center; padding: 20px;">[Mô phỏng truy cập Camera]</div>
         </div>
         <div id="timer-text" class="text-red"></div>
     </div>
 
-    <!-- Màn hình Rút tiền -->
+    <!-- MÀN HÌNH RÚT TIỀN -->
     <div id="withdraw-view" class="view">
-        <button class="btn bg-red" style="margin-bottom: 20px;" onclick="navigate('main-view')">⬅ Quay lại Trang Chính</button>
+        <button class="btn bg-red" style="margin-bottom: 20px;" onclick="navigate('main-view')">⬅ Về Trang Chính</button>
         <h2 class="text-green" style="margin-bottom: 20px;">Rút Tiền Về Tài Khoản</h2>
         
-        <div class="loan-card">
-            <h3 style="margin-bottom: 10px;">Số dư khả dụng: <span id="available-balance" class="text-red">0 VNĐ</span></h3>
+        <div class="loan-card" style="text-align: center; border: 2px solid #4CAF50;">
+            <p style="font-size: 16px; font-weight: bold; color: #555;">Số tiền đã được giải ngân:</p>
+            <h2 id="available-balance" class="text-red" style="margin-top: 10px; font-size: 30px;">0 VNĐ</h2>
         </div>
 
-        <form id="withdraw-form" onsubmit="handleWithdraw(event)">
+        <form id="withdraw-form">
             <div class="form-group">
-                <label>Ngân hàng:</label>
+                <label>Chọn ngân hàng:</label>
                 <select class="form-control" required>
+                    <option value="">-- Chọn ngân hàng --</option>
                     <option>Vietcombank</option>
                     <option>Techcombank</option>
                     <option>MB Bank</option>
@@ -205,122 +215,134 @@
             </div>
             <div class="form-group">
                 <label>Số tài khoản:</label>
-                <input type="number" class="form-control" required>
+                <input type="number" class="form-control" placeholder="Nhập số tài khoản..." required>
             </div>
             <div class="form-group">
                 <label>Tên chủ tài khoản:</label>
-                <input type="text" class="form-control" required>
+                <input type="text" class="form-control" placeholder="Viết hoa không dấu..." required>
             </div>
-            <button type="submit" class="btn bg-green">Rút Tiền</button>
+            <button type="submit" class="btn bg-green">RÚT TIỀN NGAY</button>
         </form>
     </div>
 
-    <!-- Màn hình Thanh toán -->
+    <!-- MÀN HÌNH DANH SÁCH THANH TOÁN -->
     <div id="repay-view" class="view">
-        <button class="btn bg-red" style="margin-bottom: 20px;" onclick="navigate('main-view')">⬅ Quay lại</button>
-        <h2 class="text-green" style="margin-bottom: 20px;">Thanh Toán Khoản Vay</h2>
-        <div id="repay-list">
-            <!-- Danh sách khoản vay render tại đây -->
-        </div>
+        <button class="btn bg-red" style="margin-bottom: 20px;" onclick="navigate('main-view')">⬅ Về Trang Chính</button>
+        <h2 class="text-green" style="margin-bottom: 20px;">Kỳ Thanh Toán Của Bạn</h2>
+        <div id="repay-list"></div>
     </div>
 
-    <!-- Màn hình QR Thanh Toán -->
+    <!-- MÀN HÌNH QUÉT QR THANH TOÁN -->
     <div id="qr-view" class="view">
-        <h2 class="text-green" style="text-align: center; margin-bottom: 10px;">Quét Mã Thanh Toán</h2>
-        <div class="loan-card">
-            <p><strong>Ngân hàng:</strong> TPBank</p>
-            <p><strong>Số tài khoản:</strong> <span class="text-red">7783863107</span></p>
-            <p><strong>Người nhận:</strong> NGUYEN CHI THANH DAT</p>
-            <p><strong>Số tiền:</strong> <span id="qr-amount" class="text-red"></span></p>
+        <h2 class="text-green" style="text-align: center; margin-bottom: 15px;">Quét Mã Thanh Toán</h2>
+        <div class="loan-card" style="background: #f9f9f9;">
+            <p style="margin-bottom: 8px;"><strong>Ngân hàng:</strong> TPBank</p>
+            <p style="margin-bottom: 8px;"><strong>Số tài khoản:</strong> <span class="text-red" style="font-weight: bold; font-size: 18px;">7783863107</span></p>
+            <p style="margin-bottom: 8px;"><strong>Người nhận:</strong> NGUYEN CHI THANH DAT</p>
+            <p><strong>Cần thanh toán:</strong> <span id="qr-amount" class="text-red" style="font-weight: bold; font-size: 18px;"></span></p>
         </div>
         <div class="qr-container">
-            <!-- Fake QR code for UI -->
+            <!-- Mã QR ảo -->
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=7783863107-NGUYEN-CHI-THANH-DAT" alt="QR Code">
+            <p style="margin-top: 10px; font-weight: bold; color: #666;">Dùng app ngân hàng để quét mã</p>
         </div>
-        <button class="btn bg-green" onclick="confirmPayment()">Đã Thanh Toán</button>
-        <button class="btn bg-red" onclick="navigate('repay-view')" style="margin-top: 10px;">Hủy</button>
+        <button class="btn bg-green" onclick="confirmPayment()">ĐÃ THANH TOÁN</button>
+        <button class="btn bg-red" onclick="navigate('repay-view')" style="margin-top: 10px; background-color: #999;">Quay Lại</button>
     </div>
 
-    <!-- Màn hình Lịch sử -->
+    <!-- MÀN HÌNH LỊCH SỬ -->
     <div id="history-view" class="view">
-        <button class="btn bg-red" style="margin-bottom: 20px;" onclick="navigate('main-view')">⬅ Quay lại</button>
+        <button class="btn bg-red" style="margin-bottom: 20px;" onclick="navigate('main-view')">⬅ Về Trang Chính</button>
         <h2 class="text-green" style="margin-bottom: 20px;">Lịch Sử Khoản Vay</h2>
-        <div id="history-list">
-            <!-- Render lịch sử tại đây -->
-        </div>
+        <div id="history-list"></div>
     </div>
 
-    <!-- Footer làm mờ -->
+    <!-- Chữ làm mờ -->
     <div class="disclaimer">đây là trang mô phỏng , không phải thật</div>
 </div>
 
 <script>
-    /* ================= TRẠNG THÁI HỆ THỐNG ================= */
+    /* ================= 1. HỆ THỐNG LƯU TRỮ (Chống lỗi LocalStorage) ================= */
+    const Storage = {
+        memory: {},
+        get(key) {
+            try { return JSON.parse(localStorage.getItem(key)) || this.memory[key] || null; } 
+            catch (e) { return this.memory[key] || null; }
+        },
+        set(key, value) {
+            try { localStorage.setItem(key, JSON.stringify(value)); } 
+            catch (e) { this.memory[key] = value; }
+        }
+    };
+
     let currentUser = null;
     let streamRef = null;
     let currentPayingLoanId = null;
 
-    /* Helper định dạng tiền */
-    const formatVND = (num) => {
-        return num.toLocaleString('vi-VN') + ' VNĐ';
-    };
+    /* Helper định dạng tiền VNĐ */
+    const formatVND = (num) => num.toLocaleString('vi-VN') + ' VNĐ';
 
-    /* ================= 1. CHỨC NĂNG ĐĂNG NHẬP / ĐĂNG KÝ ================= */
-    function handleAuth(e) {
-        e.preventDefault();
+    /* ================= 2. XỬ LÝ ĐĂNG NHẬP / ĐĂNG KÝ ================= */
+    // Đã dùng addEventListener và e.preventDefault() để chặn hoàn toàn lỗi tải lại trang
+    document.getElementById('auth-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // CHẶN LOAD TRANG (Rất quan trọng)
+        
         const un = document.getElementById('username').value.trim();
         const pw = document.getElementById('password').value;
         const cpw = document.getElementById('confirm-password').value;
 
-        if (un.length < 6) return alert("Tên tài khoản tối thiểu 6 ký tự!");
+        if (un.length < 6) return alert("Tên tài khoản phải có tối thiểu 6 ký tự!");
 
-        let users = JSON.parse(localStorage.getItem('bofe_users')) || {};
+        let users = Storage.get('bofe_users') || {};
 
         if (users[un]) {
-            // Đã có tài khoản -> Đăng nhập
+            // Đã có tài khoản => Đăng nhập
             if (users[un].password === pw) {
-                login(un);
+                executeLogin(un);
             } else {
                 alert("Sai mật khẩu! Tài khoản này đã được tạo trước đó.");
             }
         } else {
-            // Chưa có tài khoản -> Đăng ký
+            // Chưa có tài khoản => Đăng ký
             if (!cpw) {
-                alert("Đây là tài khoản mới. Vui lòng nhập 'Xác nhận lại mật khẩu' để tạo.");
+                alert("Bạn đang tạo tài khoản mới. Vui lòng nhập 'Xác nhận lại mật khẩu' để đăng ký.");
                 return;
             }
-            if (pw !== cpw) return alert("Mật khẩu xác nhận không khớp!");
+            if (pw !== cpw) return alert("Mật khẩu xác nhận không trùng khớp!");
             
             users[un] = { password: pw };
-            localStorage.setItem('bofe_users', JSON.stringify(users));
+            Storage.set('bofe_users', users);
             alert("Tạo tài khoản thành công!");
-            login(un);
+            executeLogin(un);
         }
-    }
+    });
 
-    function login(username) {
+    function executeLogin(username) {
         currentUser = username;
         document.getElementById('main-header').style.display = 'flex';
+        
+        // Khởi tạo dữ liệu ví và lịch sử nếu chưa có
+        if (!Storage.get('bofe_loans_' + currentUser)) Storage.set('bofe_loans_' + currentUser, []);
+        if (!Storage.get('bofe_balance_' + currentUser)) Storage.set('bofe_balance_' + currentUser, 0);
+
+        // Chuyển tới trang chính
         navigate('main-view');
-        // Khởi tạo data người dùng nếu chưa có
-        if(!localStorage.getItem('bofe_loans_' + currentUser)) {
-            localStorage.setItem('bofe_loans_' + currentUser, JSON.stringify([]));
-        }
-        if(!localStorage.getItem('bofe_balance_' + currentUser)) {
-            localStorage.setItem('bofe_balance_' + currentUser, '0');
-        }
+        
+        // Xóa trắng form để bảo mật
+        document.getElementById('auth-form').reset();
+        
+        // Khởi tạo các giá trị slider ban đầu
+        updateFastLoan();
+        updateShortLoanConfig();
     }
 
     function logout() {
         currentUser = null;
         document.getElementById('main-header').style.display = 'none';
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        document.getElementById('confirm-password').value = '';
         navigate('auth-view');
     }
 
-    /* ================= 2. ĐIỀU HƯỚNG & MENU ================= */
+    /* ================= 3. ĐIỀU HƯỚNG & MENU ================= */
     function navigate(viewId) {
         document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
@@ -328,18 +350,14 @@
         if (viewId === 'withdraw-view') loadWithdraw();
         if (viewId === 'repay-view') loadRepayments();
         if (viewId === 'history-view') loadHistory();
+        window.scrollTo(0, 0);
     }
 
     function toggleMenu() {
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
-        if (sidebar.classList.contains('open')) {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        } else {
-            sidebar.classList.add('open');
-            overlay.classList.add('active');
-        }
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
     }
 
     function switchTab(tab) {
@@ -354,10 +372,11 @@
         } else {
             document.getElementById('tab-vay-ngan').classList.add('active');
             document.getElementById('form-vay-ngan').style.display = 'block';
+            updateShortLoanConfig();
         }
     }
 
-    /* ================= 3. TÍNH TOÁN KHOẢN VAY ================= */
+    /* ================= 4. TÍNH TOÁN KHOẢN VAY ================= */
     function updateFastLoan() {
         let val = parseInt(document.getElementById('slider-vay-nhanh').value);
         document.getElementById('val-vay-nhanh').innerText = formatVND(val);
@@ -368,55 +387,4 @@
     const shortLoanConfig = {
         'Sửa xe': { min: 500000, max: 1000000, step: 50000, default: 500000 },
         'Học phí': { min: 5000000, max: 10000000, step: 500000, default: 5000000 },
-        'KTV': { min: 200000, max: 500000, step: 50000, default: 200000 },
-        'Ăn cơm Gà': { min: 30000, max: 50000, step: 5000, default: 30000 }
-    };
-
-    function updateShortLoanConfig() {
-        let cat = document.getElementById('category-vay-ngan').value;
-        let config = shortLoanConfig[cat];
-        let slider = document.getElementById('slider-vay-ngan');
-        slider.min = config.min;
-        slider.max = config.max;
-        slider.step = config.step;
-        slider.value = config.default;
-        updateShortLoan();
-    }
-
-    function updateShortLoan() {
-        let val = parseInt(document.getElementById('slider-vay-ngan').value);
-        document.getElementById('val-vay-ngan').innerText = formatVND(val);
-        let total = val + (val * 0.40);
-        document.getElementById('total-vay-ngan').innerText = formatVND(total);
-    }
-
-    /* ================= 4. XỬ LÝ DUYỆT CAMERA ================= */
-    async function startLoanProcess(type) {
-        let amount, term, interest, name, waitTime;
-
-        if (type === 'nhanh') {
-            amount = parseInt(document.getElementById('slider-vay-nhanh').value);
-            term = document.getElementById('term-vay-nhanh').value + ' tháng';
-            interest = 0.30;
-            name = 'Vay Nhanh';
-            waitTime = 60; // 1 phút duyệt
-        } else {
-            amount = parseInt(document.getElementById('slider-vay-ngan').value);
-            term = document.getElementById('term-vay-ngan').value + ' ngày';
-            interest = 0.40;
-            name = 'Vay Ngắn Ngày (' + document.getElementById('category-vay-ngan').value + ')';
-            waitTime = 45; // 45s duyệt
-        }
-
-        let total = amount + (amount * interest);
-        
-        // Mở màn hình Camera
-        navigate('camera-view');
-        document.getElementById('camera-title').innerText = "Vui lòng giữ khuôn mặt trong khung";
-        
-        const videoElement = document.getElementById('camera-video');
-        const fallbackElement = document.getElementById('camera-fallback');
-        
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            videoElement.srcO
+        'KTV': { min: 200000, max: 500000, 
