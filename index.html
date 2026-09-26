@@ -3,211 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BO.FE - Ứng dụng Tài chính Toàn cầu</title>
+    <title>BO.FE - Siêu Ứng Dụng Tài Chính Đầu Tư</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body, html { background-color: #f4f6f9; min-height: 100vh; display: flex; justify-content: center; }
+        body, html { background-color: #0f172a; color: #fff; min-height: 100vh; display: flex; justify-content: center; }
         
-        #app { width: 100%; max-width: 414px; background: #f9fbfd; min-height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.15); overflow-x: hidden; }
+        #app { width: 100%; max-width: 414px; background: #f8fafc; color: #333; min-height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.5); overflow-x: hidden; }
         
-        /* Màu chủ đạo chuẩn Fintech */
-        .bg-gradient-green { background: linear-gradient(135deg, #00b14f 0%, #008a3e 100%); color: white; }
-        .text-green { color: #00b14f; }
-        .text-red { color: #ff3b30; }
+        /* Màu Fintech Pro */
+        .bg-main { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+        .text-green { color: #10b981; }
+        .text-red { color: #ef4444; }
+        .text-dark { color: #0f172a; }
         
         /* Header */
-        header { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 12px rgba(0,177,79,0.2); }
+        header { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 12px rgba(16,185,129,0.2); }
         .menu-btn { font-size: 26px; cursor: pointer; background: none; border: none; color: white; line-height: 1; }
-        .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 1.5px; margin: 0; }
+        .logo-text { font-size: 24px; font-weight: 900; letter-spacing: 1.5px; margin: 0; }
         
-        /* Chuyển View mượt mà */
-        .view { display: none; padding: 20px; flex: 1; padding-bottom: 70px; }
-        .view.active { display: block; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* Views */
+        .view { display: none; padding: 20px; flex: 1; padding-bottom: 90px; }
+        .view.active { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Banner Đại Sứ Thương Hiệu */
-        .banner { background: linear-gradient(45deg, #111, #333); border-radius: 16px; padding: 15px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; box-shadow: 0 8px 15px rgba(0,0,0,0.15); position: relative; overflow: hidden; }
-        .banner::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=400&q=50') center/cover; opacity: 0.3; z-index: 1; }
-        .banner-content { position: relative; z-index: 2; color: #fff; width: 60%; }
-        .banner-content h3 { font-size: 13px; font-weight: 800; color: #ffcc00; text-transform: uppercase; margin-bottom: 4px; }
-        .banner-content p { font-size: 11px; font-weight: 600; line-height: 1.3; }
-        .banner-avatars { display: flex; position: relative; z-index: 2; gap: -10px; }
-        .banner-avatars img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #ffcc00; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.3); margin-left: -15px; background: #fff; }
+        /* Forms & Cards */
+        .card { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #475569; font-size: 13px; text-transform: uppercase; }
+        .form-control { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; outline: none; transition: 0.2s; background: #f8fafc; }
+        .form-control:focus { border-color: #10b981; }
+        select.form-control { appearance: none; background: url('data:image/svg+xml;utf8,<svg fill="%2394a3b8" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center; }
         
-        /* Forms & Inputs */
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 14px; }
-        .form-control { width: 100%; padding: 14px; border: 1.5px solid #e0e0e0; border-radius: 12px; font-size: 16px; outline: none; transition: 0.2s; background: #fff; }
-        .form-control:focus { border-color: #00b14f; box-shadow: 0 0 0 3px rgba(0,177,79,0.1); }
-        select.form-control { appearance: none; background: url('data:image/svg+xml;utf8,<svg fill="%23999" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center; background-color: #fff; background-size: 20px; }
+        /* Buttons */
+        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        .btn-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; box-shadow: 0 6px 15px rgba(16,185,129,0.3); }
+        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; box-shadow: 0 6px 15px rgba(239,68,68,0.3); }
+        .btn-dark { background: #1e293b; color: white; }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
         
-        /* Nút bấm (Buttons) */
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 0.5px; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-green { background: linear-gradient(135deg, #00b14f 0%, #008a3e 100%); color: white; box-shadow: 0 6px 15px rgba(0,177,79,0.3); }
-        .btn-red { background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%); color: white; box-shadow: 0 6px 15px rgba(255,75,43,0.3); }
-        .btn:active { transform: translateY(2px); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .btn:disabled { background: #d1d5db; box-shadow: none; transform: none; cursor: not-allowed; }
+        /* Tabs */
+        .tabs { display: flex; background: #e2e8f0; border-radius: 12px; padding: 4px; margin-bottom: 20px; }
+        .tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; font-weight: 700; color: #64748b; border-radius: 10px; font-size: 13px; }
+        .tab.active { background: white; color: #10b981; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
-        /* Tabs chuyên nghiệp */
-        .tabs { display: flex; background: #eee; border-radius: 12px; padding: 4px; margin-bottom: 25px; }
-        .tab { flex: 1; text-align: center; padding: 12px; cursor: pointer; font-weight: 700; color: #666; border-radius: 10px; transition: 0.3s; font-size: 14px; }
-        .tab.active { background: white; color: #00b14f; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        /* Sliders */
+        .slider-val { font-size: 28px; font-weight: 900; text-align: center; color: #10b981; margin: 10px 0; }
+        input[type=range] { width: 100%; height: 6px; background: #cbd5e1; border-radius: 5px; outline: none; -webkit-appearance: none; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #10b981; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         
-        /* Thanh trượt (Slider) */
-        .slider-val { font-size: 32px; font-weight: 900; text-align: center; color: #00b14f; margin: 15px 0 5px 0; letter-spacing: -0.5px; }
-        input[type=range] { width: 100%; height: 6px; background: #ddd; border-radius: 5px; outline: none; -webkit-appearance: none; margin-bottom: 10px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #00b14f; cursor: pointer; box-shadow: 0 3px 6px rgba(0,0,0,0.2); border: 3px solid #fff; }
+        /* Khối Kết Quả Vay */
+        .result-card { background: #1e293b; border-radius: 16px; padding: 20px; color: white; margin-bottom: 20px; }
+        .result-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #94a3b8; }
+        .result-row strong { color: #facc15; font-size: 15px; }
         
-        /* Khối hiển thị tiền & Lãi suất (Loan Card Result) */
-        .result-card { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 16px; padding: 20px; color: white; margin-top: 10px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(30,60,114,0.3); }
-        .result-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; opacity: 0.9; }
-        .result-row strong { font-size: 16px; font-weight: 800; color: #ffdd00; }
-        .total-pay { border-top: 1px dashed rgba(255,255,255,0.3); padding-top: 15px; margin-top: 5px; text-align: center; }
-        .total-pay span { display: block; font-size: 13px; opacity: 0.8; margin-bottom: 5px; }
-        .total-pay h2 { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: 0.5px; }
-        
-        /* UI Elements Card */
-        .card { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.02); }
-        .qr-container { text-align: center; margin: 25px 0; padding: 20px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .qr-container img { max-width: 220px; border-radius: 12px; }
+        /* Sidebar Menu */
+        #sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #fff; z-index: 1000; transition: left 0.3s; box-shadow: 5px 0 25px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
+        #sidebar.open { left: 0; }
+        .sidebar-header { padding: 25px 20px; background: #10b981; color: white; display: flex; justify-content: space-between; }
+        .menu-item { padding: 18px 25px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-weight: 700; color: #334155; font-size: 14px; display: flex; gap: 15px; }
+        .menu-item:hover { background: #f8fafc; color: #10b981; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; display: none; }
+        .overlay.active { display: block; }
+
+        /* SÀN CHỨNG KHOÁN */
+        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
+        .stock-item:last-child { border-bottom: none; }
+        .stock-code { font-weight: 900; font-size: 18px; color: #1e293b; }
+        .stock-name { font-size: 12px; color: #64748b; }
+        .stock-price { text-align: right; font-weight: 800; }
+        .stock-up { color: #10b981; }
+        .stock-down { color: #ef4444; }
+        .chart-box { background: #0f172a; padding: 20px; border-radius: 12px; margin-bottom: 20px; position: relative; }
+        .mock-chart { height: 100px; width: 100%; border-bottom: 1px solid #334155; display: flex; align-items: flex-end; gap: 5px; }
+        .bar { width: 10%; background: #10b981; border-radius: 2px 2px 0 0; animation: grow 1s ease-out forwards; transform-origin: bottom; }
+        @keyframes grow { from { transform: scaleY(0); } }
+
+        /* CHATBOT AI */
+        #chatbot-btn { position: fixed; bottom: 30px; right: 20px; width: 60px; height: 60px; background: #10b981; border-radius: 50%; box-shadow: 0 4px 15px rgba(16,185,129,0.5); display: flex; justify-content: center; align-items: center; font-size: 28px; color: white; cursor: pointer; z-index: 100; transition: 0.3s; border: 3px solid #fff; }
+        #chatbot-btn:hover { transform: scale(1.1); }
+        #chat-window { position: fixed; bottom: 100px; right: 20px; width: 300px; height: 400px; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 101; display: none; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; }
+        .chat-header { background: #1e293b; color: white; padding: 15px; font-weight: 800; display: flex; justify-content: space-between; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
+        .msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
+        .msg-ai { background: #e2e8f0; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .msg-user { background: #10b981; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-input { display: flex; border-top: 1px solid #e2e8f0; }
+        .chat-input input { flex: 1; padding: 12px; border: none; outline: none; font-size: 14px; }
+        .chat-input button { padding: 0 15px; background: #10b981; color: white; border: none; font-weight: bold; cursor: pointer; }
 
         /* Camera */
-        #video-container { width: 100%; height: 320px; background: #000; border-radius: 16px; overflow: hidden; margin-bottom: 25px; display: flex; justify-content: center; align-items: center; color: white; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        #video-container { width: 100%; height: 320px; background: #000; border-radius: 16px; overflow: hidden; margin-bottom: 25px; display: flex; justify-content: center; align-items: center; color: white; }
         video { width: 100%; height: 100%; object-fit: cover; }
-        #timer-text { font-size: 24px; font-weight: 900; text-align: center; color: #ff3b30; }
 
-        /* Menu Sidebar */
-        #sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #fff; z-index: 1000; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 5px 0 25px rgba(0,0,0,0.15); display: flex; flex-direction: column; }
-        #sidebar.open { left: 0; }
-        .sidebar-header { padding: 25px 20px; background: linear-gradient(135deg, #00b14f 0%, #008a3e 100%); color: white; display: flex; justify-content: space-between; align-items: center; }
-        .menu-item { padding: 18px 25px; border-bottom: 1px solid #f0f0f0; cursor: pointer; font-weight: 600; color: #333; font-size: 15px; transition: 0.2s; display: flex; align-items: center; gap: 12px; }
-        .menu-item:hover { background: #f9f9f9; padding-left: 30px; color: #00b14f; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); z-index: 999; display: none; opacity: 0; transition: 0.3s; }
-        .overlay.active { display: block; opacity: 1; }
-
-        /* Chữ làm mờ */
-        .disclaimer { position: absolute; bottom: 8px; left: 0; width: 100%; text-align: center; font-size: 11px; color: #000; opacity: 0.5; pointer-events: none; z-index: 5; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+        /* Footer */
+        .disclaimer { position: absolute; bottom: 5px; width: 100%; text-align: center; font-size: 10px; color: #000; opacity: 0.3; pointer-events: none; z-index: 5; font-weight: 800; }
     </style>
 </head>
 <body>
 
 <div id="app">
-    <!-- Header -->
-    <header class="bg-gradient-green" id="main-header" style="display:none;">
+    <!-- HEADER -->
+    <header class="bg-main" id="main-header" style="display:none;">
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
         <h1 class="logo-text">BO.FE</h1>
         <div style="width: 26px;"></div>
     </header>
 
-    <!-- Menu Mở Rộng -->
+    <!-- SIDEBAR -->
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
     <div id="sidebar">
         <div class="sidebar-header">
             <div>
-                <h3 style="font-weight: 800; font-size: 18px;">Tài Khoản</h3>
-                <p id="menu-username" style="font-size: 13px; opacity: 0.9; margin-top: 4px;">Khách hàng VIP</p>
+                <h3 style="font-weight: 900; font-size: 18px;">BO.FE APP</h3>
+                <p id="menu-username" style="font-size: 12px; opacity: 0.8;">Khách hàng</p>
             </div>
-            <span onclick="toggleMenu()" style="cursor:pointer; font-size: 24px; font-weight: bold;">✕</span>
+            <span onclick="toggleMenu()" style="cursor:pointer; font-size: 24px;">✕</span>
         </div>
-        <div class="menu-item" onclick="navigate('withdraw-view'); toggleMenu();">💳 <span>Rút tiền giải ngân</span></div>
-        <div class="menu-item" onclick="navigate('repay-view'); toggleMenu();">💰 <span>Thanh toán khoản vay</span></div>
-        <div class="menu-item" onclick="navigate('history-view'); toggleMenu();">📜 <span>Lịch sử giao dịch</span></div>
+        <div class="menu-item" onclick="navigate('main-view'); toggleMenu();">🏠 Trang Chủ (Vay)</div>
+        <div class="menu-item text-green" onclick="navigate('stock-view'); toggleMenu();">📈 Sàn Chứng Khoán 3AE</div>
+        <div class="menu-item" onclick="navigate('savings-view'); toggleMenu();">🏦 Gửi Tiết Kiệm (80%/năm)</div>
+        <div class="menu-item" onclick="navigate('withdraw-view'); toggleMenu();">💳 Rút Tiền Về Bank</div>
+        <div class="menu-item" onclick="navigate('repay-view'); toggleMenu();">💰 Thanh Toán Nợ</div>
+        <div class="menu-item" onclick="navigate('history-view'); toggleMenu();">📜 Lịch Sử Giao Dịch</div>
         <div style="margin-top: auto; border-top: 1px solid #eee;">
-            <div class="menu-item text-red" onclick="logout(); toggleMenu();">🚪 <span>Đăng xuất tài khoản</span></div>
+            <div class="menu-item text-red" onclick="logout(); toggleMenu();">🚪 Đăng xuất</div>
         </div>
     </div>
 
-    <!-- 1. MÀN HÌNH ĐĂNG NHẬP (Chống Reload) -->
-    <div id="auth-view" class="view active" style="padding-top: 10vh; background: #fff;">
-        <h1 class="text-green" style="text-align: center; margin-bottom: 5px; font-size: 52px; font-weight: 900; letter-spacing: -2px;">BO.FE</h1>
-        <div style="text-align: center; margin-bottom: 35px; font-style: italic; font-weight: 800; font-size: 15px; color: #ff3b30; text-transform: uppercase; letter-spacing: 1px;">
-            "Bạn cần cứu ? Đã có BoFe"
+    <!-- AI CHATBOT BUBBLE -->
+    <div id="chatbot-btn" onclick="toggleChat()" style="display:none;">🤖</div>
+    <div id="chat-window">
+        <div class="chat-header">
+            <span>AI Hỗ Trợ BO.FE</span>
+            <span onclick="toggleChat()" style="cursor:pointer;">✕</span>
         </div>
+        <div class="chat-body" id="chat-body">
+            <div class="msg msg-ai">Chào bạn, tôi là trợ lý AI của BO.FE. Bạn cần hỏi về Vay tiền, Chứng khoán hay Tiết kiệm?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chat-text" placeholder="Nhập câu hỏi..." onkeypress="if(event.key === 'Enter') sendChat()">
+            <button onclick="sendChat()">Gửi</button>
+        </div>
+    </div>
+
+    <!-- 1. ĐĂNG NHẬP -->
+    <div id="auth-view" class="view active" style="padding-top: 10vh;">
+        <h1 class="text-green" style="text-align: center; margin-bottom: 5px; font-size: 56px; font-weight: 900;">BO.FE</h1>
+        <div style="text-align: center; margin-bottom: 30px; font-style: italic; font-weight: 800; font-size: 14px; color: #ef4444;">"Bạn cần cứu ? Đã có BoFe"</div>
         
-        <div class="card" style="box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: none;">
+        <div class="card">
             <div class="form-group">
-                <label>Tên đăng nhập</label>
-                <input type="text" id="username" class="form-control" placeholder="Tối thiểu 6 ký tự...">
+                <label>Tài khoản</label>
+                <input type="text" id="username" class="form-control" placeholder="Tối thiểu 6 ký tự">
             </div>
             <div class="form-group">
                 <label>Mật khẩu</label>
-                <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu...">
+                <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu">
             </div>
             <div class="form-group">
-                <label>Xác nhận mật khẩu (Nếu là Khách mới)</label>
-                <input type="password" id="confirm-password" class="form-control" placeholder="Nhập lại để tạo tài khoản...">
+                <label>Xác nhận mật khẩu (Tạo mới)</label>
+                <input type="password" id="confirm-password" class="form-control" placeholder="Nhập lại nếu chưa có tài khoản">
             </div>
-            <button type="button" class="btn btn-green" style="margin-top: 10px;" onclick="handleAuth()">Đăng Nhập / Tạo Tài Khoản</button>
-            <p style="text-align: center; margin-top: 18px; font-size: 13px; color: #888; font-weight: 500;">
-                Hệ thống tự động đăng ký bảo mật nếu tài khoản chưa tồn tại.
-            </p>
+            <button type="button" class="btn btn-green" onclick="handleAuth()">VÀO HỆ THỐNG</button>
         </div>
     </div>
 
-    <!-- 2. TRANG CHÍNH -->
+    <!-- 2. TRANG CHÍNH (VAY) -->
     <div id="main-view" class="view">
-        <!-- Banner Đại sứ Thương hiệu -->
-        <div class="banner">
-            <div class="banner-content">
-                <h3>ĐỐI TÁC TOÀN CẦU</h3>
-                <p>Đồng hành cùng siêu sao <br>L. Messi & C. Ronaldo</p>
-            </div>
-            <div class="banner-avatars">
-                <!-- Sử dụng ảnh Wiki thu nhỏ làm minh họa -->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" style="z-index: 2;" alt="Messi">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" style="z-index: 1;" alt="Ronaldo">
-            </div>
-        </div>
-
-        <div class="tabs">
+        <div class="tabs" style="display: flex; gap: 5px;">
             <div class="tab active" onclick="switchTab('vay-nhanh')" id="tab-vay-nhanh">🚀 Vay Nhanh</div>
-            <div class="tab" onclick="switchTab('vay-ngan')" id="tab-vay-ngan">⚡ Vay Ngắn Ngày</div>
+            <div class="tab" onclick="switchTab('vay-ngan')" id="tab-vay-ngan">⚡ Ngắn Ngày</div>
+            <div class="tab text-red" onclick="switchTab('vay-dautu')" id="tab-vay-dautu">📈 Vay Đầu Tư</div>
         </div>
 
-        <!-- FORM VAY NHANH -->
+        <!-- VAY NHANH -->
         <div id="form-vay-nhanh">
             <div class="card">
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label style="text-align: center; font-size: 15px; color:#666;">Số tiền muốn vay (500k - 10Tr)</label>
+                <div class="form-group"><label>Số tiền vay (500k - 10Tr)</label>
                     <div class="slider-val" id="val-vay-nhanh">5.000.000 ₫</div>
                     <input type="range" id="slider-vay-nhanh" min="500000" max="10000000" step="100000" value="5000000" oninput="updateFastLoan()">
                 </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Chọn kỳ hạn thanh toán</label>
+                <div class="form-group"><label>Kỳ hạn</label>
                     <select id="term-vay-nhanh" class="form-control" onchange="updateFastLoan()">
-                        <option value="3">3 tháng (90 ngày)</option>
-                        <option value="6">6 tháng (180 ngày)</option>
-                        <option value="12">12 tháng (360 ngày)</option>
+                        <option value="3">3 tháng (Lãi 30%)</option>
+                        <option value="6">6 tháng (Lãi 60%)</option>
+                        <option value="12">12 tháng (Lãi 120%)</option>
                     </select>
                 </div>
             </div>
-
-            <!-- Bảng tính toán Lãi suất & Tổng tiền VAY NHANH -->
             <div class="result-card">
-                <div class="result-row">
-                    <span>Mức lãi suất:</span>
-                    <strong>30% / Tháng</strong>
-                </div>
-                <div class="result-row">
-                    <span>Tiền lãi dự tính:</span>
-                    <strong id="interest-vay-nhanh">4.500.000 ₫</strong>
-                </div>
-                <div class="total-pay">
-                    <span>TỔNG SỐ TIỀN CẦN THANH TOÁN</span>
-                    <h2 id="total-vay-nhanh">9.500.000 ₫</h2>
-                </div>
+                <div class="result-row"><span>Tiền lãi dự tính:</span><strong id="interest-vay-nhanh">1.500.000 ₫</strong></div>
+                <div class="result-row"><span>Tổng thanh toán:</span><strong id="total-vay-nhanh" style="font-size:20px; color:#fff;">6.500.000 ₫</strong></div>
             </div>
-            
-            <button class="btn btn-red" id="btn-vay-nhanh" onclick="startLoanProcess('nhanh')">XÁC NHẬN VAY NGAY</button>
+            <button class="btn btn-red" onclick="startLoanProcess('nhanh')">DUYỆT VAY NHANH</button>
         </div>
 
-        <!-- FORM VAY NGẮN NGÀY -->
+        <!-- VAY NGẮN NGÀY -->
         <div id="form-vay-ngan" style="display: none;">
             <div class="card">
-                <div class="form-group">
-                    <label>Mục đích vay:</label>
+                <div class="form-group"><label>Mục đích</label>
                     <select id="category-vay-ngan" class="form-control" onchange="updateShortLoanConfig()">
                         <option value="Sửa xe">Sửa xe (500k - 1Tr)</option>
                         <option value="Học phí">Học phí (5Tr - 10Tr)</option>
@@ -215,481 +212,439 @@
                         <option value="Ăn cơm Gà">Ăn cơm Gà (30k - 50k)</option>
                     </select>
                 </div>
-                <div class="form-group" style="margin-bottom: 0;">
-                    <label style="text-align: center; font-size: 15px; color:#666;">Số tiền muốn vay</label>
+                <div class="form-group"><label>Số tiền</label>
                     <div class="slider-val" id="val-vay-ngan">500.000 ₫</div>
                     <input type="range" id="slider-vay-ngan" oninput="updateShortLoan()">
                 </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Chọn kỳ hạn thanh toán</label>
+                <div class="form-group"><label>Kỳ hạn (Lãi 40%/7 ngày)</label>
                     <select id="term-vay-ngan" class="form-control" onchange="updateShortLoan()">
-                        <option value="7">7 ngày</option>
-                        <option value="14">14 ngày</option>
-                        <option value="30">30 ngày</option>
+                        <option value="7">7 ngày</option><option value="14">14 ngày</option><option value="30">30 ngày</option>
                     </select>
                 </div>
             </div>
-
-            <!-- Bảng tính toán Lãi suất & Tổng tiền VAY NGẮN NGÀY -->
             <div class="result-card">
-                <div class="result-row">
-                    <span>Mức lãi suất:</span>
-                    <strong>40% / 7 Ngày</strong>
+                <div class="result-row"><span>Tiền lãi:</span><strong id="interest-vay-ngan">200.000 ₫</strong></div>
+                <div class="result-row"><span>Tổng thanh toán:</span><strong id="total-vay-ngan" style="font-size:20px; color:#fff;">700.000 ₫</strong></div>
+            </div>
+            <button class="btn btn-red" onclick="startLoanProcess('ngan')">DUYỆT VAY NGẮN</button>
+        </div>
+
+        <!-- VAY ĐẦU TƯ (TÍNH NĂNG MỚI) -->
+        <div id="form-vay-dautu" style="display: none;">
+            <div class="card" style="border: 2px solid #10b981;">
+                <p style="font-size:12px; color:#ef4444; font-weight:bold; margin-bottom:15px; text-align:center;">LƯU Ý: Tiền vay đầu tư bị KHÓA, CHỈ ĐƯỢC DÙNG MUA CHỨNG KHOÁN, không thể rút về Bank.</p>
+                <div class="form-group"><label>Hạn mức vay đầu tư lớn (10Tr - 5 Tỷ)</label>
+                    <div class="slider-val" id="val-vay-dautu">100.000.000 ₫</div>
+                    <input type="range" id="slider-vay-dautu" min="10000000" max="5000000000" step="10000000" value="100000000" oninput="updateInvestLoan()">
                 </div>
-                <div class="result-row">
-                    <span>Tiền lãi dự tính:</span>
-                    <strong id="interest-vay-ngan">200.000 ₫</strong>
-                </div>
-                <div class="total-pay">
-                    <span>TỔNG SỐ TIỀN CẦN THANH TOÁN</span>
-                    <h2 id="total-vay-ngan">700.000 ₫</h2>
+                <div class="form-group"><label>Kỳ hạn</label>
+                    <select id="term-vay-dautu" class="form-control" onchange="updateInvestLoan()">
+                        <option value="1">1 tháng (Lãi 15%)</option>
+                        <option value="3">3 tháng (Lãi 45%)</option>
+                    </select>
                 </div>
             </div>
-            
-            <button class="btn btn-red" id="btn-vay-ngan" onclick="startLoanProcess('ngan')">XÁC NHẬN VAY NGAY</button>
+            <div class="result-card">
+                <div class="result-row"><span>Lãi dự tính:</span><strong id="interest-vay-dautu">15.000.000 ₫</strong></div>
+                <div class="result-row"><span>Nợ cần trả:</span><strong id="total-vay-dautu" style="font-size:20px; color:#fff;">115.000.000 ₫</strong></div>
+            </div>
+            <button class="btn btn-dark" onclick="startLoanProcess('dautu')">DUYỆT VAY ĐẦU TƯ</button>
+        </div>
+    </div>
+
+    <!-- 3. SÀN CHỨNG KHOÁN (MỚI) -->
+    <div id="stock-view" class="view">
+        <div class="card bg-main">
+            <h3 style="margin-bottom: 5px;">Số dư Đầu Tư khả dụng:</h3>
+            <h2 id="stock-invest-balance" style="font-size: 28px; font-weight: 900;">0 ₫</h2>
+        </div>
+
+        <div class="chart-box">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <h3 style="color: #facc15; font-weight: 900;">3AE GROUP <span style="font-size:12px; background:#10b981; padding:2px 5px; border-radius:4px; color:#fff;">+90%</span></h3>
+                <span style="color:#fff; font-weight:bold;">150,500 ₫</span>
+            </div>
+            <!-- Giả lập biểu đồ chứng khoán tăng -->
+            <div class="mock-chart">
+                <div class="bar" style="height: 20%;"></div><div class="bar" style="height: 35%;"></div>
+                <div class="bar" style="height: 25%; background:#ef4444;"></div><div class="bar" style="height: 50%;"></div>
+                <div class="bar" style="height: 70%;"></div><div class="bar" style="height: 95%;"></div>
+            </div>
+            <p style="font-size: 11px; color:#94a3b8; margin-top: 10px;">Biểu đồ tăng trưởng 3AE (Mô phỏng)</p>
+        </div>
+
+        <div class="card" style="padding: 0;">
+            <div class="stock-item">
+                <div><div class="stock-code">FPT</div><div class="stock-name">FPT Corp</div></div>
+                <div class="stock-price stock-up">112,000 ₫<br><span style="font-size:11px;">+1.2%</span></div>
+            </div>
+            <div class="stock-item">
+                <div><div class="stock-code">VIC</div><div class="stock-name">Vingroup</div></div>
+                <div class="stock-price stock-down">43,500 ₫<br><span style="font-size:11px;">-0.5%</span></div>
+            </div>
+            <div class="stock-item" style="background: #f0fdf4;">
+                <div>
+                    <div class="stock-code text-green" style="font-size:22px;">3AE</div>
+                    <div class="stock-name text-dark" style="font-weight:bold;">3AE GROUP (Độc Quyền)</div>
+                </div>
+                <div class="stock-price stock-up" style="font-size:18px;">
+                    150,500 ₫<br><span style="font-size:14px; font-weight:900;">+90% / Ngày</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 15px;">Đầu Tư Ngay mã 3AE</h3>
+            <p style="font-size:12px; color:#666; margin-bottom:10px;">Lợi nhuận được cộng sau 1 ngày (Mô phỏng 5 giây). Trừ 8% phí GD và 8.5% Thuế TNCN.</p>
+            <input type="number" id="buy-stock-amount" class="form-control" placeholder="Nhập số tiền mua..." style="margin-bottom:10px;">
+            <button class="btn btn-green" onclick="buy3AE()">MUA CỔ PHIẾU 3AE</button>
+        </div>
+    </div>
+
+    <!-- 4. GỬI TIẾT KIỆM (MỚI) -->
+    <div id="savings-view" class="view">
+        <h2 style="font-weight: 900; color: #1e293b; margin-bottom: 20px;">Gửi Tiết Kiệm VIP</h2>
+        <div class="card" style="background: #1e293b; color: white;">
+            <p>Số dư tiền mặt thật (Rút được):</p>
+            <h2 id="savings-cash-balance" class="text-green" style="font-size: 28px;">0 ₫</h2>
+        </div>
+        <div class="card">
+            <div style="background: #fef08a; color: #854d0e; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; margin-bottom: 15px;">
+                Chương trình đặc biệt: Lãi 80%/năm. Yêu cầu tối thiểu 3 Tỷ VNĐ (Không áp dụng tiền Vay Đầu Tư).
+            </div>
+            <div class="form-group">
+                <label>Số tiền gửi (Tối thiểu 3,000,000,000)</label>
+                <input type="number" id="savings-amount" class="form-control" placeholder="Nhập số tiền...">
+            </div>
+            <div class="form-group">
+                <label>Kỳ hạn gửi</label>
+                <select id="savings-term" class="form-control">
+                    <option value="5">5 Năm</option>
+                    <option value="10">10 Năm</option>
+                </select>
+            </div>
+            <button class="btn btn-green" onclick="createSavings()">MỞ SỔ TIẾT KIỆM</button>
         </div>
     </div>
 
     <!-- MÀN HÌNH CAMERA ĐỊNH DANH -->
     <div id="camera-view" class="view" style="background: #fff;">
-        <h2 style="text-align: center; margin-bottom: 25px; font-weight: 800; color: #111;" id="camera-title">Định danh eKYC</h2>
-        <p style="text-align: center; color: #666; margin-bottom: 15px; font-size: 14px;">Vui lòng giữ khuôn mặt rõ nét trong khung hình để hệ thống tự động quét.</p>
-        
+        <h2 style="text-align: center; margin-bottom: 20px; font-weight: 900;">Định danh eKYC</h2>
         <div id="video-container">
             <video id="camera-video" autoplay playsinline></video>
-            <div id="camera-fallback" style="display: none; text-align: center; padding: 20px; color: #aaa; font-weight: 500;">
-                [Giao diện Camera bảo mật]
-            </div>
+            <div id="camera-fallback" style="display: none; padding: 20px; text-align: center; color:#666;">[Đang truy cập Camera ảo]</div>
         </div>
-        <div id="timer-text"></div>
+        <h2 id="timer-text" class="text-red" style="text-align: center;"></h2>
     </div>
 
-    <!-- MÀN HÌNH RÚT TIỀN -->
+    <!-- RÚT TIỀN -->
     <div id="withdraw-view" class="view">
-        <button class="btn" style="background: #e0e0e0; color: #333; margin-bottom: 20px; font-size: 14px; padding: 12px;" onclick="navigate('main-view')">⬅ Quay Lại Trang Chủ</button>
-        <h2 style="font-weight: 800; margin-bottom: 20px; color: #111;">Rút Tiền Khả Dụng</h2>
-        
-        <div class="card" style="text-align: center; background: linear-gradient(135deg, #00b14f 0%, #008a3e 100%); color: white;">
-            <p style="font-size: 14px; font-weight: 600; opacity: 0.9;">Số dư ví BO.FE:</p>
-            <h2 id="available-balance" style="margin-top: 5px; font-size: 34px; font-weight: 900;">0 ₫</h2>
+        <div class="card bg-main">
+            <p style="font-weight: bold;">Số dư tiền mặt có thể rút:</p>
+            <h2 id="available-balance" style="font-size: 30px;">0 ₫</h2>
+            <p style="font-size: 11px; margin-top:5px; opacity:0.8;">(Tiền vay đầu tư không hiển thị ở đây)</p>
         </div>
-
         <div class="card">
             <div class="form-group">
-                <label>Ngân hàng thụ hưởng:</label>
+                <label>Ngân hàng:</label>
                 <select class="form-control" id="bank-select">
                     <option value="">-- Chọn ngân hàng --</option>
-                    <option>Vietcombank</option>
-                    <option>Techcombank</option>
-                    <option>MB Bank</option>
-                    <option>Vietinbank</option>
-                    <option>BIDV</option>
+                    <option>Vietcombank</option><option>Techcombank</option><option>MB Bank</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>Số tài khoản:</label>
-                <input type="number" id="bank-account" class="form-control" placeholder="Nhập số tài khoản...">
-            </div>
-            <div class="form-group">
-                <label>Tên chủ tài khoản (In hoa không dấu):</label>
-                <input type="text" id="bank-name" class="form-control" placeholder="VD: NGUYEN VAN A">
-            </div>
-            <button type="button" class="btn btn-green" onclick="handleWithdraw()">XÁC NHẬN RÚT TIỀN</button>
+            <div class="form-group"><label>Số tài khoản:</label><input type="number" id="bank-account" class="form-control"></div>
+            <div class="form-group"><label>Chủ tài khoản:</label><input type="text" id="bank-name" class="form-control"></div>
+            <button class="btn btn-green" onclick="handleWithdraw()">RÚT TIỀN</button>
         </div>
     </div>
 
-    <!-- MÀN HÌNH DANH SÁCH THANH TOÁN -->
-    <div id="repay-view" class="view">
-        <button class="btn" style="background: #e0e0e0; color: #333; margin-bottom: 20px; font-size: 14px; padding: 12px;" onclick="navigate('main-view')">⬅ Quay Lại Trang Chủ</button>
-        <h2 style="font-weight: 800; margin-bottom: 20px; color: #111;">Kỳ Thanh Toán Của Bạn</h2>
-        <div id="repay-list"></div>
-    </div>
+    <!-- THANH TOÁN & LỊCH SỬ -->
+    <div id="repay-view" class="view"><h2 style="margin-bottom:20px; font-weight:900;">Khoản Nợ Của Bạn</h2><div id="repay-list"></div></div>
+    <div id="history-view" class="view"><h2 style="margin-bottom:20px; font-weight:900;">Lịch Sử Giao Dịch</h2><div id="history-list"></div></div>
 
-    <!-- MÀN HÌNH QUÉT QR -->
-    <div id="qr-view" class="view">
-        <h2 style="text-align: center; margin-bottom: 20px; font-weight: 800; color: #111;">Thanh Toán Khoản Vay</h2>
-        <div class="card" style="border-left: 5px solid #00b14f;">
-            <p style="margin-bottom: 10px; font-size: 15px;"><strong>Ngân hàng:</strong> TPBank</p>
-            <p style="margin-bottom: 10px; font-size: 15px;"><strong>Số tài khoản:</strong> <span class="text-green" style="font-weight: 900; font-size: 18px;">7783863107</span></p>
-            <p style="margin-bottom: 10px; font-size: 15px;"><strong>Người nhận:</strong> NGUYEN CHI THANH DAT</p>
-            <p style="font-size: 15px;"><strong>Số tiền cần CK:</strong> <span id="qr-amount" class="text-red" style="font-weight: 900; font-size: 20px;"></span></p>
-        </div>
-        <div class="qr-container">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=7783863107-NGUYEN-CHI-THANH-DAT" alt="QR Code">
-            <p style="margin-top: 15px; font-weight: 600; color: #555;">Sử dụng App Ngân hàng để quét mã QR</p>
-        </div>
-        <button class="btn btn-green" onclick="confirmPayment()">TÔI ĐÃ CHUYỂN KHOẢN</button>
-        <button class="btn" onclick="navigate('repay-view')" style="margin-top: 12px; background-color: #ddd; color: #333;">Hủy Giao Dịch</button>
-    </div>
-
-    <!-- MÀN HÌNH LỊCH SỬ -->
-    <div id="history-view" class="view">
-        <button class="btn" style="background: #e0e0e0; color: #333; margin-bottom: 20px; font-size: 14px; padding: 12px;" onclick="navigate('main-view')">⬅ Quay Lại Trang Chủ</button>
-        <h2 style="font-weight: 800; margin-bottom: 20px; color: #111;">Lịch Sử Giao Dịch</h2>
-        <div id="history-list"></div>
-    </div>
-
-    <!-- Chữ làm mờ -->
     <div class="disclaimer">ĐÂY LÀ TRANG MÔ PHỎNG , KHÔNG PHẢI THẬT</div>
 </div>
 
 <script>
-    /* ================= HỆ THỐNG LƯU TRỮ VĨNH VIỄN ================= */
+    /* ================= CORE SYSTEM ================= */
     const Storage = {
         memory: {},
         get(key) {
-            try { 
-                let item = localStorage.getItem(key);
-                if (item) return JSON.parse(item);
-            } catch (e) {}
+            try { let item = localStorage.getItem(key); if(item) return JSON.parse(item); } catch(e){}
             return this.memory[key] || null;
         },
         set(key, value) {
-            try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+            try { localStorage.setItem(key, JSON.stringify(value)); } catch(e){}
             this.memory[key] = value;
         }
     };
 
     let currentUser = null;
     let streamRef = null;
-    let currentPayingLoanId = null;
-
-    /* Định dạng VNĐ đẹp: 5.000.000 ₫ */
     const formatVND = (num) => parseInt(num).toLocaleString('vi-VN') + ' ₫';
 
-    /* Lắng nghe phím Enter */
-    document.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter' && document.getElementById('auth-view').classList.contains('active')) {
-            handleAuth();
-        }
-    });
+    /* ================= AI CHATBOT LOGIC ================= */
+    function toggleChat() {
+        const chat = document.getElementById('chat-window');
+        chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+    }
 
-    /* ================= LUỒNG ĐĂNG NHẬP (Chống Reload tuyệt đối) ================= */
+    function sendChat() {
+        const input = document.getElementById('chat-text');
+        const text = input.value.trim().toLowerCase();
+        if(!text) return;
+        
+        appendChat(input.value, 'user');
+        input.value = '';
+
+        setTimeout(() => {
+            let reply = "Xin lỗi, tôi chưa hiểu ý bạn. Vui lòng hỏi về Vay tiền, Chứng khoán, Tiết kiệm hoặc 3AE.";
+            if(text.includes('vay')) reply = "Hệ thống có Vay Nhanh (Lãi 30%/tháng), Vay Ngắn (40%/7 ngày) và Vay Đầu Tư (Dùng mua chứng khoán). Bạn muốn hỏi mục nào?";
+            if(text.includes('chứng khoán') || text.includes('3ae')) reply = "Mã 3AE GROUP hiện đang độc quyền trên hệ thống với mức tăng trưởng cam kết 90%/ngày. Hãy vay đầu tư để mua ngay!";
+            if(text.includes('tiết kiệm')) reply = "Gói tiết kiệm VIP lãi 80%/năm, yêu cầu số dư tiền mặt tự có tối thiểu 3 Tỷ VNĐ.";
+            if(text.includes('rút tiền')) reply = "Bạn chỉ có thể rút số dư tiền mặt. Số dư từ 'Vay đầu tư' bị khóa để mua chứng khoán.";
+            appendChat(reply, 'ai');
+        }, 500);
+    }
+
+    function appendChat(msg, type) {
+        const body = document.getElementById('chat-body');
+        body.innerHTML += `<div class="msg msg-${type}">${msg}</div>`;
+        body.scrollTop = body.scrollHeight;
+    }
+
+    /* ================= AUTHENTICATION ================= */
+    document.addEventListener('keypress', e => { if(e.key === 'Enter' && document.getElementById('auth-view').classList.contains('active')) handleAuth(); });
+
     function handleAuth() {
         const un = document.getElementById('username').value.trim();
         const pw = document.getElementById('password').value;
         const cpw = document.getElementById('confirm-password').value;
 
-        if (un.length < 6) return alert("⚠️ Tên đăng nhập phải có tối thiểu 6 ký tự!");
-        if (pw.length === 0) return alert("⚠️ Vui lòng nhập mật khẩu!");
+        if (un.length < 6) return alert("Tên tối thiểu 6 ký tự!");
+        if (pw.length === 0) return alert("Nhập mật khẩu!");
 
         let users = Storage.get('bofe_users') || {};
-
         if (users[un]) {
-            // Đã có => Đăng nhập
-            if (users[un].password === pw) {
-                executeLogin(un);
-            } else {
-                alert("❌ Sai mật khẩu! Hoặc tên đăng nhập này đã được đăng ký bởi người khác.");
-            }
+            if (users[un].password === pw) executeLogin(un);
+            else alert("Sai mật khẩu!");
         } else {
-            // Chưa có => Đăng ký
-            if (!cpw) return alert("⚠️ Bạn đang tạo tài khoản mới.\nVui lòng điền vào ô 'Xác nhận mật khẩu' để hoàn tất ĐĂNG KÝ.");
-            if (pw !== cpw) return alert("❌ Mật khẩu xác nhận không trùng khớp!");
-            
-            users[un] = { password: pw };
-            Storage.set('bofe_users', users);
-            alert("✅ Đăng ký tài khoản thành công!\nHệ thống yêu cầu bạn nhập lại mật khẩu một lần nữa để bảo mật.");
-            
-            document.getElementById('username').value = un;
-            document.getElementById('password').value = '';
-            document.getElementById('confirm-password').value = '';
+            if (!cpw) return alert("Vui lòng nhập 'Xác nhận mật khẩu' để đăng ký mới.");
+            if (pw !== cpw) return alert("Mật khẩu không khớp!");
+            users[un] = { password: pw }; Storage.set('bofe_users', users);
+            alert("Tạo tài khoản thành công! Hãy đăng nhập lại.");
+            document.getElementById('username').value = un; document.getElementById('password').value = ''; document.getElementById('confirm-password').value = '';
         }
     }
 
     function executeLogin(username) {
         currentUser = username;
         document.getElementById('main-header').style.display = 'flex';
-        document.getElementById('menu-username').innerText = 'Xin chào, ' + username;
+        document.getElementById('chatbot-btn').style.display = 'flex';
         
-        if (!Storage.get('bofe_loans_' + currentUser)) Storage.set('bofe_loans_' + currentUser, []);
+        // Khởi tạo Ví: bofe_balance (Tiền thật), bofe_invest_balance (Tiền vay mua CK)
         if (Storage.get('bofe_balance_' + currentUser) === null) Storage.set('bofe_balance_' + currentUser, 0);
+        if (Storage.get('bofe_invest_balance_' + currentUser) === null) Storage.set('bofe_invest_balance_' + currentUser, 0);
+        if (!Storage.get('bofe_history_' + currentUser)) Storage.set('bofe_history_' + currentUser, []);
 
         navigate('main-view');
-        
-        document.getElementById('username').value = '';
-        document.getElementById('password').value = '';
-        document.getElementById('confirm-password').value = '';
-        
-        // Cập nhật số liệu hiển thị lần đầu
-        updateFastLoan();
-        updateShortLoanConfig();
+        updateFastLoan(); updateShortLoanConfig(); updateInvestLoan();
     }
 
-    function logout() {
-        currentUser = null;
-        document.getElementById('main-header').style.display = 'none';
-        navigate('auth-view');
-    }
+    function logout() { currentUser = null; location.reload(); }
 
-    /* ================= ĐIỀU HƯỚNG & MENU ================= */
+    /* ================= NAVIGATION & TABS ================= */
     function navigate(viewId) {
         document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
-        
-        if (viewId === 'withdraw-view') loadWithdraw();
+        if (viewId === 'withdraw-view') document.getElementById('available-balance').innerText = formatVND(Storage.get('bofe_balance_' + currentUser) || 0);
+        if (viewId === 'stock-view') document.getElementById('stock-invest-balance').innerText = formatVND((Storage.get('bofe_balance_' + currentUser) || 0) + (Storage.get('bofe_invest_balance_' + currentUser) || 0));
+        if (viewId === 'savings-view') document.getElementById('savings-cash-balance').innerText = formatVND(Storage.get('bofe_balance_' + currentUser) || 0);
         if (viewId === 'repay-view') loadRepayments();
         if (viewId === 'history-view') loadHistory();
-        window.scrollTo(0, 0);
     }
-
-    function toggleMenu() {
-        document.getElementById('sidebar').classList.toggle('open');
-        document.getElementById('overlay').classList.toggle('active');
-    }
+    function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
 
     function switchTab(tab) {
-        document.getElementById('tab-vay-nhanh').classList.remove('active');
-        document.getElementById('tab-vay-ngan').classList.remove('active');
-        document.getElementById('form-vay-nhanh').style.display = 'none';
-        document.getElementById('form-vay-ngan').style.display = 'none';
-
-        if(tab === 'vay-nhanh') {
-            document.getElementById('tab-vay-nhanh').classList.add('active');
-            document.getElementById('form-vay-nhanh').style.display = 'block';
-            updateFastLoan();
-        } else {
-            document.getElementById('tab-vay-ngan').classList.add('active');
-            document.getElementById('form-vay-ngan').style.display = 'block';
-            updateShortLoanConfig();
-        }
+        ['vay-nhanh', 'vay-ngan', 'vay-dautu'].forEach(t => {
+            document.getElementById('tab-'+t).classList.remove('active');
+            document.getElementById('form-'+t).style.display = 'none';
+        });
+        document.getElementById('tab-'+tab).classList.add('active');
+        document.getElementById('form-'+tab).style.display = 'block';
     }
 
-    /* ================= THUẬT TOÁN TÍNH LÃI SUẤT CHUẨN ================= */
-    
-    // Vay Nhanh: 30% / 1 tháng
+    /* ================= LOAN CALCULATIONS ================= */
     function updateFastLoan() {
-        let val = parseInt(document.getElementById('slider-vay-nhanh').value);
-        let months = parseInt(document.getElementById('term-vay-nhanh').value);
-        
-        // Tiền lãi = Vốn * 30% * Số tháng
-        let interest = val * 0.30 * months;
-        let total = val + interest;
-
-        document.getElementById('val-vay-nhanh').innerText = formatVND(val);
-        document.getElementById('interest-vay-nhanh').innerText = formatVND(interest);
-        document.getElementById('total-vay-nhanh').innerText = formatVND(total);
+        let v = parseInt(document.getElementById('slider-vay-nhanh').value), m = parseInt(document.getElementById('term-vay-nhanh').value);
+        let i = v * 0.30 * m;
+        document.getElementById('val-vay-nhanh').innerText = formatVND(v);
+        document.getElementById('interest-vay-nhanh').innerText = formatVND(i);
+        document.getElementById('total-vay-nhanh').innerText = formatVND(v + i);
     }
-
-    // Cấu hình mốc Vay Ngắn
-    const shortLoanConfig = {
-        'Sửa xe': { min: 500000, max: 1000000, step: 50000, default: 500000 },
-        'Học phí': { min: 5000000, max: 10000000, step: 500000, default: 5000000 },
-        'KTV': { min: 200000, max: 500000, step: 50000, default: 200000 },
-        'Ăn cơm Gà': { min: 30000, max: 50000, step: 5000, default: 30000 }
-    };
-
+    const shortCfg = { 'Sửa xe':{min:500000,max:1000000}, 'Học phí':{min:5000000,max:10000000}, 'KTV':{min:200000,max:500000}, 'Ăn cơm Gà':{min:30000,max:50000} };
     function updateShortLoanConfig() {
-        let cat = document.getElementById('category-vay-ngan').value;
-        let config = shortLoanConfig[cat];
-        let slider = document.getElementById('slider-vay-ngan');
-        slider.min = config.min;
-        slider.max = config.max;
-        slider.step = config.step;
-        slider.value = config.default;
-        updateShortLoan();
+        let c = shortCfg[document.getElementById('category-vay-ngan').value], sl = document.getElementById('slider-vay-ngan');
+        sl.min = c.min; sl.max = c.max; sl.value = c.min; sl.step = c.min/10; updateShortLoan();
     }
-
-    // Vay Ngắn Ngày: 40% / 7 ngày
     function updateShortLoan() {
-        let val = parseInt(document.getElementById('slider-vay-ngan').value);
-        let days = parseInt(document.getElementById('term-vay-ngan').value);
-        
-        // Tiền lãi = Vốn * 40% * (Số ngày / 7)
-        let interestRate = 0.40;
-        let timeFactor = days / 7;
-        let interest = Math.round(val * interestRate * timeFactor);
-        let total = val + interest;
-
-        document.getElementById('val-vay-ngan').innerText = formatVND(val);
-        document.getElementById('interest-vay-ngan').innerText = formatVND(interest);
-        document.getElementById('total-vay-ngan').innerText = formatVND(total);
+        let v = parseInt(document.getElementById('slider-vay-ngan').value), d = parseInt(document.getElementById('term-vay-ngan').value);
+        let i = Math.round(v * 0.40 * (d/7));
+        document.getElementById('val-vay-ngan').innerText = formatVND(v);
+        document.getElementById('interest-vay-ngan').innerText = formatVND(i);
+        document.getElementById('total-vay-ngan').innerText = formatVND(v + i);
+    }
+    function updateInvestLoan() {
+        let v = parseInt(document.getElementById('slider-vay-dautu').value), m = parseInt(document.getElementById('term-vay-dautu').value);
+        let i = v * 0.15 * m;
+        document.getElementById('val-vay-dautu').innerText = formatVND(v);
+        document.getElementById('interest-vay-dautu').innerText = formatVND(i);
+        document.getElementById('total-vay-dautu').innerText = formatVND(v + i);
     }
 
-    /* ================= XỬ LÝ QUÉT CAMERA & DUYỆT ================= */
+    /* ================= PROCESS LOAN (CAMERA) ================= */
     async function startLoanProcess(type) {
-        let amount, term, totalPay, name, waitTime;
+        let amt, total, name;
+        if(type==='nhanh') { amt = parseInt(document.getElementById('slider-vay-nhanh').value); total = amt + (amt * 0.30 * parseInt(document.getElementById('term-vay-nhanh').value)); name = "Vay Nhanh"; }
+        if(type==='ngan') { amt = parseInt(document.getElementById('slider-vay-ngan').value); total = amt + Math.round(amt * 0.40 * (parseInt(document.getElementById('term-vay-ngan').value)/7)); name = "Vay Ngắn"; }
+        if(type==='dautu') { amt = parseInt(document.getElementById('slider-vay-dautu').value); total = amt + (amt * 0.15 * parseInt(document.getElementById('term-vay-dautu').value)); name = "Vay ĐẦU TƯ"; }
 
-        if (type === 'nhanh') {
-            amount = parseInt(document.getElementById('slider-vay-nhanh').value);
-            let months = parseInt(document.getElementById('term-vay-nhanh').value);
-            totalPay = amount + (amount * 0.30 * months);
-            term = months + ' tháng';
-            name = 'Vay Nhanh Chóng';
-            waitTime = 60; // 60s
-            document.getElementById('btn-vay-nhanh').disabled = true;
-        } else {
-            amount = parseInt(document.getElementById('slider-vay-ngan').value);
-            let days = parseInt(document.getElementById('term-vay-ngan').value);
-            totalPay = amount + Math.round(amount * 0.40 * (days/7));
-            term = days + ' ngày';
-            name = 'Vay Ngắn (' + document.getElementById('category-vay-ngan').value + ')';
-            waitTime = 45; // 45s
-            document.getElementById('btn-vay-ngan').disabled = true;
-        }
-
-        // Bật Camera
         navigate('camera-view');
-        document.getElementById('camera-title').innerText = "Định danh eKYC";
-        
-        const videoElement = document.getElementById('camera-video');
-        const fallbackElement = document.getElementById('camera-fallback');
-        
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            videoElement.srcObject = stream;
-            videoElement.style.display = 'block';
-            fallbackElement.style.display = 'none';
-            streamRef = stream;
-        } catch (e) {
-            videoElement.style.display = 'none';
-            fallbackElement.style.display = 'block';
-            fallbackElement.innerHTML = "<br>📷 Không có quyền truy cập Camera.<br><br>Sử dụng công cụ giả lập sinh trắc học...";
+        try { streamRef = await navigator.mediaDevices.getUserMedia({video:true}); document.getElementById('camera-video').srcObject = streamRef; } 
+        catch(e) { document.getElementById('camera-video').style.display='none'; document.getElementById('camera-fallback').style.display='block'; }
+
+        await countdown(3, "Quét eKYC: ");
+        if(streamRef) streamRef.getTracks().forEach(t=>t.stop());
+        await countdown(3, "Duyệt hồ sơ: ");
+
+        // Lưu khoản nợ
+        logHistory(`NHẬN NỢ: ${name}`, total, `Gốc: ${formatVND(amt)}. Tình trạng: Đang nợ`, 'debt');
+
+        // Cộng tiền
+        if(type === 'dautu') {
+            Storage.set('bofe_invest_balance_' + currentUser, (Storage.get('bofe_invest_balance_' + currentUser)||0) + amt);
+            alert(`Đã duyệt! ${formatVND(amt)} được cộng vào VÍ ĐẦU TƯ (Khóa rút).`);
+        } else {
+            Storage.set('bofe_balance_' + currentUser, (Storage.get('bofe_balance_' + currentUser)||0) + amt);
+            alert(`Đã duyệt! ${formatVND(amt)} được cộng vào VÍ TIỀN MẶT.`);
         }
-
-        // Quét 10s
-        await countdown(10, "Đang quét sinh trắc học... ");
-        
-        // Tắt camera chụp ảnh
-        if(streamRef) { streamRef.getTracks().forEach(t => t.stop()); videoElement.style.display = 'none'; }
-        fallbackElement.style.display = 'block';
-        fallbackElement.innerHTML = "<br>✅ Khớp khuôn mặt 99.8%.<br><br>Đang tải hồ sơ mã hóa lên máy chủ...";
-        document.getElementById('camera-title').innerText = "Thẩm định hồ sơ...";
-
-        // Chờ duyệt
-        await countdown(waitTime, "Thời gian duyệt còn: ");
-
-        // Lưu DB
-        let loans = Storage.get('bofe_loans_' + currentUser) || [];
-        loans.push({
-            id: Date.now(),
-            name: name,
-            amount: amount,
-            term: term,
-            totalPay: totalPay,
-            remaining: totalPay,
-            status: 'approved',
-            date: new Date().toLocaleString('vi-VN')
-        });
-        Storage.set('bofe_loans_' + currentUser, loans);
-
-        let balance = Storage.get('bofe_balance_' + currentUser) || 0;
-        Storage.set('bofe_balance_' + currentUser, balance + amount);
-
-        document.getElementById('btn-vay-nhanh').disabled = false;
-        document.getElementById('btn-vay-ngan').disabled = false;
-
-        alert("🎉 HỒ SƠ ĐƯỢC PHÊ DUYỆT TỰ ĐỘNG!\nSố tiền " + formatVND(amount) + " đã được chuyển vào Ví khả dụng.");
         navigate('main-view');
     }
 
-    function countdown(seconds, prefix) {
-        return new Promise(resolve => {
-            const timerEl = document.getElementById('timer-text');
-            let s = seconds;
-            timerEl.innerText = prefix + s + 's';
-            let iv = setInterval(() => {
-                s--;
-                timerEl.innerText = prefix + s + 's';
-                if(s <= 0) { clearInterval(iv); resolve(); }
-            }, 1000);
-        });
-    }
-
-    /* ================= RÚT TIỀN ================= */
-    function loadWithdraw() {
-        let balance = Storage.get('bofe_balance_' + currentUser) || 0;
-        document.getElementById('available-balance').innerText = formatVND(balance);
-    }
-
-    function handleWithdraw() {
-        let bank = document.getElementById('bank-select').value;
-        let acc = document.getElementById('bank-account').value;
-        let name = document.getElementById('bank-name').value;
-
-        if (!bank || !acc || !name) return alert("⚠️ Vui lòng điền đầy đủ thông tin ngân hàng!");
+    /* ================= SÀN CHỨNG KHOÁN ================= */
+    function buy3AE() {
+        let amt = parseInt(document.getElementById('buy-stock-amount').value);
+        if(!amt || amt <= 0) return alert("Nhập số tiền hợp lệ!");
         
-        let balance = Storage.get('bofe_balance_' + currentUser) || 0;
-        if (balance <= 0) return alert("❌ Số dư của bạn hiện không đủ để rút!");
-        
-        // Trừ tiền
-        Storage.set('bofe_balance_' + currentUser, 0);
-        alert("✅ LỆNH CHUYỂN TIỀN THÀNH CÔNG!\nHệ thống đang xử lý giải ngân về tài khoản " + bank + " của bạn.");
-        
-        document.getElementById('bank-select').value = "";
-        document.getElementById('bank-account').value = "";
-        document.getElementById('bank-name').value = "";
+        let cash = Storage.get('bofe_balance_' + currentUser) || 0;
+        let investCash = Storage.get('bofe_invest_balance_' + currentUser) || 0;
+        let totalAvail = cash + investCash;
 
-        navigate('main-view');
-    }
+        if (amt > totalAvail) return alert("Số dư tổng không đủ!");
 
-    /* ================= THANH TOÁN ================= */
-    function loadRepayments() {
-        let loans = Storage.get('bofe_loans_' + currentUser) || [];
-        let listEl = document.getElementById('repay-list');
-        listEl.innerHTML = '';
-        
-        let hasActive = false;
-        loans.forEach(loan => {
-            if(loan.remaining > 0) {
-                hasActive = true;
-                listEl.innerHTML += `
-                    <div class="card" style="border-top: 4px solid #00b14f;">
-                        <h3 style="margin-bottom: 10px; color:#111;">${loan.name}</h3>
-                        <p style="margin-bottom: 6px; font-size:14px; color:#555;">Kỳ hạn: <strong>${loan.term}</strong></p>
-                        <p style="margin-bottom: 12px; font-size:14px; color:#555;">Thanh toán: <strong class="text-red" style="font-size:18px;">${formatVND(loan.remaining)}</strong></p>
-                        <p style="margin-bottom: 15px; font-size:12px; color:#999;">Khởi tạo: ${loan.date}</p>
-                        <button class="btn btn-green" style="padding:12px; font-size:14px;" onclick="showQR(${loan.id}, ${loan.remaining})">THANH TOÁN NGAY</button>
-                    </div>
-                `;
-            }
-        });
-
-        if(!hasActive) listEl.innerHTML = '<div class="card" style="text-align:center; color:#888;">Bạn không có khoản nợ nào cần thanh toán. Cảm ơn bạn!</div>';
-    }
-
-    function showQR(loanId, amount) {
-        currentPayingLoanId = loanId;
-        document.getElementById('qr-amount').innerText = formatVND(amount);
-        navigate('qr-view');
-    }
-
-    function confirmPayment() {
-        let loans = Storage.get('bofe_loans_' + currentUser) || [];
-        for (let i = 0; i < loans.length; i++) {
-            if (loans[i].id === currentPayingLoanId) {
-                loans[i].remaining = 0;
-                loans[i].status = 'paid';
-                break;
-            }
+        // Trừ tiền: Ưu tiên trừ tiền Vay Đầu Tư trước, thiếu thì trừ tiền mặt
+        if (amt <= investCash) {
+            Storage.set('bofe_invest_balance_' + currentUser, investCash - amt);
+        } else {
+            Storage.set('bofe_invest_balance_' + currentUser, 0);
+            Storage.set('bofe_balance_' + currentUser, cash - (amt - investCash));
         }
-        Storage.set('bofe_loans_' + currentUser, loans);
-        alert("✅ Ghi nhận thanh toán thành công!\nHệ thống đã tự động gạch nợ kỳ hạn vừa rồi.");
-        navigate('repay-view');
-    }
 
-    /* ================= LỊCH SỬ ================= */
-    function loadHistory() {
-        let loans = Storage.get('bofe_loans_' + currentUser) || [];
-        let listEl = document.getElementById('history-list');
-        listEl.innerHTML = '';
+        document.getElementById('buy-stock-amount').value = '';
+        logHistory("MUA CỔ PHIẾU 3AE", amt, "Khớp lệnh mua", "out");
+        navigate('camera-view');
         
-        if(loans.length === 0) return listEl.innerHTML = '<div class="card" style="text-align:center; color:#888;">Chưa có dữ liệu giao dịch.</div>';
+        // Mô phỏng 1 ngày bằng 5 giây
+        countdown(5, "Đang mô phỏng qua 1 Ngày: ").then(() => {
+            // Lợi nhuận 90%
+            let grossProfit = amt * 0.90;
+            let fee = grossProfit * 0.08;
+            let tax = grossProfit * 0.085;
+            let netProfit = grossProfit - fee - tax;
+            let totalReturn = amt + netProfit;
 
-        let sortedLoans = [...loans].reverse();
-        sortedLoans.forEach(loan => {
-            let isPaid = loan.remaining === 0;
-            let statusText = isPaid ? '<span style="color: #00b14f; font-weight: 800;">Hoàn tất trả nợ</span>' : '<span style="color: #ff3b30; font-weight: 800;">Đang trong kỳ hạn</span>';
+            // Lãi chứng khoán CỘNG VỀ VÍ TIỀN MẶT (có thể rút)
+            Storage.set('bofe_balance_' + currentUser, (Storage.get('bofe_balance_' + currentUser)||0) + totalReturn);
             
-            listEl.innerHTML += `
-                <div class="card" style="border-left: 4px solid ${isPaid ? '#00b14f' : '#ff3b30'};">
-                    <p style="margin-bottom: 8px; font-size: 15px;"><strong>Khoản vay:</strong> ${loan.name}</p>
-                    <p style="margin-bottom: 8px; font-size: 14px; color:#555;"><strong>Tiền gốc:</strong> ${formatVND(loan.amount)}</p>
-                    <p style="margin-bottom: 8px; font-size: 14px; color:#555;"><strong>Tổng tiền kèm lãi:</strong> ${formatVND(loan.totalPay)}</p>
-                    <p style="margin-bottom: 8px; font-size: 14px;"><strong>Tình trạng:</strong> ${statusText}</p>
-                    <p style="font-size: 12px; color: #aaa; margin-top: 12px; border-top: 1px dashed #eee; padding-top: 8px;">Thời gian duyệt: ${loan.date}</p>
-                </div>
-            `;
+            let detail = `Lãi 90%: +${formatVND(grossProfit)} | Phí GD (8%): -${formatVND(fee)} | Thuế (8.5%): -${formatVND(tax)}`;
+            logHistory("BÁN CỔ PHIẾU 3AE (LÃI)", totalReturn, detail, "in");
+            
+            alert(`Đã qua 1 ngày!\nBạn lãi ròng: ${formatVND(netProfit)}\nTổng tiền thu về VÍ TIỀN MẶT: ${formatVND(totalReturn)}`);
+            navigate('stock-view');
+        });
+    }
+
+    /* ================= GỬI TIẾT KIỆM ================= */
+    function createSavings() {
+        let amt = parseInt(document.getElementById('savings-amount').value);
+        let term = document.getElementById('savings-term').value;
+        if(amt < 3000000000) return alert("Cần tối thiểu 3 Tỷ VNĐ!");
+        
+        let cash = Storage.get('bofe_balance_' + currentUser) || 0;
+        if(cash < amt) return alert("Số dư TIỀN MẶT không đủ! (Không tính tiền Vay Đầu Tư)");
+
+        Storage.set('bofe_balance_' + currentUser, cash - amt);
+        logHistory(`GỬI TIẾT KIỆM ${term} NĂM`, amt, `Lãi suất 80%/năm`, "out");
+        
+        alert(`Mở sổ thành công!\nSố tiền ${formatVND(amt)} đã được chuyển vào quỹ tiết kiệm.`);
+        document.getElementById('savings-amount').value = '';
+        navigate('savings-view');
+    }
+
+    /* ================= RÚT TIỀN & THANH TOÁN (Giữ nguyên logic cũ) ================= */
+    function handleWithdraw() {
+        if(!document.getElementById('bank-select').value || !document.getElementById('bank-account').value) return alert("Điền đủ thông tin!");
+        let cash = Storage.get('bofe_balance_' + currentUser) || 0;
+        if(cash <= 0) return alert("Không đủ tiền mặt để rút!");
+        Storage.set('bofe_balance_' + currentUser, 0);
+        logHistory("RÚT TIỀN VỀ BANK", cash, "Giải ngân thành công", "out");
+        alert("Rút tiền thành công!"); navigate('main-view');
+    }
+
+    function loadRepayments() {
+        let h = Storage.get('bofe_history_' + currentUser) || [], html = '';
+        h.forEach(x => {
+            if(x.type === 'debt' && x.active) {
+                html += `<div class="card" style="border-top:4px solid #ef4444;"><h3>${x.title}</h3><p>Cần trả: <b class="text-red">${formatVND(x.amount)}</b></p><button class="btn btn-green" onclick="payDebt(${x.id})" style="margin-top:10px;">Thanh toán ngay</button></div>`;
+            }
+        });
+        document.getElementById('repay-list').innerHTML = html || '<div class="card">Không có khoản nợ.</div>';
+    }
+
+    function payDebt(id) {
+        let h = Storage.get('bofe_history_' + currentUser) || [];
+        h = h.map(x => { if(x.id === id) { x.active = false; x.detail = "Đã thanh toán"; } return x; });
+        Storage.set('bofe_history_' + currentUser, h);
+        alert("Gạch nợ thành công!"); navigate('repay-view');
+    }
+
+    /* ================= HISTORY LOG ================= */
+    function logHistory(title, amount, detail, type) {
+        let h = Storage.get('bofe_history_' + currentUser) || [];
+        h.push({ id: Date.now(), title, amount, detail, type, active: type === 'debt', date: new Date().toLocaleString('vi-VN') });
+        Storage.set('bofe_history_' + currentUser, h);
+    }
+
+    function loadHistory() {
+        let h = Storage.get('bofe_history_' + currentUser) || [];
+        let html = '';
+        [...h].reverse().forEach(x => {
+            let color = x.type === 'in' ? '#10b981' : (x.type === 'out' ? '#64748b' : '#ef4444');
+            html += `<div class="card" style="border-left: 4px solid ${color};">
+                <p><b>${x.title}</b></p>
+                <p style="color:${color}; font-weight:bold;">${formatVND(x.amount)}</p>
+                <p style="font-size:12px; color:#666;">${x.detail}</p>
+                <p style="font-size:11px; color:#aaa; margin-top:5px;">${x.date}</p>
+            </div>`;
+        });
+        document.getElementById('history-list').innerHTML = html || '<div class="card">Chưa có giao dịch.</div>';
+    }
+
+    function countdown(sec, pre) {
+        return new Promise(res => {
+            let el = document.getElementById('timer-text'), s = sec;
+            el.innerText = pre + s + 's';
+            let iv = setInterval(() => { s--; el.innerText = pre + s + 's'; if(s<=0){ clearInterval(iv); res(); } }, 1000);
         });
     }
 </script>
