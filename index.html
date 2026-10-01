@@ -3,115 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>BO.FE - Siêu Ứng Dụng Tài Chính Đầu Tư</title>
+    <title>BO.FE - Siêu Ứng Dụng Tài Chính & Sàn Giao Dịch</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:wght@700&display=swap');
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body, html { background-color: #0f172a; color: #fff; min-height: 100vh; display: flex; justify-content: center; }
+        body, html { background-color: #0b0e14; color: #fff; min-height: 100vh; display: flex; justify-content: center; }
         
-        #app { width: 100%; max-width: 414px; background: #f8fafc; color: #333; min-height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.5); overflow-x: hidden; }
+        #app { width: 100%; max-width: 414px; background: #0f172a; color: #f8fafc; min-height: 100vh; position: relative; display: flex; flex-direction: column; box-shadow: 0 0 25px rgba(0,0,0,0.8); overflow-x: hidden; }
         
+        /* Màu phong cách sàn tài chính */
         .bg-main { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
         .text-green { color: #10b981; }
         .text-red { color: #ef4444; }
+        .text-yellow { color: #facc15; }
+        .text-blue { color: #38bdf8; }
         
         /* Header */
-        header { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 12px rgba(16,185,129,0.2); }
-        .menu-btn { font-size: 26px; cursor: pointer; background: none; border: none; color: white; line-height: 1; }
-        .logo-text { font-size: 24px; font-weight: 900; letter-spacing: 1.5px; margin: 0; }
+        header { padding: 15px 18px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; background: #111827; border-bottom: 1px solid #1f2937; }
+        .menu-btn { font-size: 24px; cursor: pointer; background: none; border: none; color: white; line-height: 1; }
+        .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 1px; color: #10b981; }
         
         /* Views */
-        .view { display: none; padding: 20px; flex: 1; padding-bottom: 90px; }
-        .view.active { display: block; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .view { display: none; padding: 16px; flex: 1; padding-bottom: 90px; }
+        .view.active { display: block; animation: fadeIn 0.25s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* UI Components */
-        .card { background: #fff; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 700; color: #475569; font-size: 13px; text-transform: uppercase; }
-        .form-control { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 16px; outline: none; background: #f8fafc; }
+        /* Card & Elements */
+        .card { background: #1e293b; border-radius: 14px; padding: 18px; margin-bottom: 14px; border: 1px solid #334155; position: relative; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 700; color: #94a3b8; font-size: 12px; text-transform: uppercase; }
+        .form-control { width: 100%; padding: 12px 14px; border: 1.5px solid #334155; border-radius: 10px; font-size: 15px; outline: none; background: #0f172a; color: #fff; }
         .form-control:focus { border-color: #10b981; }
-        select.form-control { appearance: none; background: url('data:image/svg+xml;utf8,<svg fill="%2394a3b8" viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center; }
         
         /* Buttons */
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
-        .btn-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; box-shadow: 0 6px 15px rgba(16,185,129,0.3); }
-        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; box-shadow: 0 6px 15px rgba(239,68,68,0.3); }
-        .btn-dark { background: #1e293b; color: white; }
-        .btn:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; color: #64748b; }
-        
-        /* Sliders */
-        .slider-val { font-size: 28px; font-weight: 900; text-align: center; color: #10b981; margin: 10px 0; }
-        input[type=range] { width: 100%; height: 6px; background: #cbd5e1; border-radius: 5px; outline: none; -webkit-appearance: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #10b981; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-        
-        /* Eye Toggle */
-        .eye-btn { font-size: 22px; cursor: pointer; vertical-align: middle; margin-left: 8px; opacity: 0.8; transition: 0.2s; }
-        .eye-btn:active { transform: scale(0.9); }
-        .mask-data { font-family: 'Space Mono', monospace; letter-spacing: -1px; }
-
-        /* SÀN CHỨNG KHOÁN REALTIME */
-        .portfolio-box { background: #0f172a; border-radius: 16px; padding: 15px; color: white; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
-        .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .stock-item:last-child { border-bottom: none; }
-        .stock-code { font-weight: 900; font-size: 18px; color: #1e293b; }
-        .stock-name { font-size: 12px; color: #64748b; }
-        .stock-price { text-align: right; font-weight: 800; }
-        .stock-up { color: #10b981; }
-        .stock-down { color: #ef4444; }
-        
-        .live-card { background: #1e293b; border-radius: 10px; padding: 12px; margin-bottom: 10px; border-left: 4px solid #10b981; }
-        .live-card p { display: flex; justify-content: space-between; font-size: 13px; color: #cbd5e1; margin-bottom: 5px; }
-        .live-card b { font-family: 'Space Mono', monospace; font-size: 15px; color: #facc15; }
-        .live-card .total { font-size: 18px; color: #fff; font-weight: 900; }
-        .btn-sell { width: 100%; padding: 10px; border-radius: 8px; font-weight: bold; border: none; margin-top: 10px; cursor: pointer; }
-        .btn-sell.active { background: #10b981; color: white; }
-        .btn-sell:disabled { background: #334155; color: #94a3b8; }
-
-        /* CAMERA */
-        #video-container { width: 100%; height: 350px; background: #000; border-radius: 16px; overflow: hidden; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; color: white; position: relative; }
-        video { width: 100%; height: 100%; object-fit: cover; }
-        .cam-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><rect x="10%" y="10%" width="80%" height="80%" fill="none" stroke="%2310b981" stroke-width="3" stroke-dasharray="10 10"/></svg>'); pointer-events: none; }
-        #random-code-box { position: absolute; bottom: 20px; width: 80%; background: rgba(0,0,0,0.7); padding: 10px; border-radius: 12px; text-align: center; border: 2px solid #ef4444; display: none; }
-        
-        /* CHATBOT */
-        #chatbot-btn { position: fixed; bottom: 30px; right: 20px; width: 60px; height: 60px; background: #10b981; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 28px; cursor: pointer; z-index: 100; border: 3px solid #fff; box-shadow: 0 4px 15px rgba(16,185,129,0.5); }
-        #chat-window { position: fixed; bottom: 100px; right: 20px; width: 300px; height: 400px; background: white; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 101; display: none; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; }
-        .chat-header { background: #1e293b; color: white; padding: 15px; font-weight: 800; display: flex; justify-content: space-between; }
-        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: #f8fafc; display: flex; flex-direction: column; gap: 10px; }
-        .msg { max-width: 80%; padding: 10px 15px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
-        .msg-ai { background: #e2e8f0; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .msg-user { background: #10b981; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .chat-input { display: flex; border-top: 1px solid #e2e8f0; }
-        .chat-input input { flex: 1; padding: 12px; border: none; outline: none; }
-        .chat-input button { padding: 0 15px; background: #10b981; color: white; border: none; font-weight: bold; }
-
-        /* Sidebar & Others */
-        #sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #fff; z-index: 1000; transition: left 0.3s; box-shadow: 5px 0 25px rgba(0,0,0,0.5); display: flex; flex-direction: column; }
-        #sidebar.open { left: 0; }
-        .sidebar-header { padding: 25px 20px; background: #10b981; color: white; display: flex; justify-content: space-between; }
-        .menu-item { padding: 18px 25px; border-bottom: 1px solid #f1f5f9; cursor: pointer; font-weight: 700; color: #334155; font-size: 14px; display: flex; gap: 15px; }
-        .menu-item:hover { background: #f8fafc; color: #10b981; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; display: none; }
-        .overlay.active { display: block; }
-        .disclaimer { position: absolute; bottom: 5px; width: 100%; text-align: center; font-size: 10px; color: #000; opacity: 0.3; pointer-events: none; z-index: 5; font-weight: 800; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
+        .btn-green { background: #10b981; color: white; }
+        .btn-green:hover { background: #059669; }
+        .btn-red { background: #ef4444; color: white; }
+        .btn-blue { background: #2563eb; color: white; }
+        .btn:disabled { background: #475569; color: #94a3b8; cursor: not-allowed; }
         
         /* Tabs */
-        .tabs { display: flex; background: #e2e8f0; border-radius: 12px; padding: 4px; margin-bottom: 20px; gap: 4px; }
-        .tab { flex: 1; text-align: center; padding: 10px; cursor: pointer; font-weight: 700; color: #64748b; border-radius: 10px; font-size: 13px; }
-        .tab.active { background: white; color: #10b981; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .tabs { display: flex; background: #1e293b; border-radius: 10px; padding: 3px; margin-bottom: 16px; gap: 4px; }
+        .tab { flex: 1; text-align: center; padding: 9px; cursor: pointer; font-weight: 700; color: #94a3b8; border-radius: 8px; font-size: 12px; }
+        .tab.active { background: #10b981; color: white; }
+
+        /* Con mắt ẩn/hiện số dư */
+        .eye-btn { cursor: pointer; opacity: 0.8; margin-left: 6px; font-size: 18px; vertical-align: middle; }
+
+        /* SÀN CRYPTO & FOREX GIAO DIỆN CHUYÊN NGHIỆP */
+        .forex-top-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 12px; }
+        .mini-badge-box { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 8px 12px; flex: 1; display: flex; flex-direction: column; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .mini-badge-box:hover { border-color: #10b981; }
+        .mini-badge-box span { font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+        .mini-badge-box b { font-size: 14px; font-family: 'Space Mono', monospace; color: #facc15; }
+        
+        .chart-container { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 12px; margin-bottom: 14px; position: relative; }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .pair-title { font-size: 16px; font-weight: 900; display: flex; align-items: center; gap: 6px; }
+        .live-price-tag { font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
+        .live-price-tag.up { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid #10b981; }
+        .live-price-tag.down { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; }
+        
+        canvas#forex-chart { width: 100%; height: 160px; background: #0b0f19; border-radius: 8px; }
+        
+        .order-box { background: #1e293b; border-radius: 12px; padding: 14px; border: 1px solid #334155; }
+        .stepper { display: flex; align-items: center; background: #0f172a; border-radius: 8px; border: 1px solid #334155; overflow: hidden; margin-top: 4px; }
+        .stepper button { width: 44px; height: 38px; background: #334155; border: none; color: #fff; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .stepper input { flex: 1; background: transparent; border: none; text-align: center; color: #fff; font-weight: bold; font-size: 15px; }
+
+        /* Modal Popup */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: #1e293b; width: 100%; max-width: 360px; border-radius: 16px; padding: 22px; border: 1px solid #475569; }
+
+        /* Camera */
+        #video-container { width: 100%; height: 320px; background: #000; border-radius: 16px; overflow: hidden; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; position: relative; border: 2px solid #10b981; }
+        video { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* Sidebar */
+        #sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #111827; z-index: 1000; transition: left 0.3s; box-shadow: 5px 0 25px rgba(0,0,0,0.7); display: flex; flex-direction: column; }
+        #sidebar.open { left: 0; }
+        .sidebar-header { padding: 22px; background: #10b981; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .menu-item { padding: 16px 20px; border-bottom: 1px solid #1f2937; cursor: pointer; font-weight: 700; color: #cbd5e1; font-size: 14px; display: flex; gap: 12px; }
+        .menu-item:hover { background: #1f2937; color: #10b981; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; display: none; }
+        .overlay.active { display: block; }
+        
+        /* Chatbot */
+        #chatbot-btn { position: fixed; bottom: 30px; right: 20px; width: 56px; height: 56px; background: #10b981; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; cursor: pointer; z-index: 100; border: 2px solid #fff; box-shadow: 0 4px 15px rgba(16,185,129,0.5); }
+        #chat-window { position: fixed; bottom: 95px; right: 20px; width: 310px; height: 400px; background: #1e293b; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 101; display: none; flex-direction: column; border: 1px solid #334155; overflow: hidden; }
+        .chat-header { background: #0f172a; padding: 12px 16px; font-weight: bold; display: flex; justify-content: space-between; }
+        .chat-body { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+        .msg { max-width: 82%; padding: 8px 12px; border-radius: 10px; line-height: 1.35; }
+        .msg-ai { background: #334155; color: #fff; align-self: flex-start; }
+        .msg-user { background: #10b981; color: white; align-self: flex-end; }
+        .chat-input { display: flex; border-top: 1px solid #334155; }
+        .chat-input input { flex: 1; padding: 10px; border: none; background: #0f172a; color: #fff; outline: none; }
+        .chat-input button { padding: 0 14px; background: #10b981; color: white; border: none; font-weight: bold; cursor: pointer; }
+        
+        .disclaimer { position: absolute; bottom: 5px; width: 100%; text-align: center; font-size: 10px; color: #64748b; opacity: 0.5; pointer-events: none; z-index: 5; font-weight: 800; }
     </style>
 </head>
 <body>
 
 <div id="app">
     <!-- HEADER -->
-    <header class="bg-main" id="main-header" style="display:none;">
+    <header id="main-header" style="display:none;">
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
-        <h1 class="logo-text">BO.FE</h1>
-        <div style="width: 26px;"></div>
+        <h1 class="logo-text">BO.FE PRO</h1>
+        <div style="width: 24px;"></div>
     </header>
 
     <!-- SIDEBAR -->
@@ -119,18 +121,19 @@
     <div id="sidebar">
         <div class="sidebar-header">
             <div>
-                <h3 style="font-weight: 900; font-size: 18px;">BO.FE APP</h3>
-                <p id="menu-username" style="font-size: 12px; opacity: 0.8;">Khách hàng</p>
+                <h3 style="font-weight: 900; font-size: 18px;">HỆ THỐNG BO.FE</h3>
+                <p id="menu-username" style="font-size: 12px; opacity: 0.9;">Khách hàng VIP</p>
             </div>
-            <span onclick="toggleMenu()" style="cursor:pointer; font-size: 24px;">✕</span>
+            <span onclick="toggleMenu()" style="cursor:pointer; font-size: 22px;">✕</span>
         </div>
-        <div class="menu-item" onclick="navigate('main-view'); toggleMenu();">🏠 Trang Chủ (Vay)</div>
-        <div class="menu-item text-green" onclick="navigate('stock-view'); toggleMenu();">📈 Sàn Chứng Khoán 24h</div>
-        <div class="menu-item" onclick="navigate('savings-view'); toggleMenu();">🏦 Tiết Kiệm Khủng (80%)</div>
-        <div class="menu-item" onclick="navigate('withdraw-view'); toggleMenu();">💳 Rút Tiền / Ví</div>
+        <div class="menu-item" onclick="navigate('main-view'); toggleMenu();">🏠 Trang Chủ (Vay Vốn)</div>
+        <div class="menu-item text-blue" onclick="navigate('forex-view'); toggleMenu();">⚡ Sàn Crypto & Forex (Exness/OKX)</div>
+        <div class="menu-item text-green" onclick="navigate('stock-view'); toggleMenu();">📈 Sàn Chứng Khoán 3AE (+90%)</div>
+        <div class="menu-item" onclick="navigate('savings-view'); toggleMenu();">🏦 Gửi Tiết Kiệm (80%/năm)</div>
+        <div class="menu-item" onclick="navigate('withdraw-view'); toggleMenu();">💳 Rút Tiền Về Ngân Hàng</div>
         <div class="menu-item" onclick="navigate('repay-view'); toggleMenu();">💰 Thanh Toán Nợ</div>
         <div class="menu-item" onclick="navigate('history-view'); toggleMenu();">📜 Lịch Sử Giao Dịch</div>
-        <div style="margin-top: auto; border-top: 1px solid #eee;">
+        <div style="margin-top: auto; border-top: 1px solid #1f2937;">
             <div class="menu-item text-red" onclick="logout(); toggleMenu();">🚪 Đăng xuất</div>
         </div>
     </div>
@@ -138,480 +141,694 @@
     <!-- AI CHATBOT -->
     <div id="chatbot-btn" onclick="toggleChat()" style="display:none;">🤖</div>
     <div id="chat-window">
-        <div class="chat-header"><span>AI Hỗ Trợ BO.FE</span><span onclick="toggleChat()" style="cursor:pointer;">✕</span></div>
-        <div class="chat-body" id="chat-body"><div class="msg msg-ai">Chào bạn, tôi là trợ lý AI. Bạn cần hỏi về Vay tiền, Chứng khoán hay Tiết kiệm?</div></div>
+        <div class="chat-header"><span>Trợ Lý AI BO.FE</span><span onclick="toggleChat()" style="cursor:pointer;">✕</span></div>
+        <div class="chat-body" id="chat-body">
+            <div class="msg msg-ai">Chào bạn! Tôi có thể hỗ trợ bạn về Vay, Chứng khoán 3AE, Sàn Crypto/Forex hoặc Giftcode BOFE.</div>
+        </div>
         <div class="chat-input">
-            <input type="text" id="chat-text" placeholder="Nhập câu hỏi..." onkeypress="if(event.key === 'Enter') sendChat()">
+            <input type="text" id="chat-text" placeholder="Nhập câu hỏi..." onkeypress="if(event.key==='Enter') sendChat()">
             <button onclick="sendChat()">Gửi</button>
         </div>
     </div>
 
     <!-- 1. ĐĂNG NHẬP -->
-    <div id="auth-view" class="view active" style="padding-top: 10vh;">
-        <h1 class="text-green" style="text-align: center; margin-bottom: 5px; font-size: 56px; font-weight: 900;">BO.FE</h1>
-        <div style="text-align: center; margin-bottom: 30px; font-style: italic; font-weight: 800; font-size: 14px; color: #ef4444;">"Bạn cần cứu ? Đã có BoFe"</div>
+    <div id="auth-view" class="view active" style="padding-top: 8vh;">
+        <h1 class="text-green" style="text-align: center; margin-bottom: 4px; font-size: 48px; font-weight: 900;">BO.FE</h1>
+        <div style="text-align: center; margin-bottom: 25px; font-weight: 800; font-size: 13px; color: #ef4444;">"BẠN CẦN CỨU ? ĐÃ CÓ BOFE"</div>
         <div class="card">
             <div class="form-group"><label>Tài khoản</label><input type="text" id="username" class="form-control" placeholder="Tối thiểu 6 ký tự"></div>
             <div class="form-group"><label>Mật khẩu</label><input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu"></div>
-            <div class="form-group"><label>Xác nhận mật khẩu (Tạo mới)</label><input type="password" id="confirm-password" class="form-control" placeholder="Nhập lại nếu chưa có tài khoản"></div>
-            <button type="button" class="btn btn-green" onclick="handleAuth()">VÀO HỆ THỐNG</button>
+            <div class="form-group"><label>Xác nhận mật khẩu (Tạo mới)</label><input type="password" id="confirm-password" class="form-control" placeholder="Nhập lại nếu tạo tài khoản mới"></div>
+            <button type="button" class="btn btn-green" onclick="handleAuth()">ĐĂNG NHẬP / TẠO TÀI KHOẢN</button>
         </div>
     </div>
 
-    <!-- 2. TRANG CHÍNH (VAY) -->
+    <!-- 2. TRANG CHÍNH: VAY -->
     <div id="main-view" class="view">
+        <div class="card bg-main" style="margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <p style="font-size:12px; font-weight:bold; opacity:0.9;">Số Dư Ví Chính (Khả dụng):</p>
+                <h2 style="font-size:24px; font-weight:900; margin-top:2px;"><span class="mask-cash" data-raw="0">0</span> ₫ <span class="eye-btn" onclick="toggleBalance()">👁️️</span></h2>
+            </div>
+            <button class="btn btn-blue" style="width:auto; padding:8px 14px; font-size:12px;" onclick="navigate('withdraw-view')">Rút Về Bank</button>
+        </div>
+
         <div class="tabs">
-            <div class="tab active" onclick="switchTab('vay-nhanh')" id="tab-vay-nhanh">🚀 Nhanh</div>
+            <div class="tab active" onclick="switchTab('vay-nhanh')" id="tab-vay-nhanh">🚀 Vay Nhanh</div>
             <div class="tab" onclick="switchTab('vay-ngan')" id="tab-vay-ngan">⚡ Ngắn Ngày</div>
-            <div class="tab text-red" onclick="switchTab('vay-dautu')" id="tab-vay-dautu">📈 Vay Đầu Tư</div>
+            <div class="tab text-yellow" onclick="switchTab('vay-dautu')" id="tab-vay-dautu">📈 Vay Đầu Tư</div>
         </div>
 
         <div id="form-vay-nhanh">
             <div class="card">
-                <div class="form-group"><label>Số tiền vay (500k - 10Tr)</label><div class="slider-val" id="val-vay-nhanh">5.000.000 ₫</div><input type="range" id="slider-vay-nhanh" min="500000" max="10000000" step="100000" value="5000000" oninput="updateFastLoan()"></div>
+                <div class="form-group"><label>Số tiền vay (500k - 10Tr)</label><h2 class="text-green" id="val-vay-nhanh" style="text-align:center; margin:8px 0;">5.000.000 ₫</h2><input type="range" id="slider-vay-nhanh" min="500000" max="10000000" step="100000" value="5000000" oninput="updateFastLoan()"></div>
                 <div class="form-group"><label>Kỳ hạn</label><select id="term-vay-nhanh" class="form-control" onchange="updateFastLoan()"><option value="3">3 tháng (Lãi 30%)</option><option value="6">6 tháng (Lãi 60%)</option><option value="12">12 tháng (Lãi 120%)</option></select></div>
             </div>
-            <button class="btn btn-red" onclick="startLoanProcess('nhanh')">DUYỆT VAY NHANH</button>
+            <button class="btn btn-red" onclick="startLoanProcess('nhanh')">XÁC NHẬN VAY NHANH</button>
         </div>
 
-        <div id="form-vay-ngan" style="display: none;">
+        <div id="form-vay-ngan" style="display:none;">
             <div class="card">
-                <div class="form-group"><label>Mục đích</label><select id="category-vay-ngan" class="form-control" onchange="updateShortLoanConfig()"><option value="Sửa xe">Sửa xe (500k - 1Tr)</option><option value="Học phí">Học phí (5Tr - 10Tr)</option><option value="KTV">KTV (200k - 500k)</option><option value="Ăn cơm Gà">Ăn cơm Gà (30k - 50k)</option></select></div>
-                <div class="form-group"><label>Số tiền</label><div class="slider-val" id="val-vay-ngan">500.000 ₫</div><input type="range" id="slider-vay-ngan" oninput="updateShortLoan()"></div>
+                <div class="form-group"><label>Mục đích</label><select id="category-vay-ngan" class="form-control" onchange="updateShortLoan()"><option value="Sửa xe">Sửa xe (500k - 1Tr)</option><option value="Học phí">Học phí (5Tr - 10Tr)</option><option value="KTV">KTV (200k - 500k)</option><option value="Ăn cơm Gà">Ăn cơm Gà (30k - 50k)</option></select></div>
+                <div class="form-group"><label>Số tiền</label><h2 class="text-green" id="val-vay-ngan" style="text-align:center; margin:8px 0;">500.000 ₫</h2><input type="range" id="slider-vay-ngan" min="30000" max="10000000" step="50000" value="500000" oninput="updateShortLoan()"></div>
                 <div class="form-group"><label>Kỳ hạn (Lãi 40%/7 ngày)</label><select id="term-vay-ngan" class="form-control" onchange="updateShortLoan()"><option value="7">7 ngày</option><option value="14">14 ngày</option><option value="30">30 ngày</option></select></div>
             </div>
-            <button class="btn btn-red" onclick="startLoanProcess('ngan')">DUYỆT VAY NGẮN</button>
+            <button class="btn btn-red" onclick="startLoanProcess('ngan')">XÁC NHẬN VAY NGẮN</button>
         </div>
 
-        <div id="form-vay-dautu" style="display: none;">
-            <div class="card" style="border: 2px solid #10b981;">
-                <p style="font-size:12px; color:#ef4444; font-weight:bold; margin-bottom:15px; text-align:center;">VAY MUA CHỨNG KHOÁN (Yêu cầu MIC + CAMERA 50s)</p>
-                <div class="form-group"><label>Hạn mức vay (10Tr - 5 Tỷ)</label><div class="slider-val" id="val-vay-dautu">100.000.000 ₫</div><input type="range" id="slider-vay-dautu" min="10000000" max="5000000000" step="10000000" value="100000000" oninput="updateInvestLoan()"></div>
+        <div id="form-vay-dautu" style="display:none;">
+            <div class="card" style="border: 2px solid #facc15;">
+                <p style="color:#ef4444; font-size:12px; font-weight:bold; margin-bottom:12px; text-align:center;">VAY ĐẦU TƯ: Tiền chỉ dùng mua Chứng khoán (Xác minh Mic 50s)</p>
+                <div class="form-group"><label>Hạn mức vay (10Tr - 5 Tỷ)</label><h2 class="text-yellow" id="val-vay-dautu" style="text-align:center; margin:8px 0;">100.000.000 ₫</h2><input type="range" id="slider-vay-dautu" min="10000000" max="5000000000" step="10000000" value="100000000" oninput="updateInvestLoan()"></div>
                 <div class="form-group"><label>Kỳ hạn</label><select id="term-vay-dautu" class="form-control" onchange="updateInvestLoan()"><option value="1">1 tháng (Lãi 15%)</option><option value="3">3 tháng (Lãi 45%)</option></select></div>
             </div>
-            <button class="btn btn-dark" onclick="startLoanProcess('dautu')">XÁC THỰC VAY ĐẦU TƯ</button>
+            <button class="btn btn-blue" onclick="startLoanProcess('dautu')">XÁC THỰC VAY ĐẦU TƯ</button>
         </div>
     </div>
 
-    <!-- 3. SÀN CHỨNG KHOÁN REAL-TIME -->
-    <div id="stock-view" class="view">
-        <div class="card bg-main" style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <p style="font-weight:bold; font-size:13px; opacity:0.9;">Số dư Mua Chứng Khoán:</p>
-                <h2 style="font-size: 24px; font-weight: 900; margin-top:5px;"><span class="mask-data mask-invest" data-raw="0">0</span> ₫ <span class="eye-btn" onclick="toggleBalance()">👁️</span></h2>
+    <!-- 3. SÀN CRYPTO & FOREX (MỚI THEO GIAO DIỆN ẢNH) -->
+    <div id="forex-view" class="view">
+        <!-- 2 Ô NHỎ Ở PHẦN TRÊN CÙNG: GIFTCODE VÀ SỐ DƯ -->
+        <div class="forex-top-bar">
+            <div class="mini-badge-box" onclick="openGiftcodeModal()">
+                <span>🎁 GIFTCODE</span>
+                <b id="top-giftcode-status">NHẬN $500</b>
+            </div>
+            <div class="mini-badge-box" style="border-color:#2563eb;">
+                <span>💵 SỐ DƯ SÀN</span>
+                <b><span id="forex-balance-display">0.00</span> USD</b>
             </div>
         </div>
 
-        <!-- DANH MỤC ĐANG ĐẦU TƯ (Real-time nhảy số) -->
-        <div class="portfolio-box">
-            <h3 style="font-weight: 900; margin-bottom: 15px; color:#facc15; font-size:16px;">DANH MỤC ĐẦU TƯ (Live 24h)</h3>
-            <div id="portfolio-list">
-                <!-- Data Render Here -->
-                <p style="font-size:13px; color:#94a3b8; text-align:center;">Bạn chưa mua cổ phiếu nào.</p>
+        <!-- Khối Rút tiền Forex về ví chính -->
+        <div style="display:flex; justify-content:space-between; align-items:center; background:#1e293b; padding:8px 12px; border-radius:10px; margin-bottom:12px;">
+            <div style="font-size:11px; color:#94a3b8;">
+                Khả dụng rút: <strong class="text-green" id="forex-withdrawable">0.00 USD</strong> (Tối thiểu $100)
+            </div>
+            <button class="btn btn-green" style="width:auto; padding:6px 12px; font-size:11px;" onclick="withdrawForexToMain()">Rút Về Ví Chính</button>
+        </div>
+
+        <!-- CHART FOREX LIVE THEO ẢNH -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <div class="pair-title">
+                    <span>🇪🇺🇺🇸 EUR/USD</span>
+                    <span style="font-size:11px; color:#94a3b8; font-weight:normal;">1:500</span>
+                </div>
+                <div class="live-price-tag up" id="forex-live-price">1.17044</div>
+            </div>
+            <canvas id="forex-chart" width="360" height="160"></canvas>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-top:6px;">
+                <span>06:15</span><span>10:20</span><span>14:30</span><span>18:45</span><span>Live</span>
             </div>
         </div>
 
-        <div class="card" style="padding: 0;">
-            <h3 style="padding: 15px; border-bottom: 1px solid #eee;">Thị Trường Giao Dịch</h3>
+        <!-- BẢNG ĐẶT LỆNH FOREX CHUẨN EXNESS -->
+        <div class="order-box">
+            <div class="tabs" style="margin-bottom:10px;">
+                <div class="tab active" style="padding:6px;">Market</div>
+                <div class="tab" style="padding:6px;">Limit</div>
+                <div class="tab" style="padding:6px;">Stop</div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:8px;">
+                <label>Khối Lượng Giao Dịch (Volume Lots)</label>
+                <div class="stepper">
+                    <button onclick="changeLot(-0.01)">-</button>
+                    <input type="text" id="forex-lot" value="0.01" readonly>
+                    <button onclick="changeLot(0.01)">+</button>
+                </div>
+            </div>
+
+            <div style="display:flex; gap:8px; margin-bottom:10px;">
+                <div style="flex:1;">
+                    <label style="font-size:11px; color:#94a3b8; font-weight:bold;">Take Profit (TP)</label>
+                    <input type="number" id="forex-tp" class="form-control" style="padding:8px;" value="1.17300" step="0.0001">
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:11px; color:#94a3b8; font-weight:bold;">Stop Loss (SL)</label>
+                    <input type="number" id="forex-sl" class="form-control" style="padding:8px;" value="1.15414" step="0.0001">
+                </div>
+            </div>
+
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-green" style="flex:1; padding:12px;" onclick="placeForexOrder('BUY')">BUY (MUA)</button>
+                <button class="btn btn-red" style="flex:1; padding:12px;" onclick="placeForexOrder('SELL')">SELL (BÁN)</button>
+            </div>
             
-            <div class="stock-item" style="background: #f0fdf4;">
-                <div><div class="stock-code text-green">3AE</div><div class="stock-name">3AE GROUP (Độc Quyền)</div></div>
-                <div class="stock-price stock-up">150,500 ₫<br><span style="font-size:12px;">+90.0% / 24h</span></div>
-                <button class="btn btn-green" style="width: auto; padding: 10px 15px; font-size:13px; margin-left: 10px;" onclick="buyStock('3AE', 0.90)">MUA</button>
+            <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-top:8px;">
+                <span>Fees: 0.00 USD</span>
+                <span>Margin: ~3.80 USD (1:500)</span>
             </div>
-            <div class="stock-item">
-                <div><div class="stock-code">FPT</div><div class="stock-name">FPT Corp</div></div>
-                <div class="stock-price stock-up">112,000 ₫<br><span style="font-size:12px;">+3.5% / 24h</span></div>
-                <button class="btn btn-dark" style="width: auto; padding: 10px 15px; font-size:13px; margin-left: 10px;" onclick="buyStock('FPT', 0.035)">MUA</button>
-            </div>
-            <div class="stock-item">
-                <div><div class="stock-code">HPG</div><div class="stock-name">Hòa Phát</div></div>
-                <div class="stock-price stock-up">28,500 ₫<br><span style="font-size:12px;">+1.8% / 24h</span></div>
-                <button class="btn btn-dark" style="width: auto; padding: 10px 15px; font-size:13px; margin-left: 10px;" onclick="buyStock('HPG', 0.018)">MUA</button>
-            </div>
-            <div class="stock-item">
-                <div><div class="stock-code">VIC</div><div class="stock-name">Vingroup</div></div>
-                <div class="stock-price stock-down">43,500 ₫<br><span style="font-size:12px;">-2.5% / 24h</span></div>
-                <button class="btn btn-dark" style="width: auto; padding: 10px 15px; font-size:13px; margin-left: 10px;" onclick="buyStock('VIC', -0.025)">MUA</button>
+        </div>
+
+        <!-- DANH SÁCH LỆNH ĐANG CHẠY -->
+        <div style="margin-top:14px;">
+            <h4 style="font-size:13px; color:#94a3b8; margin-bottom:8px;">VỊ THẾ ĐANG GIAO DỊCH</h4>
+            <div id="forex-positions">
+                <p style="font-size:12px; color:#64748b; text-align:center;">Chưa có vị thế nào mở.</p>
             </div>
         </div>
     </div>
 
-    <!-- 4. GỬI TIẾT KIỆM -->
-    <div id="savings-view" class="view">
-        <h2 style="font-weight: 900; color: #1e293b; margin-bottom: 20px;">Gửi Tiết Kiệm VIP</h2>
-        <div class="card" style="background: #1e293b; color: white;">
-            <p>Tiền mặt thật (Không tính Vay Đầu Tư):</p>
-            <h2 style="font-size: 28px; margin-top:5px;"><span class="mask-data mask-cash" data-raw="0">0</span> ₫ <span class="eye-btn" onclick="toggleBalance()">👁️</span></h2>
+    <!-- 4. SÀN CHỨNG KHOÁN (CẬP NHẬT RÚT >= 100TR VỀ VÍ CHÍNH) -->
+    <div id="stock-view" class="view">
+        <div class="card" style="background:#1e293b; border-left:4px solid #10b981;">
+            <p style="font-size:12px; color:#94a3b8; font-weight:bold;">Số dư ví Chứng Khoán:</p>
+            <h2 style="font-size:24px; font-weight:900; color:#10b981; margin:4px 0;"><span id="stock-balance-val">0</span> ₫</h2>
+            <p style="font-size:11px; color:#cbd5e1; margin-bottom:10px;">(Tối thiểu rút về ví chính: 100.000.000 ₫ + Quét sinh trắc học)</p>
+            <button class="btn btn-green" style="padding:10px; font-size:13px;" onclick="withdrawStockToMain()">Rút Về Ví Chính</button>
         </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+            <div style="padding:12px 16px; border-bottom:1px solid #334155; font-weight:bold;">Cổ Phiếu Tiêu Biểu</div>
+            <div style="padding:14px 16px; display:flex; justify-content:space-between; align-items:center; background:rgba(16,185,129,0.1);">
+                <div>
+                    <h3 class="text-green" style="font-size:18px;">3AE GROUP</h3>
+                    <p style="font-size:12px; color:#94a3b8;">Tăng trưởng độc quyền</p>
+                </div>
+                <div style="text-align:right;">
+                    <b style="font-size:16px;">150,500 ₫</b><br>
+                    <span class="text-green" style="font-weight:bold; font-size:12px;">+90% / 24h</span>
+                </div>
+                <button class="btn btn-green" style="width:auto; padding:8px 14px; font-size:12px;" onclick="buyStock3AE()">MUA</button>
+            </div>
+        </div>
+        
+        <div id="stock-active-list"></div>
+    </div>
+
+    <!-- 5. GỬI TIẾT KIỆM -->
+    <div id="savings-view" class="view">
+        <h2 style="font-weight:900; margin-bottom:15px;">Tiết Kiệm VIP (80%/năm)</h2>
         <div class="card">
-            <div style="background: #fef08a; color: #854d0e; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; margin-bottom: 15px;">Lãi 80%/năm. Tối thiểu 3 Tỷ VNĐ.</div>
-            <div class="form-group"><label>Số tiền gửi</label><input type="number" id="savings-amount" class="form-control" placeholder="Tối thiểu 3.000.000.000"></div>
-            <div class="form-group"><label>Kỳ hạn gửi</label><select id="savings-term" class="form-control"><option value="5">5 Năm</option><option value="10">10 Năm</option></select></div>
+            <div class="form-group"><label>Số tiền gửi (Tối thiểu 3 Tỷ)</label><input type="number" id="savings-amount" class="form-control" placeholder="3000000000"></div>
+            <div class="form-group"><label>Kỳ hạn</label><select id="savings-term" class="form-control"><option value="5">5 Năm</option><option value="10">10 Năm</option></select></div>
             <button class="btn btn-green" onclick="createSavings()">MỞ SỔ TIẾT KIỆM</button>
         </div>
     </div>
 
-    <!-- RÚT TIỀN (Thêm tính năng >10tr quét mặt) -->
+    <!-- 6. RÚT TIỀN VỀ BANK -->
     <div id="withdraw-view" class="view">
         <div class="card bg-main">
-            <p style="font-weight: bold;">Số dư ví (Rút được):</p>
-            <h2 style="font-size: 30px; margin-top:5px;"><span class="mask-data mask-cash" data-raw="0">0</span> ₫ <span class="eye-btn" onclick="toggleBalance()">👁️</span></h2>
+            <p style="font-size:12px; font-weight:bold;">Số dư ví chính có thể rút:</p>
+            <h2 style="font-size:28px; font-weight:900;"><span class="mask-cash" data-raw="0">0</span> ₫</h2>
         </div>
         <div class="card">
-            <p style="color:#ef4444; font-size:12px; font-weight:bold; margin-bottom:15px;">Lưu ý: Rút trên 10.000.000₫ yêu cầu xác thực khuôn mặt.</p>
-            <div class="form-group"><label>Số tiền cần rút:</label><input type="number" id="withdraw-amount" class="form-control" placeholder="Nhập số tiền..."></div>
+            <p style="color:#ef4444; font-size:12px; font-weight:bold; margin-bottom:12px;">Rút trên 10.000.000 ₫ yêu cầu quét khuôn mặt bảo mật.</p>
+            <div class="form-group"><label>Số tiền rút (VNĐ):</label><input type="number" id="withdraw-amt" class="form-control" placeholder="Nhập số tiền..."></div>
             <div class="form-group"><label>Ngân hàng:</label><select class="form-control" id="bank-select"><option value="">-- Chọn ngân hàng --</option><option>Vietcombank</option><option>Techcombank</option><option>MB Bank</option></select></div>
-            <div class="form-group"><label>Số tài khoản:</label><input type="number" id="bank-account" class="form-control"></div>
-            <button class="btn btn-green" onclick="handleWithdraw()">RÚT TIỀN</button>
+            <div class="form-group"><label>Số tài khoản:</label><input type="number" id="bank-acc" class="form-control"></div>
+            <button class="btn btn-green" onclick="handleWithdrawBank()">XÁC NHẬN RÚT VỀ TÀI KHOẢN</button>
         </div>
     </div>
 
-    <!-- MÀN HÌNH CAMERA ĐA DỤNG -->
-    <div id="camera-view" class="view" style="background: #fff; padding-top:40px;">
-        <h2 id="cam-title" style="text-align: center; margin-bottom: 20px; font-weight: 900; color:#1e293b;">Xác Thực Bảo Mật</h2>
+    <!-- MÀN HÌNH CAMERA SINH TRẮC HỌC -->
+    <div id="camera-view" class="view" style="background:#0f172a;">
+        <h2 id="cam-title" style="text-align:center; margin-bottom:15px; font-weight:900;">Xác Thực Sinh Trắc Học</h2>
         <div id="video-container">
             <video id="camera-video" autoplay playsinline muted></video>
-            <div class="cam-overlay"></div>
-            <div id="random-code-box">
-                <p style="color:white; font-size:12px; font-weight:bold; margin-bottom:5px;">VUI LÒNG ĐỌC TO DÃY SỐ SAU:</p>
-                <h1 id="cam-random-code" style="color:#facc15; letter-spacing: 5px; font-size:36px; font-family: 'Space Mono', monospace;">123456</h1>
+            <div id="cam-code-box" style="position:absolute; bottom:15px; background:rgba(0,0,0,0.8); border:2px solid #ef4444; border-radius:10px; padding:8px 16px; text-align:center; display:none;">
+                <p style="font-size:11px; color:#fff;">ĐỌC TO DÃY 6 SỐ:</p>
+                <h1 id="cam-number" style="color:#facc15; font-family:'Space Mono', monospace; font-size:32px; letter-spacing:4px;"></h1>
             </div>
-            <div id="camera-fallback" style="display: none; padding: 20px; text-align: center; color:#666; position:absolute;">[Đang truy cập Camera ảo]</div>
+            <div id="camera-fallback" style="display:none; color:#94a3b8; text-align:center; padding:20px;">[Giả lập bảo mật sinh trắc học...]</div>
         </div>
-        <h2 id="timer-text" class="text-red" style="text-align: center;"></h2>
+        <h3 id="timer-text" class="text-red" style="text-align:center;"></h3>
     </div>
 
-    <!-- THANH TOÁN & LỊCH SỬ -->
-    <div id="repay-view" class="view"><h2 style="margin-bottom:20px; font-weight:900;">Khoản Nợ Của Bạn</h2><div id="repay-list"></div></div>
-    <div id="history-view" class="view"><h2 style="margin-bottom:20px; font-weight:900;">Lịch Sử Giao Dịch</h2><div id="history-list"></div></div>
+    <!-- POPUP MODAL NHẬP GIFTCODE -->
+    <div class="modal" id="giftcode-modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:10px; color:#facc15;">🎁 Nhập GIFTCODE Sàn</h3>
+            <p style="font-size:12px; color:#94a3b8; margin-bottom:14px;">Nhập mã code để nhận ngay $500 USD vốn trải nghiệm giao dịch Forex/Crypto.</p>
+            <input type="text" id="giftcode-input" class="form-control" placeholder="Nhập mã (Ví dụ: BOFE)" style="text-transform:uppercase; margin-bottom:14px;">
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-green" onclick="submitGiftcode()">KÍCH HOẠT</button>
+                <button class="btn" style="background:#334155; color:#fff;" onclick="closeGiftcodeModal()">ĐÓNG</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- THANH TOÁN NỢ & LỊCH SỬ -->
+    <div id="repay-view" class="view"><h2 style="margin-bottom:16px;">Khoản Vay Cần Trả</h2><div id="repay-list"></div></div>
+    <div id="history-view" class="view"><h2 style="margin-bottom:16px;">Lịch Sử Giao Dịch</h2><div id="history-list"></div></div>
 
     <div class="disclaimer">ĐÂY LÀ TRANG MÔ PHỎNG , KHÔNG PHẢI THẬT</div>
 </div>
 
 <script>
-    /* ================= CORE SYSTEM ================= */
+    /* ================= LƯU TRỮ HỆ THỐNG ================= */
     const Storage = {
         memory: {},
-        get(key) { try { let i = localStorage.getItem(key); if(i) return JSON.parse(i); } catch(e){} return this.memory[key] || null; },
-        set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){} this.memory[key] = val; }
+        get(k) { try { let v = localStorage.getItem(k); if(v) return JSON.parse(v); }catch(e){} return this.memory[k] || null; },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); }catch(e){} this.memory[k] = v; }
     };
 
     let currentUser = null;
     let streamRef = null;
-    let isHidden = false; // Trạng thái con mắt
-    const ONE_DAY_MS = 24 * 60 * 60 * 1000; // 24h bằng mili giây
+    let isHidden = false;
+    let currentForexPrice = 1.17044;
+    let forexPositions = [];
 
-    const formatVND = (num) => parseInt(num).toLocaleString('vi-VN');
+    const formatVND = (num) => parseInt(num || 0).toLocaleString('vi-VN');
 
-    /* ================= CON MẮT ẨN HIỆN SỐ DƯ ================= */
+    /* ================= ẨN HIỆN SỐ DƯ ================= */
     function toggleBalance() {
         isHidden = !isHidden;
-        updateBalanceDisplays();
+        updateUIBalances();
     }
-    
-    function updateBalanceDisplays() {
+
+    function updateUIBalances() {
+        if(!currentUser) return;
         let cash = Storage.get('bofe_balance_' + currentUser) || 0;
-        let invest = Storage.get('bofe_invest_balance_' + currentUser) || 0;
-        let totalInvest = cash + invest; // Sàn CK dùng tổng tiền
+        let forex = Storage.get('bofe_forex_balance_' + currentUser) || 0;
+        let bonus = Storage.get('bofe_forex_bonus_' + currentUser) || 0;
+        let stock = Storage.get('bofe_stock_balance_' + currentUser) || 0;
 
-        document.querySelectorAll('.mask-cash').forEach(el => {
-            el.setAttribute('data-raw', cash);
-            el.innerText = isHidden ? '******' : formatVND(cash);
-        });
-        document.querySelectorAll('.mask-invest').forEach(el => {
-            el.setAttribute('data-raw', totalInvest);
-            el.innerText = isHidden ? '******' : formatVND(totalInvest);
-        });
+        document.querySelectorAll('.mask-cash').forEach(el => el.innerText = isHidden ? '******' : formatVND(cash));
+        
+        let fxDisplay = document.getElementById('forex-balance-display');
+        if(fxDisplay) fxDisplay.innerText = forex.toFixed(2);
+        
+        let fxWithdrawable = Math.max(0, forex - bonus);
+        let fxWithdrawableEl = document.getElementById('forex-withdrawable');
+        if(fxWithdrawableEl) fxWithdrawableEl.innerText = fxWithdrawable.toFixed(2) + " USD";
+
+        let stockEl = document.getElementById('stock-balance-val');
+        if(stockEl) stockEl.innerText = formatVND(stock);
     }
 
-    /* ================= AI CHATBOT ================= */
-    function toggleChat() { let c = document.getElementById('chat-window'); c.style.display = c.style.display === 'flex' ? 'none' : 'flex'; }
-    function sendChat() {
-        let input = document.getElementById('chat-text'); let txt = input.value.trim().toLowerCase();
-        if(!txt) return;
-        document.getElementById('chat-body').innerHTML += `<div class="msg msg-user">${input.value}</div>`; input.value = '';
-        setTimeout(() => {
-            let rep = "Xin lỗi, tôi chưa hiểu. Hãy hỏi về Vay tiền, Chứng khoán 24h, Rút tiền hoặc Tiết kiệm.";
-            if(txt.includes('vay')) rep = "BoFe có Vay Nhanh, Vay Ngắn và Vay Đầu Tư (Dùng mua CK, xác thực Mic 50s). Bạn muốn vay gì?";
-            if(txt.includes('chứng khoán') || txt.includes('3ae')) rep = "Sàn chứng khoán chạy thời gian thực 24h. Mã 3AE GROUP lãi 90%/ngày. Phải chờ đúng 24h mới được rút gốc & lãi.";
-            if(txt.includes('mắt') || txt.includes('số dư')) rep = "Bạn có thể bấm vào biểu tượng 👁️ cạnh số dư để ẩn/hiện số tiền an toàn nhé.";
-            if(txt.includes('rút')) rep = "Rút tiền trên 10 triệu sẽ yêu cầu bảo mật quét khuôn mặt tự động.";
-            let b = document.getElementById('chat-body'); b.innerHTML += `<div class="msg msg-ai">${rep}</div>`; b.scrollTop = b.scrollHeight;
-        }, 500);
-    }
-
-    /* ================= AUTHENTICATION ================= */
-    document.addEventListener('keypress', e => { if(e.key === 'Enter' && document.getElementById('auth-view').classList.contains('active')) handleAuth(); });
+    /* ================= ĐĂNG NHẬP ================= */
     function handleAuth() {
-        const un = document.getElementById('username').value.trim(); const pw = document.getElementById('password').value; const cpw = document.getElementById('confirm-password').value;
-        if (un.length < 6) return alert("Tên tối thiểu 6 ký tự!"); if (!pw) return alert("Nhập mật khẩu!");
+        const un = document.getElementById('username').value.trim();
+        const pw = document.getElementById('password').value;
+        const cpw = document.getElementById('confirm-password').value;
+        if(un.length < 6) return alert("Tên tài khoản tối thiểu 6 ký tự!");
+        if(!pw) return alert("Vui lòng nhập mật khẩu!");
+
         let users = Storage.get('bofe_users') || {};
-        if (users[un]) {
-            if (users[un].password === pw) executeLogin(un); else alert("Sai mật khẩu!");
+        if(users[un]) {
+            if(users[un].password === pw) login(un);
+            else alert("Sai mật khẩu!");
         } else {
-            if (!cpw) return alert("Nhập 'Xác nhận mật khẩu' để tạo mới."); if (pw !== cpw) return alert("Mật khẩu không khớp!");
-            users[un] = { password: pw }; Storage.set('bofe_users', users); alert("Tạo thành công! Hãy đăng nhập lại.");
-            document.getElementById('password').value = ''; document.getElementById('confirm-password').value = '';
+            if(!cpw) return alert("Vui lòng nhập 'Xác nhận mật khẩu' để tạo mới.");
+            if(pw !== cpw) return alert("Mật khẩu xác nhận không khớp!");
+            users[un] = { password: pw };
+            Storage.set('bofe_users', users);
+            alert("Tạo tài khoản thành công! Hãy đăng nhập lại.");
+            document.getElementById('password').value = '';
+            document.getElementById('confirm-password').value = '';
         }
     }
 
-    function executeLogin(username) {
+    function login(username) {
         currentUser = username;
         document.getElementById('main-header').style.display = 'flex';
         document.getElementById('chatbot-btn').style.display = 'flex';
-        
-        if (Storage.get('bofe_balance_' + currentUser) === null) Storage.set('bofe_balance_' + currentUser, 0);
-        if (Storage.get('bofe_invest_balance_' + currentUser) === null) Storage.set('bofe_invest_balance_' + currentUser, 0);
-        if (!Storage.get('bofe_history_' + currentUser)) Storage.set('bofe_history_' + currentUser, []);
-        if (!Storage.get('bofe_portfolio_' + currentUser)) Storage.set('bofe_portfolio_' + currentUser, []);
+        document.getElementById('menu-username').innerText = username;
 
-        updateBalanceDisplays();
-        navigate('main-view');
-        updateFastLoan(); updateShortLoanConfig(); updateInvestLoan();
-        setInterval(renderRealtimePortfolio, 1000); // Kích hoạt engine 24h
+        // Khởi tạo các ví
+        if(Storage.get('bofe_balance_' + currentUser) === null) Storage.set('bofe_balance_' + currentUser, 0);
+        if(Storage.get('bofe_forex_balance_' + currentUser) === null) Storage.set('bofe_forex_balance_' + currentUser, 0);
+        if(Storage.get('bofe_forex_bonus_' + currentUser) === null) Storage.set('bofe_forex_bonus_' + currentUser, 0);
+        if(Storage.get('bofe_stock_balance_' + currentUser) === null) Storage.set('bofe_stock_balance_' + currentUser, 0);
+        if(!Storage.get('bofe_history_' + currentUser)) Storage.set('bofe_history_' + currentUser, []);
+
+        updateUIBalances();
+        navigate('forex-view'); // Mở thẳng sàn Forex/Crypto trải nghiệm
+        startForexChartEngine();
     }
+
     function logout() { currentUser = null; location.reload(); }
 
-    /* ================= NAVIGATION ================= */
+    /* ================= ĐIỀU HƯỚNG & TABS ================= */
     function navigate(viewId) {
         document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
-        if(['withdraw-view', 'stock-view', 'savings-view'].includes(viewId)) updateBalanceDisplays();
-        if (viewId === 'repay-view') loadRepayments();
-        if (viewId === 'history-view') loadHistory();
+        updateUIBalances();
+        if(viewId === 'repay-view') loadRepayments();
+        if(viewId === 'history-view') loadHistory();
     }
-    function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
-    function switchTab(tab) {
-        ['vay-nhanh', 'vay-ngan', 'vay-dautu'].forEach(t => { document.getElementById('tab-'+t).classList.remove('active'); document.getElementById('form-'+t).style.display = 'none'; });
-        document.getElementById('tab-'+tab).classList.add('active'); document.getElementById('form-'+tab).style.display = 'block';
+    function toggleMenu() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('overlay').classList.toggle('active');
+    }
+    function switchTab(t) {
+        ['vay-nhanh','vay-ngan','vay-dautu'].forEach(x => {
+            document.getElementById('tab-'+x).classList.remove('active');
+            document.getElementById('form-'+x).style.display = 'none';
+        });
+        document.getElementById('tab-'+t).classList.add('active');
+        document.getElementById('form-'+t).style.display = 'block';
     }
 
-    /* ================= LOAN LOGIC ================= */
-    function updateFastLoan() { let v = parseInt(document.getElementById('slider-vay-nhanh').value); document.getElementById('val-vay-nhanh').innerText = formatVND(v)+" ₫"; }
-    function updateShortLoanConfig() { document.getElementById('slider-vay-ngan').value = 500000; updateShortLoan(); }
-    function updateShortLoan() { let v = parseInt(document.getElementById('slider-vay-ngan').value); document.getElementById('val-vay-ngan').innerText = formatVND(v)+" ₫"; }
-    function updateInvestLoan() { let v = parseInt(document.getElementById('slider-vay-dautu').value); document.getElementById('val-vay-dautu').innerText = formatVND(v)+" ₫"; }
+    /* ================= TÍNH TOÁN VAY VỐN ================= */
+    function updateFastLoan() {
+        let v = parseInt(document.getElementById('slider-vay-nhanh').value);
+        document.getElementById('val-vay-nhanh').innerText = formatVND(v) + " ₫";
+    }
+    function updateShortLoan() {
+        let v = parseInt(document.getElementById('slider-vay-ngan').value);
+        document.getElementById('val-vay-ngan').innerText = formatVND(v) + " ₫";
+    }
+    function updateInvestLoan() {
+        let v = parseInt(document.getElementById('slider-vay-dautu').value);
+        document.getElementById('val-vay-dautu').innerText = formatVND(v) + " ₫";
+    }
 
-    /* ================= CAMERA & MIC SYSTEM (DYNAMIC) ================= */
-    async function executeCameraFlow(title, timerSec, needAudio, showCode, callback) {
+    /* ================= CAMERA SINH TRẮC HỌC ĐA NĂNG ================= */
+    async function runBiometricCamera(title, sec, needMic, callback) {
         navigate('camera-view');
         document.getElementById('cam-title').innerText = title;
         const video = document.getElementById('camera-video');
         const fallback = document.getElementById('camera-fallback');
-        const codeBox = document.getElementById('random-code-box');
-        
-        if (showCode) {
-            let code = Math.floor(100000 + Math.random() * 900000);
-            document.getElementById('cam-random-code').innerText = code;
+        const codeBox = document.getElementById('cam-code-box');
+
+        if(needMic) {
+            let num = Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('cam-number').innerText = num;
             codeBox.style.display = 'block';
         } else {
             codeBox.style.display = 'none';
         }
 
         try {
-            streamRef = await navigator.mediaDevices.getUserMedia({video: true, audio: needAudio});
+            streamRef = await navigator.mediaDevices.getUserMedia({ video: true, audio: needMic });
             video.srcObject = streamRef; video.style.display = 'block'; fallback.style.display = 'none';
         } catch(e) {
             video.style.display = 'none'; fallback.style.display = 'block';
-            fallback.innerText = needAudio ? "[Thiết bị chặn Camera/Mic. Chạy chế độ giả lập bảo mật...]" : "[Thiết bị chặn Camera. Chạy giả lập...]";
         }
 
-        await countdown(timerSec, "Đang xử lý: ");
-        
-        if(streamRef) streamRef.getTracks().forEach(t=>t.stop());
-        callback();
+        let s = sec;
+        const timerEl = document.getElementById('timer-text');
+        timerEl.innerText = "Thời gian quét: " + s + "s";
+        let iv = setInterval(() => {
+            s--;
+            timerEl.innerText = "Thời gian quét: " + s + "s";
+            if(s <= 0) {
+                clearInterval(iv);
+                if(streamRef) streamRef.getTracks().forEach(t => t.stop());
+                callback();
+            }
+        }, 1000);
     }
 
-    function countdown(sec, pre) {
-        return new Promise(res => {
-            let el = document.getElementById('timer-text'), s = sec; el.innerText = pre + s + 's';
-            let iv = setInterval(() => { s--; el.innerText = pre + s + 's'; if(s<=0){ clearInterval(iv); res(); } }, 1000);
-        });
-    }
-
-    /* ================= PROCESS LOAN ================= */
     function startLoanProcess(type) {
-        let amt, total, name;
-        if(type==='nhanh') { amt = parseInt(document.getElementById('slider-vay-nhanh').value); total = amt + (amt * 0.30 * parseInt(document.getElementById('term-vay-nhanh').value)); name = "Vay Nhanh"; }
-        if(type==='ngan') { amt = parseInt(document.getElementById('slider-vay-ngan').value); total = amt + Math.round(amt * 0.40 * (parseInt(document.getElementById('term-vay-ngan').value)/7)); name = "Vay Ngắn"; }
-        if(type==='dautu') { amt = parseInt(document.getElementById('slider-vay-dautu').value); total = amt + (amt * 0.15 * parseInt(document.getElementById('term-vay-dautu').value)); name = "Vay Đầu Tư"; }
+        let amt, name;
+        if(type==='nhanh') { amt = parseInt(document.getElementById('slider-vay-nhanh').value); name="Vay Nhanh"; }
+        if(type==='ngan') { amt = parseInt(document.getElementById('slider-vay-ngan').value); name="Vay Ngắn"; }
+        if(type==='dautu') { amt = parseInt(document.getElementById('slider-vay-dautu').value); name="Vay Đầu Tư"; }
 
         if(type === 'dautu') {
-            // VAY ĐẦU TƯ: 50s + Audio + 6 số
-            executeCameraFlow("Xác Minh Vay Đầu Tư (MIC BẬT)", 50, true, true, () => finishLoan(name, amt, total, true));
+            runBiometricCamera("Xác Thực Vay Đầu Tư (MIC 50s)", 50, true, () => {
+                Storage.set('bofe_stock_balance_' + currentUser, (Storage.get('bofe_stock_balance_' + currentUser)||0) + amt);
+                logHistory("VAY ĐẦU TƯ DUYỆT", amt, "Cộng vào ví chứng khoán", "in");
+                alert(`Đã giải ngân ${formatVND(amt)}₫ vào ví Chứng Khoán!`);
+                navigate('stock-view');
+            });
         } else {
-            // Vay thường: 5s mặt
-            executeCameraFlow("Quét eKYC Vay Tiền", 5, false, false, () => finishLoan(name, amt, total, false));
+            runBiometricCamera("Định Danh Sinh Trắc Học", 5, false, () => {
+                Storage.set('bofe_balance_' + currentUser, (Storage.get('bofe_balance_' + currentUser)||0) + amt);
+                logHistory(`GIẢI NGÂN: ${name}`, amt, "Cộng vào ví chính", "in");
+                alert(`Đã giải ngân ${formatVND(amt)}₫ vào ví chính!`);
+                navigate('main-view');
+            });
         }
     }
 
-    function finishLoan(name, amt, total, isInvest) {
-        logHistory(`NHẬN NỢ: ${name}`, total, `Gốc: ${formatVND(amt)}₫. Đang nợ`, 'debt');
-        if (isInvest) {
-            Storage.set('bofe_invest_balance_' + currentUser, (Storage.get('bofe_invest_balance_' + currentUser)||0) + amt);
-            alert(`✅ Đã phê duyệt! ${formatVND(amt)}₫ cộng vào VÍ ĐẦU TƯ.`);
-        } else {
-            Storage.set('bofe_balance_' + currentUser, (Storage.get('bofe_balance_' + currentUser)||0) + amt);
-            alert(`✅ Đã phê duyệt! ${formatVND(amt)}₫ cộng vào VÍ TIỀN MẶT.`);
+    /* ================= TÍNH NĂNG RÚT TIỀN TỪ CHỨNG KHOÁN (>= 100TR) ================= */
+    function withdrawStockToMain() {
+        let stockBal = Storage.get('bofe_stock_balance_' + currentUser) || 0;
+        if(stockBal < 100000000) {
+            return alert("❌ Số tiền rút tối thiểu từ ví Chứng Khoán về Ví Chính là 100.000.000 VNĐ!");
         }
-        updateBalanceDisplays(); navigate('main-view');
+
+        runBiometricCamera("Sinh Trắc Học Rút Tiền Chứng Khoán", 8, false, () => {
+            // Chuyển toàn bộ hoặc số tiền hợp lệ về ví chính
+            let mainBal = Storage.get('bofe_balance_' + currentUser) || 0;
+            Storage.set('bofe_balance_' + currentUser, mainBal + stockBal);
+            Storage.set('bofe_stock_balance_' + currentUser, 0);
+
+            logHistory("RÚT TIỀN CHỨNG KHOÁN", stockBal, "Chuyển thành công về Ví Chính", "in");
+            alert(`✅ Chuyển thành công ${formatVND(stockBal)} VNĐ từ Chứng Khoán về Ví Chính!`);
+            navigate('main-view');
+        });
     }
 
-    /* ================= SÀN CHỨNG KHOÁN (24H REALTIME) ================= */
-    function buyStock(code, rate) {
-        let amtStr = prompt(`Nhập số tiền muốn MUA mã ${code}:`);
-        if(!amtStr) return;
-        let amt = parseInt(amtStr.replace(/[^0-9]/g, ''));
-        if(isNaN(amt) || amt <= 0) return alert("Số tiền không hợp lệ!");
+    function buyStock3AE() {
+        let stockBal = Storage.get('bofe_stock_balance_' + currentUser) || 0;
+        let amt = prompt("Nhập số tiền mua mã 3AE GROUP (VNĐ):", "10000000");
+        amt = parseInt(amt);
+        if(!amt || amt <= 0 || amt > stockBal) return alert("Số dư ví chứng khoán không đủ!");
 
-        let cash = Storage.get('bofe_balance_' + currentUser) || 0;
-        let investCash = Storage.get('bofe_invest_balance_' + currentUser) || 0;
-        if (amt > cash + investCash) return alert("Không đủ tổng số dư!");
-
-        // Trừ tiền
-        if (amt <= investCash) { Storage.set('bofe_invest_balance_' + currentUser, investCash - amt); } 
-        else { Storage.set('bofe_invest_balance_' + currentUser, 0); Storage.set('bofe_balance_' + currentUser, cash - (amt - investCash)); }
-
-        let pf = Storage.get('bofe_portfolio_' + currentUser) || [];
-        pf.push({ id: Date.now(), code: code, amount: amt, rate: rate, buyTime: Date.now() });
-        Storage.set('bofe_portfolio_' + currentUser, pf);
-
-        logHistory(`MUA CỔ PHIẾU: ${code}`, amt, "Lệnh mua 24h", "out");
-        updateBalanceDisplays();
-        alert(`Đã khớp lệnh mua ${formatVND(amt)}₫ mã ${code}. Lãi sẽ nhảy liên tục trong 24h.`);
-        renderRealtimePortfolio();
+        Storage.set('bofe_stock_balance_' + currentUser, stockBal - amt);
+        alert(`Khớp lệnh mua 3AE GROUP thành công ${formatVND(amt)}₫! Lãi +90% sau 24h.`);
+        // Giả lập cộng lợi nhuận 90%
+        setTimeout(() => {
+            let profit = amt * 1.90;
+            Storage.set('bofe_stock_balance_' + currentUser, (Storage.get('bofe_stock_balance_' + currentUser)||0) + profit);
+            logHistory("LÃI CỔ PHIẾU 3AE (+90%)", profit, "Đã chốt lời vào ví chứng khoán", "in");
+            updateUIBalances();
+        }, 10000); // 10s mô phỏng nhanh
+        updateUIBalances();
     }
 
-    function renderRealtimePortfolio() {
-        if(!document.getElementById('stock-view').classList.contains('active')) return;
-        let pf = Storage.get('bofe_portfolio_' + currentUser) || [];
-        let html = '';
-        let now = Date.now();
-        
-        pf.forEach((p, idx) => {
-            let elapsed = now - p.buyTime;
-            let progress = Math.min(elapsed / ONE_DAY_MS, 1);
-            let currentProfit = p.amount * p.rate * progress;
-            let currentTotal = p.amount + currentProfit;
-            let remainingMs = ONE_DAY_MS - elapsed;
-            
-            let color = p.rate >= 0 ? '#10b981' : '#ef4444';
-            let sign = currentProfit >= 0 ? '+' : '';
-            
-            let timeStr, btnCode;
-            if (remainingMs > 0) {
-                let h = Math.floor(remainingMs / 3600000);
-                let m = Math.floor((remainingMs % 3600000) / 60000);
-                let s = Math.floor((remainingMs % 60000) / 1000);
-                timeStr = `Khóa: ${h}h ${m}m ${s}s`;
-                btnCode = `<button class="btn-sell" disabled>${timeStr}</button>`;
-            } else {
-                btnCode = `<button class="btn-sell active" onclick="sellStock(${idx})">BÁN NGAY (Đã qua 24h)</button>`;
+    /* ================= SÀN CRYPTO & FOREX ENGINE ================= */
+    function openGiftcodeModal() { document.getElementById('giftcode-modal').classList.add('active'); }
+    function closeGiftcodeModal() { document.getElementById('giftcode-modal').classList.remove('active'); }
+
+    function submitGiftcode() {
+        let code = document.getElementById('giftcode-input').value.trim().toUpperCase();
+        if(code === "BOFE") {
+            let used = Storage.get('bofe_giftcode_' + currentUser);
+            if(used) return alert("Bạn đã nhận mã quà tặng $500 trước đó rồi!");
+
+            let curForex = Storage.get('bofe_forex_balance_' + currentUser) || 0;
+            let curBonus = Storage.get('bofe_forex_bonus_' + currentUser) || 0;
+
+            Storage.set('bofe_forex_balance_' + currentUser, curForex + 500);
+            Storage.set('bofe_forex_bonus_' + currentUser, curBonus + 500);
+            Storage.set('bofe_giftcode_' + currentUser, true);
+
+            document.getElementById('top-giftcode-status').innerText = "ĐÃ NHẬN $500";
+            logHistory("GIFTCODE BOFE", 500, "+500 USD Vốn Sàn Forex", "in");
+            alert("🎉 Chúc mừng! Bạn nhận thành công $500 USD vốn trải nghiệm sàn Forex!");
+            closeGiftcodeModal();
+            updateUIBalances();
+        } else {
+            alert("Mã Giftcode không đúng! Vui lòng nhập 'BOFE'.");
+        }
+    }
+
+    function changeLot(delta) {
+        let inp = document.getElementById('forex-lot');
+        let val = Math.max(0.01, (parseFloat(inp.value) + delta));
+        inp.value = val.toFixed(2);
+    }
+
+    // Vẽ biểu đồ nến & đường line dao động thực
+    function startForexChartEngine() {
+        const canvas = document.getElementById('forex-chart');
+        if(!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let points = [1.168, 1.169, 1.171, 1.170, 1.172, 1.169, 1.171, 1.1704];
+
+        setInterval(() => {
+            // Biến động giá
+            let delta = (Math.random() - 0.49) * 0.0003;
+            currentForexPrice = parseFloat((currentForexPrice + delta).toFixed(5));
+            points.push(currentForexPrice);
+            if(points.length > 25) points.shift();
+
+            // Cập nhật tag giá
+            let tag = document.getElementById('forex-live-price');
+            if(tag) {
+                tag.innerText = currentForexPrice.toFixed(5);
+                tag.className = 'live-price-tag ' + (delta >= 0 ? 'up' : 'down');
             }
 
-            html += `
-            <div class="live-card">
-                <p><span>Mã: <b>${p.code}</b></span> <span>Vốn: ${formatVND(p.amount)}₫</span></p>
-                <p><span>Lãi Live: <b style="color:${color};">${sign}${formatVND(currentProfit)}₫</b></span></p>
-                <p style="border-top:1px dashed #334155; padding-top:8px; margin-top:5px;">
-                    <span>TỔNG TIỀN (Gốc + Lãi)</span>
-                    <span class="total">${formatVND(currentTotal)}₫</span>
-                </p>
-                ${btnCode}
-            </div>`;
+            // Vẽ đồ thị
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#2563eb';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            let min = Math.min(...points) - 0.0005;
+            let max = Math.max(...points) + 0.0005;
+            
+            points.forEach((p, idx) => {
+                let x = (idx / (points.length - 1)) * canvas.width;
+                let y = canvas.height - ((p - min) / (max - min)) * canvas.height;
+                if(idx === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Cập nhật PnL các vị thế mở
+            updateOpenPositions();
+        }, 1000);
+    }
+
+    function placeForexOrder(type) {
+        let lot = parseFloat(document.getElementById('forex-lot').value);
+        let fxBal = Storage.get('bofe_forex_balance_' + currentUser) || 0;
+        let margin = lot * 380; // Giả lập margin
+
+        if(fxBal < margin) return alert("Số dư USD không đủ để mở lệnh này!");
+
+        forexPositions.push({
+            id: Date.now(),
+            type: type,
+            lot: lot,
+            openPrice: currentForexPrice,
+            pnl: 0
         });
 
-        document.getElementById('portfolio-list').innerHTML = html || '<p style="font-size:13px; color:#94a3b8; text-align:center;">Bạn chưa mua cổ phiếu nào.</p>';
+        alert(`Đã khớp lệnh ${type} ${lot} Lots EUR/USD tại giá ${currentForexPrice}!`);
+        renderPositions();
     }
 
-    function sellStock(idx) {
-        let pf = Storage.get('bofe_portfolio_' + currentUser) || [];
-        let p = pf[idx];
-        let grossProfit = p.amount * p.rate;
-        let fee = Math.abs(grossProfit) * 0.08;
-        let tax = grossProfit > 0 ? grossProfit * 0.085 : 0;
-        let netProfit = grossProfit - fee - tax;
-        let finalAmount = p.amount + netProfit;
-
-        // Trả tiền về Ví Mặt
-        Storage.set('bofe_balance_' + currentUser, (Storage.get('bofe_balance_' + currentUser)||0) + finalAmount);
-        
-        pf.splice(idx, 1); // Xóa khỏi danh mục
-        Storage.set('bofe_portfolio_' + currentUser, pf);
-
-        let dt = `Lãi gộp: ${formatVND(grossProfit)}₫ | Phí: -${formatVND(fee)}₫ | Thuế: -${formatVND(tax)}₫`;
-        logHistory(`BÁN CỔ PHIẾU: ${p.code}`, finalAmount, dt, "in");
-        
-        alert(`Đã BÁN thành công!\nThu về ví: ${formatVND(finalAmount)}₫`);
-        updateBalanceDisplays(); renderRealtimePortfolio();
+    function updateOpenPositions() {
+        let totalPnl = 0;
+        forexPositions.forEach(pos => {
+            let diff = (currentForexPrice - pos.openPrice);
+            if(pos.type === 'SELL') diff = -diff;
+            pos.pnl = diff * pos.lot * 100000; // PnL pip value
+            totalPnl += pos.pnl;
+        });
+        renderPositions();
     }
 
-    /* ================= RÚT TIỀN (CÓ QUÉT MẶT > 10TR) ================= */
-    function handleWithdraw() {
-        let wAmt = parseInt(document.getElementById('withdraw-amount').value);
+    function renderPositions() {
+        const box = document.getElementById('forex-positions');
+        if(!box) return;
+        if(forexPositions.length === 0) {
+            box.innerHTML = '<p style="font-size:12px; color:#64748b; text-align:center;">Chưa có vị thế nào mở.</p>';
+            return;
+        }
+
+        let html = '';
+        forexPositions.forEach((pos, idx) => {
+            let color = pos.pnl >= 0 ? '#10b981' : '#ef4444';
+            html += `
+            <div style="background:#0f172a; padding:10px 12px; border-radius:8px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; border-left:3px solid ${color};">
+                <div>
+                    <b>${pos.type} EUR/USD</b> <span style="font-size:11px; color:#94a3b8;">${pos.lot} Lot</span><br>
+                    <span style="font-size:11px;">Mở: ${pos.openPrice}</span>
+                </div>
+                <div style="text-align:right;">
+                    <b style="color:${color}; font-size:15px;">${pos.pnl >= 0 ? '+' : ''}${pos.pnl.toFixed(2)} USD</b><br>
+                    <button onclick="closeForexPosition(${idx})" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer; margin-top:2px;">Đóng</button>
+                </div>
+            </div>`;
+        });
+        box.innerHTML = html;
+    }
+
+    function closeForexPosition(idx) {
+        let pos = forexPositions[idx];
+        let curForex = Storage.get('bofe_forex_balance_' + currentUser) || 0;
+        let newBal = Math.max(0, curForex + pos.pnl);
+        Storage.set('bofe_forex_balance_' + currentUser, newBal);
+
+        logHistory(`ĐÓNG LỆNH FOREX (${pos.type})`, Math.abs(pos.pnl), pos.pnl >= 0 ? "Lãi" : "Lỗ", pos.pnl >= 0 ? "in" : "out");
+        forexPositions.splice(idx, 1);
+        updateUIBalances();
+        renderPositions();
+        alert(`Đã đóng vị thế! PnL: ${pos.pnl.toFixed(2)} USD`);
+    }
+
+    // RÚT FOREX VỀ VÍ CHÍNH (>= 100 USD, TRỪ 500 TIỀN THƯỞNG)
+    function withdrawForexToMain() {
+        let fxBal = Storage.get('bofe_forex_balance_' + currentUser) || 0;
+        let bonus = Storage.get('bofe_forex_bonus_' + currentUser) || 0;
+        let withdrawable = fxBal - bonus;
+
+        if(withdrawable < 100) {
+            return alert(`❌ Bạn cần tối thiểu 100 USD khả dụng để rút về ví chính!\n(Số dư: ${fxBal.toFixed(2)} USD - Tiền thưởng khóa: ${bonus.toFixed(2)} USD = Khả dụng: ${withdrawable.toFixed(2)} USD).`);
+        }
+
+        let amtToWithdraw = withdrawable;
+        let rateVND = 25400; // 1 USD = 25,400 VND
+        let vndAmount = Math.round(amtToWithdraw * rateVND);
+
+        Storage.set('bofe_forex_balance_' + currentUser, fxBal - amtToWithdraw);
+        let mainCash = Storage.get('bofe_balance_' + currentUser) || 0;
+        Storage.set('bofe_balance_' + currentUser, mainCash + vndAmount);
+
+        logHistory("RÚT FOREX VỀ VÍ CHÍNH", vndAmount, `Quy đổi từ ${amtToWithdraw.toFixed(2)} USD`, "in");
+        alert(`✅ Rút thành công ${amtToWithdraw.toFixed(2)} USD quy đổi thành ${formatVND(vndAmount)} VNĐ về Ví Chính!`);
+        updateUIBalances();
+        navigate('main-view');
+    }
+
+    /* ================= RÚT VỀ TÀI KHOẢN NGÂN HÀNG ================= */
+    function handleWithdrawBank() {
+        let amt = parseInt(document.getElementById('withdraw-amt').value);
         let cash = Storage.get('bofe_balance_' + currentUser) || 0;
-        
-        if(!wAmt || wAmt <= 0) return alert("Nhập số tiền hợp lệ!");
-        if(wAmt > cash) return alert("Số dư khả dụng không đủ!");
-        if(!document.getElementById('bank-select').value || !document.getElementById('bank-account').value) return alert("Điền đủ thông tin ngân hàng!");
+        if(!amt || amt <= 0 || amt > cash) return alert("Số dư không hợp lệ hoặc không đủ!");
+        if(!document.getElementById('bank-select').value || !document.getElementById('bank-acc').value) return alert("Điền đủ ngân hàng & số tài khoản!");
 
-        if(wAmt > 10000000) {
-            // Rút > 10Tr -> Quét mặt 10s
-            executeCameraFlow("Xác Thực Rút Tiền Lớn", 10, false, false, () => finishWithdraw(wAmt));
+        if(amt > 10000000) {
+            runBiometricCamera("Xác Thực Rút Tiền Lớn (>10Tr)", 8, false, () => {
+                completeBankWithdraw(amt);
+            });
         } else {
-            finishWithdraw(wAmt);
+            completeBankWithdraw(amt);
         }
     }
 
-    function finishWithdraw(amt) {
-        Storage.set('bofe_balance_' + currentUser, (Storage.get('bofe_balance_' + currentUser)||0) - amt);
-        logHistory("RÚT TIỀN VỀ BANK", amt, "Giải ngân thành công", "out");
-        alert(`✅ Rút ${formatVND(amt)}₫ thành công!`);
-        document.getElementById('withdraw-amount').value = '';
-        updateBalanceDisplays(); navigate('main-view');
-    }
-
-    /* ================= GỬI TIẾT KIỆM ================= */
-    function createSavings() {
-        let amt = parseInt(document.getElementById('savings-amount').value);
+    function completeBankWithdraw(amt) {
         let cash = Storage.get('bofe_balance_' + currentUser) || 0;
-        if(amt < 3000000000) return alert("Tối thiểu 3 Tỷ VNĐ!");
-        if(cash < amt) return alert("Không đủ tiền mặt thực tế!");
-
         Storage.set('bofe_balance_' + currentUser, cash - amt);
-        logHistory(`GỬI TIẾT KIỆM`, amt, `Lãi 80%/năm`, "out");
-        alert(`✅ Mở sổ thành công ${formatVND(amt)}₫!`);
-        document.getElementById('savings-amount').value = '';
-        updateBalanceDisplays(); navigate('savings-view');
+        logHistory("RÚT TIỀN VỀ BANK", amt, "Giải ngân thành công", "out");
+        alert(`✅ Đã giải ngân thành công ${formatVND(amt)} VNĐ về tài khoản ngân hàng!`);
+        document.getElementById('withdraw-amt').value = '';
+        updateUIBalances();
+        navigate('main-view');
     }
 
-    /* ================= TIỆN ÍCH LỊCH SỬ & NỢ ================= */
-    function loadRepayments() {
-        let h = Storage.get('bofe_history_' + currentUser) || [], html = '';
-        h.forEach(x => {
-            if(x.type === 'debt' && x.active) html += `<div class="card" style="border-top:4px solid #ef4444;"><h3>${x.title}</h3><p>Cần trả: <b class="text-red">${formatVND(x.amount)}₫</b></p><button class="btn btn-green" onclick="payDebt(${x.id})" style="margin-top:10px;">Thanh toán khoản này</button></div>`;
-        });
-        document.getElementById('repay-list').innerHTML = html || '<div class="card">Không có khoản nợ.</div>';
-    }
-    function payDebt(id) {
-        let h = Storage.get('bofe_history_' + currentUser) || [];
-        h = h.map(x => { if(x.id === id) { x.active = false; x.detail = "Đã thanh toán nợ"; } return x; });
-        Storage.set('bofe_history_' + currentUser, h); alert("Gạch nợ xong!"); navigate('repay-view');
-    }
-
+    /* ================= LỊCH SỬ & AI CHATBOT ================= */
     function logHistory(title, amount, detail, type) {
         let h = Storage.get('bofe_history_' + currentUser) || [];
-        h.push({ id: Date.now(), title, amount, detail, type, active: type === 'debt', date: new Date().toLocaleString('vi-VN') });
+        h.push({ id: Date.now(), title, amount, detail, type, date: new Date().toLocaleString('vi-VN') });
         Storage.set('bofe_history_' + currentUser, h);
     }
+
     function loadHistory() {
-        let h = Storage.get('bofe_history_' + currentUser) || [], html = '';
+        let h = Storage.get('bofe_history_' + currentUser) || [];
+        let html = '';
         [...h].reverse().forEach(x => {
-            let col = x.type === 'in' ? '#10b981' : (x.type === 'out' ? '#64748b' : '#ef4444');
-            html += `<div class="card" style="border-left: 4px solid ${col};"><p><b>${x.title}</b></p><p style="color:${col}; font-weight:bold;">${formatVND(x.amount)}₫</p><p style="font-size:12px; color:#666;">${x.detail}</p><p style="font-size:11px; color:#aaa; margin-top:5px;">${x.date}</p></div>`;
+            let color = x.type === 'in' ? '#10b981' : '#ef4444';
+            html += `
+            <div class="card" style="border-left: 4px solid ${color};">
+                <p><b>${x.title}</b></p>
+                <p style="color:${color}; font-weight:bold;">${formatVND(x.amount)}</p>
+                <p style="font-size:12px; color:#94a3b8;">${x.detail}</p>
+                <p style="font-size:10px; color:#64748b; margin-top:4px;">${x.date}</p>
+            </div>`;
         });
-        document.getElementById('history-list').innerHTML = html || '<div class="card">Chưa có giao dịch.</div>';
+        document.getElementById('history-list').innerHTML = html || '<p style="text-align:center; color:#64748b;">Chưa có giao dịch.</p>';
+    }
+
+    function toggleChat() {
+        let w = document.getElementById('chat-window');
+        w.style.display = w.style.display === 'flex' ? 'none' : 'flex';
+    }
+    function sendChat() {
+        let inp = document.getElementById('chat-text');
+        let txt = inp.value.trim().toLowerCase();
+        if(!txt) return;
+        document.getElementById('chat-body').innerHTML += `<div class="msg msg-user">${inp.value}</div>`;
+        inp.value = '';
+        setTimeout(() => {
+            let rep = "Tôi là AI hỗ trợ. Bạn muốn hỏi về Giftcode BOFE, Forex EUR/USD, Vay tiền hay Rút tiền Chứng khoán?";
+            if(txt.includes('giftcode') || txt.includes('bofe')) rep = "Hãy bấm ô GIFTCODE trên sàn Forex và nhập mã 'BOFE' để nhận $500 USD vốn giao dịch ngay lập tức!";
+            if(txt.includes('rút') && txt.includes('chứng')) rep = "Để rút tiền từ ví Chứng Khoán về Ví Chính, số tiền tối thiểu là 100.000.000 VNĐ và bắt buộc xác thực khuôn mặt.";
+            if(txt.includes('forex') || txt.includes('crypto')) rep = "Sàn Forex hỗ trợ đòn bẩy 1:500, khớp lệnh Market với TP/SL tự động chuẩn Exness. Rút tối thiểu 100 USD (không tính 500 bonus).";
+            let b = document.getElementById('chat-body');
+            b.innerHTML += `<div class="msg msg-ai">${rep}</div>`;
+            b.scrollTop = b.scrollHeight;
+        }, 500);
     }
 </script>
 </body>
