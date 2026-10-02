@@ -15,28 +15,23 @@
         .bg-main { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
         .text-green { color: #10b981; } .text-red { color: #ef4444; } .text-yellow { color: #facc15; } .text-blue { color: #38bdf8; }
         
-        /* Header */
         header { padding: 15px 18px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 50; background: #111827; border-bottom: 1px solid #1f2937; }
         .menu-btn { font-size: 24px; cursor: pointer; background: none; border: none; color: white; line-height: 1; }
         .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 1px; color: #10b981; }
         
-        /* Views */
         .view { display: none; padding: 16px; flex: 1; padding-bottom: 90px; }
         .view.active { display: block; animation: fadeIn 0.25s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Elements */
         .card { background: #1e293b; border-radius: 14px; padding: 18px; margin-bottom: 14px; border: 1px solid #334155; }
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 700; color: #94a3b8; font-size: 12px; text-transform: uppercase; }
         .form-control { width: 100%; padding: 12px 14px; border: 1.5px solid #334155; border-radius: 10px; font-size: 15px; outline: none; background: #0f172a; color: #fff; }
         .form-control:focus { border-color: #10b981; }
         
-        /* Buttons */
         .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
         .btn-green { background: #10b981; color: white; } .btn-red { background: #ef4444; color: white; } .btn-blue { background: #2563eb; color: white; }
         
-        /* Tabs */
         .tabs { display: flex; background: #1e293b; border-radius: 10px; padding: 3px; margin-bottom: 16px; gap: 4px; }
         .tab { flex: 1; text-align: center; padding: 9px; cursor: pointer; font-weight: 700; color: #94a3b8; border-radius: 8px; font-size: 12px; }
         .tab.active { background: #10b981; color: white; }
@@ -50,27 +45,25 @@
         
         .chart-container { background: #111827; border: 1px solid #1f2937; border-radius: 12px; padding: 12px; margin-bottom: 14px; position: relative; }
         .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .pair-selector { background: #1e293b; color: #fff; font-size: 16px; font-weight: 900; border: 1px solid #334155; padding: 6px; border-radius: 6px; outline: none; }
+        .pair-selector { background: #1e293b; color: #fff; font-size: 14px; font-weight: 900; border: 1px solid #334155; padding: 6px; border-radius: 6px; outline: none; }
         .live-price-tag { font-family: 'Space Mono', monospace; font-size: 15px; font-weight: 800; padding: 3px 8px; border-radius: 6px; }
         .live-price-tag.up { background: rgba(16,185,129,0.2); color: #10b981; border: 1px solid #10b981; }
         .live-price-tag.down { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; }
         
-        /* Canvas Biểu đồ nến */
-        canvas#forex-chart { width: 100%; height: 200px; background: #0b0f19; border-radius: 8px; display: block; }
+        canvas#forex-chart { width: 100%; height: 220px; background: #0b0f19; border-radius: 8px; display: block; }
         
         .order-box { background: #1e293b; border-radius: 12px; padding: 14px; border: 1px solid #334155; }
         .stepper { display: flex; align-items: center; background: #0f172a; border-radius: 8px; border: 1px solid #334155; overflow: hidden; margin-top: 4px; }
-        .stepper button { width: 44px; height: 38px; background: #334155; border: none; color: #fff; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .stepper input { flex: 1; background: transparent; border: none; text-align: center; color: #fff; font-weight: bold; font-size: 15px; }
+        .stepper button { width: 44px; height: 42px; background: #334155; border: none; color: #fff; font-size: 18px; font-weight: bold; cursor: pointer; }
+        .stepper input { flex: 1; background: transparent; border: none; text-align: center; color: #fff; font-weight: bold; font-size: 16px; outline: none; }
 
-        /* Sàn chứng khoán List */
         .stock-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 16px; border-bottom: 1px solid #334155; }
         .stock-item:last-child { border-bottom: none; }
 
-        /* Popup & Camera & Others... */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
         .modal.active { display: flex; }
         .modal-content { background: #1e293b; width: 100%; max-width: 360px; border-radius: 16px; padding: 22px; border: 1px solid #475569; }
+        
         #video-container { width: 100%; height: 320px; background: #000; border-radius: 16px; overflow: hidden; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; position: relative; border: 2px solid #10b981; }
         video { width: 100%; height: 100%; object-fit: cover; }
         #sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: #111827; z-index: 1000; transition: left 0.3s; box-shadow: 5px 0 25px rgba(0,0,0,0.7); display: flex; flex-direction: column; }
@@ -90,6 +83,7 @@
         .chat-input { display: flex; border-top: 1px solid #334155; }
         .chat-input input { flex: 1; padding: 10px; border: none; background: #0f172a; color: #fff; outline: none; }
         .chat-input button { padding: 0 14px; background: #10b981; color: white; border: none; font-weight: bold; cursor: pointer; }
+        
         .slider-val { font-size: 28px; font-weight: 900; text-align: center; color: #10b981; margin: 10px 0; }
         input[type=range] { width: 100%; height: 6px; background: #cbd5e1; border-radius: 5px; outline: none; -webkit-appearance: none; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #10b981; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
@@ -114,7 +108,7 @@
             <span onclick="toggleMenu()" style="cursor:pointer; font-size: 22px;">✕</span>
         </div>
         <div class="menu-item" onclick="navigate('main-view'); toggleMenu();">🏠 Trang Chủ (Vay Vốn)</div>
-        <div class="menu-item text-blue" onclick="navigate('forex-view'); toggleMenu();">⚡ Sàn Crypto/Future (OKX)</div>
+        <div class="menu-item text-blue" onclick="navigate('forex-view'); toggleMenu();">⚡ Sàn Crypto/Future</div>
         <div class="menu-item text-green" onclick="navigate('stock-view'); toggleMenu();">📈 Sàn Chứng Khoán VN</div>
         <div class="menu-item" onclick="navigate('savings-view'); toggleMenu();">🏦 Gửi Tiết Kiệm VIP</div>
         <div class="menu-item" onclick="navigate('withdraw-view'); toggleMenu();">💳 Rút Tiền Về Ngân Hàng</div>
@@ -127,7 +121,7 @@
     <div id="chatbot-btn" onclick="toggleChat()" style="display:none;">🤖</div>
     <div id="chat-window">
         <div class="chat-header"><span>Trợ Lý AI BO.FE</span><span onclick="toggleChat()" style="cursor:pointer;">✕</span></div>
-        <div class="chat-body" id="chat-body"><div class="msg msg-ai">Chào bạn! Tôi có thể hỗ trợ bạn về Vay, Sàn Crypto/Forex, Chứng khoán hoặc Giftcode BOFE.</div></div>
+        <div class="chat-body" id="chat-body"><div class="msg msg-ai">Xin chào! Hệ thống đã mở khóa chức năng nhập KLGD và hiển thị SL/TP trên biểu đồ. Bạn cần tôi hỗ trợ gì?</div></div>
         <div class="chat-input"><input type="text" id="chat-text" placeholder="Nhập câu hỏi..." onkeypress="if(event.key==='Enter') sendChat()"><button onclick="sendChat()">Gửi</button></div>
     </div>
 
@@ -174,7 +168,7 @@
         </div>
         <div id="form-vay-dautu" style="display:none;">
             <div class="card" style="border: 2px solid #facc15;">
-                <p style="color:#ef4444; font-size:12px; font-weight:bold; margin-bottom:12px; text-align:center;">Chỉ dùng mua Chứng khoán (Xác minh Mic 50s)</p>
+                <p style="color:#ef4444; font-size:12px; font-weight:bold; margin-bottom:12px; text-align:center;">Tiền bị khóa để mua Chứng khoán (Mic 50s)</p>
                 <div class="form-group"><label>Hạn mức vay</label><h2 class="text-yellow" id="val-vay-dautu" style="text-align:center; margin:8px 0;">100.000.000 ₫</h2><input type="range" id="slider-vay-dautu" min="10000000" max="5000000000" step="10000000" value="100000000" oninput="updateInvestLoan()"></div>
                 <div class="form-group"><label>Kỳ hạn</label><select id="term-vay-dautu" class="form-control" onchange="updateInvestLoan()"><option value="1">1 tháng</option><option value="3">3 tháng</option></select></div>
             </div>
@@ -194,32 +188,44 @@
             <button class="btn btn-green" style="width:auto; padding:6px 12px; font-size:11px;" onclick="withdrawForexToMain()">Rút Về Ví</button>
         </div>
 
-        <!-- BIỂU ĐỒ NẾN NHẬT -->
         <div class="chart-container">
             <div class="chart-header">
-                <!-- Dropdown Chọn Đồng Giao Dịch -->
                 <select id="trade-pair" class="pair-selector" onchange="changePair()">
-                    <option value="BTC/USDT">🪙 BTC/USDT (Crypto)</option>
-                    <option value="ETH/USDT">🪙 ETH/USDT (Crypto)</option>
-                    <option value="XAU/USD">🥇 XAU/USD (Vàng)</option>
-                    <option value="EUR/USD">🇪🇺 EUR/USD (Forex)</option>
+                    <optgroup label="Crypto Future">
+                        <option value="BTC/USDT">🪙 BTC/USDT</option>
+                        <option value="ETH/USDT">🪙 ETH/USDT</option>
+                        <option value="BNB/USDT">🟡 BNB/USDT</option>
+                        <option value="SOL/USDT">🟣 SOL/USDT</option>
+                        <option value="XRP/USDT">✖️ XRP/USDT</option>
+                    </optgroup>
+                    <optgroup label="Forex & Metals">
+                        <option value="XAU/USD">🥇 XAU/USD (Vàng)</option>
+                        <option value="EUR/USD">🇪🇺 EUR/USD</option>
+                        <option value="GBP/USD">🇬🇧 GBP/USD</option>
+                        <option value="USD/JPY">🇯🇵 USD/JPY</option>
+                    </optgroup>
                 </select>
                 <div class="live-price-tag up" id="forex-live-price">0.00</div>
             </div>
-            <canvas id="forex-chart" width="360" height="200"></canvas>
-            <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-top:6px;">
-                <span>06:15</span><span>10:20</span><span>14:30</span><span>Live</span>
+            <canvas id="forex-chart" width="360" height="220"></canvas>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#64748b; margin-top:4px;">
+                <span>06:00</span><span>12:00</span><span>18:00</span><span>Live</span>
             </div>
         </div>
 
         <div class="order-box">
             <div class="tabs" style="margin-bottom:10px;"><div class="tab active" style="padding:6px;">Market</div><div class="tab" style="padding:6px;">Limit</div><div class="tab" style="padding:6px;">Stop</div></div>
+            
             <div class="form-group" style="margin-bottom:8px;">
-                <label>Khối Lượng Giao Dịch (Lots / Coin)</label>
+                <label>Khối Lượng Giao Dịch (Nhập tay hoặc +/-)</label>
                 <div class="stepper">
-                    <button onclick="changeLot(-0.01)">-</button><input type="text" id="forex-lot" value="0.01" readonly><button onclick="changeLot(0.01)">+</button>
+                    <button onclick="changeLot(-0.01)">-</button>
+                    <!-- Đã mở khóa cho phép nhập tay -->
+                    <input type="number" id="forex-lot" value="0.01" step="0.01" min="0.01" onchange="validateLot(this)">
+                    <button onclick="changeLot(0.01)">+</button>
                 </div>
             </div>
+            
             <div style="display:flex; gap:8px; margin-bottom:10px;">
                 <div style="flex:1;">
                     <label style="font-size:11px; color:#10b981;">Take Profit (TP)</label>
@@ -234,62 +240,84 @@
                 <button class="btn btn-green" style="flex:1; padding:12px;" onclick="placeForexOrder('BUY')">BUY (LONG)</button>
                 <button class="btn btn-red" style="flex:1; padding:12px;" onclick="placeForexOrder('SELL')">SELL (SHORT)</button>
             </div>
-            <div style="display:flex; justify-content:space-between; font-size:11px; color:#64748b; margin-top:8px;">
-                <span>Phí GD: 0.00 USD</span><span>Đòn bẩy: 1:100 (Crypto) | 1:500 (Forex)</span>
-            </div>
         </div>
+
         <div style="margin-top:14px;">
-            <h4 style="font-size:13px; color:#94a3b8; margin-bottom:8px;">VỊ THẾ ĐANG GIAO DỊCH</h4>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <h4 style="font-size:13px; color:#94a3b8;">VỊ THẾ ĐANG GIAO DỊCH</h4>
+            </div>
+            <!-- BỘ NÚT ĐÓNG VỊ THẾ NHIỀU LỆNH -->
+            <div style="display:flex; gap:6px; margin-bottom:10px;">
+                <button class="btn btn-blue" style="padding:8px; font-size:11px; border-radius:6px; flex:1;" onclick="closeAllPos()">Đóng Tất Cả</button>
+                <button class="btn btn-green" style="padding:8px; font-size:11px; border-radius:6px; flex:1;" onclick="closeProfitPos()">Đóng Lãi</button>
+                <button class="btn btn-red" style="padding:8px; font-size:11px; border-radius:6px; flex:1;" onclick="closeLossPos()">Đóng Lỗ</button>
+            </div>
+            
             <div id="forex-positions"><p style="font-size:12px; color:#64748b; text-align:center;">Chưa có vị thế nào mở.</p></div>
         </div>
     </div>
 
-    <!-- 4. SÀN CHỨNG KHOÁN (CẬP NHẬT ĐẦY ĐỦ CỔ PHIẾU) -->
+    <!-- 4. SÀN CHỨNG KHOÁN (CẬP NHẬT RÚT CHỈ PHẦN LÃI) -->
     <div id="stock-view" class="view">
         <div class="card" style="background:#1e293b; border-left:4px solid #10b981;">
-            <p style="font-size:12px; color:#94a3b8; font-weight:bold;">Số dư ví Chứng Khoán:</p>
+            <p style="font-size:12px; color:#94a3b8; font-weight:bold;">Tổng Số Dư Chứng Khoán (Gốc + Lãi):</p>
             <h2 style="font-size:24px; font-weight:900; color:#10b981; margin:4px 0;"><span id="stock-balance-val">0</span> ₫</h2>
-            <p style="font-size:11px; color:#cbd5e1; margin-bottom:10px;">(Tối thiểu rút về ví chính: 100.000.000 ₫ + Quét Sinh Trắc)</p>
-            <button class="btn btn-green" style="padding:10px; font-size:13px;" onclick="withdrawStockToMain()">Rút Về Ví Chính</button>
+            <p style="font-size:11px; color:#ef4444; margin-bottom:10px; font-weight:bold;">Lưu ý: Bạn KHÔNG THỂ rút số gốc vay đầu tư. Chỉ rút được LÃI (Tối thiểu 100tr VNĐ).</p>
+            <button class="btn btn-green" style="padding:10px; font-size:13px;" onclick="withdrawStockToMain()">Chốt Lãi Về Ví Chính</button>
         </div>
 
         <div class="card" style="padding:0; overflow:hidden;">
-            <div style="padding:12px 16px; border-bottom:1px solid #334155; font-weight:bold; background:#0f172a;">Danh Sách Cổ Phiếu</div>
+            <div style="padding:12px 16px; border-bottom:1px solid #334155; font-weight:bold; background:#0f172a;">Danh Sách Cổ Phiếu Đang Giao Dịch</div>
             
             <div class="stock-item" style="background:rgba(16,185,129,0.1);">
-                <div><h3 class="text-green" style="font-size:18px;">3AE GROUP</h3><p style="font-size:12px; color:#94a3b8;">Độc quyền</p></div>
-                <div style="text-align:right;"><b style="font-size:15px;">150,500 ₫</b><br><span class="text-green" style="font-weight:bold; font-size:12px;">+90% / 24h</span></div>
-                <button class="btn btn-green" style="width:auto; padding:8px 14px; font-size:12px;" onclick="buyStock('3AE', 0.9)">MUA</button>
+                <div><h3 class="text-green" style="font-size:18px;">3AE</h3><p style="font-size:11px; color:#94a3b8;">3AE GROUP</p></div>
+                <div style="text-align:right;"><b style="font-size:15px;">150,500 ₫</b><br><span class="text-green" style="font-weight:bold; font-size:12px;">+90%</span></div>
+                <button class="btn btn-green" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('3AE', 0.9)">MUA</button>
             </div>
             
-            <div class="stock-item">
-                <div><h3 style="font-size:16px;">FPT</h3><p style="font-size:12px; color:#94a3b8;">FPT Corp</p></div>
-                <div style="text-align:right;"><b style="font-size:14px;">125,000 ₫</b><br><span class="text-green" style="font-size:12px;">+2.5%</span></div>
-                <button class="btn btn-blue" style="width:auto; padding:8px 14px; font-size:12px;" onclick="buyStock('FPT', 0.025)">MUA</button>
+            <div class="stock-item"><div><h3 style="font-size:15px;">FPT</h3><p style="font-size:11px; color:#94a3b8;">FPT Corp</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">125,000 ₫</b><br><span class="text-green" style="font-size:11px;">+2.5%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('FPT', 0.025)">MUA</button>
             </div>
 
-            <div class="stock-item">
-                <div><h3 style="font-size:16px;">VCB</h3><p style="font-size:12px; color:#94a3b8;">Vietcombank</p></div>
-                <div style="text-align:right;"><b style="font-size:14px;">98,500 ₫</b><br><span class="text-green" style="font-size:12px;">+1.2%</span></div>
-                <button class="btn btn-blue" style="width:auto; padding:8px 14px; font-size:12px;" onclick="buyStock('VCB', 0.012)">MUA</button>
+            <div class="stock-item"><div><h3 style="font-size:15px;">VCB</h3><p style="font-size:11px; color:#94a3b8;">Vietcombank</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">98,500 ₫</b><br><span class="text-green" style="font-size:11px;">+1.2%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('VCB', 0.012)">MUA</button>
             </div>
 
-            <div class="stock-item">
-                <div><h3 style="font-size:16px;">HPG</h3><p style="font-size:12px; color:#94a3b8;">Hòa Phát</p></div>
-                <div style="text-align:right;"><b style="font-size:14px;">29,400 ₫</b><br><span class="text-red" style="font-size:12px;">-0.8%</span></div>
-                <button class="btn btn-blue" style="width:auto; padding:8px 14px; font-size:12px;" onclick="buyStock('HPG', -0.008)">MUA</button>
+            <div class="stock-item"><div><h3 style="font-size:15px;">HPG</h3><p style="font-size:11px; color:#94a3b8;">Hòa Phát</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">29,400 ₫</b><br><span class="text-red" style="font-size:11px;">-0.8%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('HPG', -0.008)">MUA</button>
             </div>
             
-            <div class="stock-item">
-                <div><h3 style="font-size:16px;">VIC</h3><p style="font-size:12px; color:#94a3b8;">Vingroup</p></div>
-                <div style="text-align:right;"><b style="font-size:14px;">42,100 ₫</b><br><span class="text-red" style="font-size:12px;">-1.5%</span></div>
-                <button class="btn btn-blue" style="width:auto; padding:8px 14px; font-size:12px;" onclick="buyStock('VIC', -0.015)">MUA</button>
+            <div class="stock-item"><div><h3 style="font-size:15px;">VIC</h3><p style="font-size:11px; color:#94a3b8;">Vingroup</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">42,100 ₫</b><br><span class="text-red" style="font-size:11px;">-1.5%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('VIC', -0.015)">MUA</button>
             </div>
             
-            <div class="stock-item">
-                <div><h3 style="font-size:16px;">VNM</h3><p style="font-size:12px; color:#94a3b8;">Vinamilk</p></div>
-                <div style="text-align:right;"><b style="font-size:14px;">68,300 ₫</b><br><span class="text-green" style="font-size:12px;">+0.5%</span></div>
-                <button class="btn btn-blue" style="width:auto; padding:8px 14px; font-size:12px;" onclick="buyStock('VNM', 0.005)">MUA</button>
+            <div class="stock-item"><div><h3 style="font-size:15px;">VNM</h3><p style="font-size:11px; color:#94a3b8;">Vinamilk</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">68,300 ₫</b><br><span class="text-green" style="font-size:11px;">+0.5%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('VNM', 0.005)">MUA</button>
+            </div>
+
+            <div class="stock-item"><div><h3 style="font-size:15px;">MWG</h3><p style="font-size:11px; color:#94a3b8;">Thế Giới Di Động</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">53,200 ₫</b><br><span class="text-green" style="font-size:11px;">+1.8%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('MWG', 0.018)">MUA</button>
+            </div>
+
+            <div class="stock-item"><div><h3 style="font-size:15px;">TCB</h3><p style="font-size:11px; color:#94a3b8;">Techcombank</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">49,150 ₫</b><br><span class="text-red" style="font-size:11px;">-0.3%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('TCB', -0.003)">MUA</button>
+            </div>
+            
+            <div class="stock-item"><div><h3 style="font-size:15px;">SSI</h3><p style="font-size:11px; color:#94a3b8;">Chứng Khoán SSI</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">37,800 ₫</b><br><span class="text-green" style="font-size:11px;">+3.1%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('SSI', 0.031)">MUA</button>
+            </div>
+
+            <div class="stock-item"><div><h3 style="font-size:15px;">MSN</h3><p style="font-size:11px; color:#94a3b8;">Masan Group</p></div>
+                <div style="text-align:right;"><b style="font-size:14px;">76,500 ₫</b><br><span class="text-red" style="font-size:11px;">-1.1%</span></div>
+                <button class="btn btn-blue" style="width:auto; padding:6px 12px; font-size:11px;" onclick="buyStock('MSN', -0.011)">MUA</button>
             </div>
         </div>
     </div>
@@ -369,7 +397,7 @@
         if(document.getElementById('stock-balance-val')) document.getElementById('stock-balance-val').innerText = formatVND(stock);
     }
 
-    // Đăng nhập
+    // Đăng nhập & Init
     function handleAuth() {
         const un = document.getElementById('username').value.trim(); const pw = document.getElementById('password').value; const cpw = document.getElementById('confirm-password').value;
         if(un.length < 6) return alert("Tên tối thiểu 6 ký tự!"); if(!pw) return alert("Nhập mật khẩu!");
@@ -383,20 +411,19 @@
     }
     function login(un) {
         currentUser = un; document.getElementById('main-header').style.display = 'flex'; document.getElementById('chatbot-btn').style.display = 'flex'; document.getElementById('menu-username').innerText = un;
-        ['bofe_balance_', 'bofe_forex_balance_', 'bofe_forex_bonus_', 'bofe_stock_balance_'].forEach(k => { if(Storage.get(k+un)===null) Storage.set(k+un, 0); });
+        ['bofe_balance_', 'bofe_forex_balance_', 'bofe_forex_bonus_', 'bofe_stock_balance_', 'bofe_invest_principal_'].forEach(k => { if(Storage.get(k+un)===null) Storage.set(k+un, 0); });
         if(!Storage.get('bofe_history_'+un)) Storage.set('bofe_history_'+un, []);
         
-        updateUIBalances(); navigate('forex-view');
-        changePair(); // Init chart
+        updateUIBalances(); navigate('forex-view'); changePair();
     }
     function logout() { currentUser = null; location.reload(); }
 
-    // Điều hướng
+    // Navigation
     function navigate(id) { document.querySelectorAll('.view').forEach(el => el.classList.remove('active')); document.getElementById(id).classList.add('active'); updateUIBalances(); if(id === 'repay-view') loadRepayments(); if(id === 'history-view') loadHistory(); }
     function toggleMenu() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('active'); }
     function switchTab(t) { ['vay-nhanh','vay-ngan','vay-dautu'].forEach(x => { document.getElementById('tab-'+x).classList.remove('active'); document.getElementById('form-'+x).style.display = 'none'; }); document.getElementById('tab-'+t).classList.add('active'); document.getElementById('form-'+t).style.display = 'block'; }
 
-    // Slider
+    // Sliders
     function updateFastLoan() { document.getElementById('val-vay-nhanh').innerText = formatVND(document.getElementById('slider-vay-nhanh').value) + " ₫"; }
     function updateShortLoan() { document.getElementById('val-vay-ngan').innerText = formatVND(document.getElementById('slider-vay-ngan').value) + " ₫"; }
     function updateInvestLoan() { document.getElementById('val-vay-dautu').innerText = formatVND(document.getElementById('slider-vay-dautu').value) + " ₫"; }
@@ -417,43 +444,59 @@
         if(t==='nhanh') { amt=parseInt(document.getElementById('slider-vay-nhanh').value); n="Vay Nhanh"; }
         if(t==='ngan') { amt=parseInt(document.getElementById('slider-vay-ngan').value); n="Vay Ngắn"; }
         if(t==='dautu') { amt=parseInt(document.getElementById('slider-vay-dautu').value); n="Vay Đầu Tư"; }
+        
         if(t==='dautu') {
             runCamera("Xác Thực Vay Đầu Tư (MIC 50s)", 50, true, () => {
-                Storage.set('bofe_stock_balance_'+currentUser, (Storage.get('bofe_stock_balance_'+currentUser)||0) + amt); logHistory("VAY ĐẦU TƯ", amt, "Cộng Ví CK", "in"); alert("Duyệt thành công vào Ví Chứng Khoán!"); navigate('stock-view');
+                // CỘNG GỐC VAY ĐẦU TƯ ĐỂ KHÓA RÚT
+                Storage.set('bofe_invest_principal_'+currentUser, (Storage.get('bofe_invest_principal_'+currentUser)||0) + amt);
+                Storage.set('bofe_stock_balance_'+currentUser, (Storage.get('bofe_stock_balance_'+currentUser)||0) + amt); 
+                logHistory("VAY ĐẦU TƯ", amt, "Cộng Ví CK", "in"); alert("Duyệt thành công vào Ví Chứng Khoán!"); navigate('stock-view');
             });
         } else {
-            runCamera("Định Danh", 5, false, () => {
-                Storage.set('bofe_balance_'+currentUser, (Storage.get('bofe_balance_'+currentUser)||0) + amt); logHistory(n, amt, "Cộng Ví Chính", "in"); alert("Duyệt thành công vào Ví Chính!"); navigate('main-view');
+            runCamera("Định Danh Sinh Trắc Học", 5, false, () => {
+                Storage.set('bofe_balance_'+currentUser, (Storage.get('bofe_balance_'+currentUser)||0) + amt); 
+                logHistory(n, amt, "Cộng Ví Chính", "in"); alert("Duyệt thành công vào Ví Chính!"); navigate('main-view');
             });
         }
     }
 
-    // Rút từ CK về chính
+    // LUẬT RÚT CHỨNG KHOÁN (CHỈ ĐƯỢC RÚT LÃI, KHÔNG RÚT GỐC)
     function withdrawStockToMain() {
-        let b = Storage.get('bofe_stock_balance_'+currentUser) || 0;
-        if(b < 100000000) return alert("Rút tối thiểu 100.000.000 VNĐ!");
-        runCamera("Bảo Mật Rút Tiền Lớn", 8, false, () => {
-            Storage.set('bofe_balance_'+currentUser, (Storage.get('bofe_balance_'+currentUser)||0) + b);
-            Storage.set('bofe_stock_balance_'+currentUser, 0);
-            logHistory("RÚT TỪ CHỨNG KHOÁN", b, "Về Ví Chính", "in"); alert("Rút thành công về Ví Chính!"); navigate('main-view');
+        let bal = Storage.get('bofe_stock_balance_'+currentUser) || 0;
+        let lockedPrincipal = Storage.get('bofe_invest_principal_'+currentUser) || 0;
+        let profit = bal - lockedPrincipal;
+
+        if(profit < 100000000) {
+            return alert(`❌ TỪ CHỐI!\nTiền gốc vay đầu tư (${formatVND(lockedPrincipal)}đ) đang BỊ KHÓA.\nLãi khả dụng của bạn: ${formatVND(profit)}đ (Yêu cầu tối thiểu 100.000.000đ LÃI mới được chốt về ví).`);
+        }
+
+        let amtToWithdraw = prompt(`Lãi khả dụng: ${formatVND(profit)} ₫\nNhập số tiền LÃI muốn chốt về ví chính:`, profit);
+        amtToWithdraw = parseInt(amtToWithdraw);
+        if(isNaN(amtToWithdraw) || amtToWithdraw < 100000000 || amtToWithdraw > profit) return alert("Số tiền không hợp lệ hoặc nhỏ hơn 100 triệu!");
+
+        runCamera("Bảo Mật Chốt Lãi", 8, false, () => {
+            Storage.set('bofe_balance_'+currentUser, (Storage.get('bofe_balance_'+currentUser)||0) + amtToWithdraw);
+            Storage.set('bofe_stock_balance_'+currentUser, bal - amtToWithdraw);
+            logHistory("CHỐT LÃI CHỨNG KHOÁN", amtToWithdraw, "Về Ví Chính", "in"); 
+            alert(`✅ Đã chốt thành công ${formatVND(amtToWithdraw)} ₫ tiền lãi về Ví Chính!`); 
+            navigate('main-view');
         });
     }
 
-    // Mua chứng khoán VN
     function buyStock(code, rate) {
         let b = Storage.get('bofe_stock_balance_'+currentUser) || 0;
         let a = prompt(`Nhập số tiền mua ${code} (VNĐ):`, "10000000"); a = parseInt(a);
         if(!a || a <= 0 || a > b) return alert("Số dư không đủ!");
         Storage.set('bofe_stock_balance_'+currentUser, b - a);
         alert(`Khớp lệnh mua ${code}. Lợi nhuận sẽ được cộng sớm!`);
-        setTimeout(() => { // Giả lập ăn lãi/lỗ
+        setTimeout(() => { 
             let p = a * (1 + rate); Storage.set('bofe_stock_balance_'+currentUser, (Storage.get('bofe_stock_balance_'+currentUser)||0) + p);
             logHistory(`CHỐT LỜI/LỖ ${code}`, p, `Lợi nhuận/Lỗ đã hạch toán`, p > a ? "in" : "out"); updateUIBalances();
         }, 5000);
         updateUIBalances();
     }
 
-    /* ================= SÀN CRYPTO & FOREX (CANDLESTICK) ================= */
+    /* ================= SÀN CRYPTO & FOREX ================= */
     function openGiftcodeModal() { document.getElementById('giftcode-modal').classList.add('active'); }
     function closeGiftcodeModal() { document.getElementById('giftcode-modal').classList.remove('active'); }
     function submitGiftcode() {
@@ -462,23 +505,35 @@
             Storage.set('bofe_forex_balance_'+currentUser, (Storage.get('bofe_forex_balance_'+currentUser)||0) + 500);
             Storage.set('bofe_forex_bonus_'+currentUser, (Storage.get('bofe_forex_bonus_'+currentUser)||0) + 500);
             Storage.set('bofe_giftcode_'+currentUser, true);
-            document.getElementById('top-giftcode-status').innerText = "ĐÃ NHẬN $500"; logHistory("GIFTCODE BOFE", 500, "Vốn giao dịch ảo", "in"); alert("Nhận $500 thành công!"); closeGiftcodeModal(); updateUIBalances();
+            document.getElementById('top-giftcode-status').innerText = "ĐÃ NHẬN $500"; logHistory("GIFTCODE BOFE", 500, "Vốn ảo", "in"); alert("Nhận $500 thành công!"); closeGiftcodeModal(); updateUIBalances();
         } else alert("Mã sai!");
     }
 
     let currentPair = "BTC/USDT", currentPrice = 64500, tickInterval = null, tickCount = 0;
-    let candleData = []; // {open, high, low, close}
+    let candleData = []; 
     let forexPositions = [];
+    
+    function getDecimals(pair) {
+        if(['EUR/USD', 'GBP/USD'].includes(pair)) return 5;
+        if(['XRP/USDT'].includes(pair)) return 4;
+        return 2;
+    }
 
     function changePair() {
         currentPair = document.getElementById('trade-pair').value;
         if(currentPair === 'BTC/USDT') currentPrice = 64500.50;
         if(currentPair === 'ETH/USDT') currentPrice = 3450.25;
+        if(currentPair === 'BNB/USDT') currentPrice = 590.10;
+        if(currentPair === 'SOL/USDT') currentPrice = 145.20;
+        if(currentPair === 'XRP/USDT') currentPrice = 0.5520;
         if(currentPair === 'XAU/USD') currentPrice = 2340.10;
         if(currentPair === 'EUR/USD') currentPrice = 1.08500;
+        if(currentPair === 'GBP/USD') currentPrice = 1.26500;
+        if(currentPair === 'USD/JPY') currentPrice = 155.40;
         
-        document.getElementById('forex-tp').value = (currentPrice * 1.05).toFixed(currentPair === 'EUR/USD' ? 5 : 2);
-        document.getElementById('forex-sl').value = (currentPrice * 0.95).toFixed(currentPair === 'EUR/USD' ? 5 : 2);
+        let dec = getDecimals(currentPair);
+        document.getElementById('forex-tp').value = (currentPrice * 1.002).toFixed(dec); 
+        document.getElementById('forex-sl').value = (currentPrice * 0.998).toFixed(dec); 
         
         initCandles();
         if(tickInterval) clearInterval(tickInterval);
@@ -487,16 +542,17 @@
 
     function initCandles() {
         candleData = []; let p = currentPrice;
-        for(let i=0; i<25; i++) {
-            let o = p + (Math.random()-0.5)*p*0.005; let c = o + (Math.random()-0.5)*p*0.005;
-            let h = Math.max(o, c) + Math.random()*p*0.002; let l = Math.min(o, c) - Math.random()*p*0.002;
+        for(let i=0; i<30; i++) {
+            let o = p + (Math.random()-0.5)*p*0.002; let c = o + (Math.random()-0.5)*p*0.002;
+            let h = Math.max(o, c) + Math.random()*p*0.001; let l = Math.min(o, c) - Math.random()*p*0.001;
             candleData.push({open: o, high: h, low: l, close: c}); p = c;
         }
         currentPrice = p; drawCandlestickChart();
     }
 
     function updateChartTick() {
-        let vol = currentPrice * (currentPair==='EUR/USD'?0.0002:0.001); 
+        let dec = getDecimals(currentPair);
+        let vol = currentPrice * 0.001; 
         let delta = (Math.random() - 0.48) * vol;
         currentPrice += delta;
         
@@ -506,14 +562,14 @@
         if(currentPrice < last.low) last.low = currentPrice;
         
         tickCount++;
-        if(tickCount >= 5) { // Tạo nến mới sau mỗi 5s
+        if(tickCount >= 5) {
             candleData.push({open: currentPrice, high: currentPrice, low: currentPrice, close: currentPrice});
-            if(candleData.length > 30) candleData.shift();
+            if(candleData.length > 40) candleData.shift();
             tickCount = 0;
         }
         
         let t = document.getElementById('forex-live-price');
-        if(t) { t.innerText = currentPrice.toFixed(currentPair==='EUR/USD'?5:2); t.className = 'live-price-tag ' + (delta>=0?'up':'down'); }
+        if(t) { t.innerText = currentPrice.toFixed(dec); t.className = 'live-price-tag ' + (delta>=0?'up':'down'); }
         
         drawCandlestickChart();
         calcPositions();
@@ -525,12 +581,18 @@
         ctx.clearRect(0,0,w,h);
         
         let minP = Math.min(...candleData.map(x=>x.low)), maxP = Math.max(...candleData.map(x=>x.high));
-        let pad = (maxP - minP) * 0.15; minP -= pad; maxP += pad;
+        
+        // SỬA LỖI SL/TP: Mở rộng scale biểu đồ để ôm trọn vẹn đường SL/TP
+        let tp = parseFloat(document.getElementById('forex-tp').value);
+        let sl = parseFloat(document.getElementById('forex-sl').value);
+        if(tp) { maxP = Math.max(maxP, tp + tp*0.0005); minP = Math.min(minP, tp - tp*0.0005); }
+        if(sl) { maxP = Math.max(maxP, sl + sl*0.0005); minP = Math.min(minP, sl - sl*0.0005); }
+        
+        let pad = (maxP - minP) * 0.1; minP -= pad; maxP += pad;
         if(maxP === minP) { maxP += 1; minP -= 1; }
         
         let cw = w / Math.max(candleData.length, 30), bw = cw * 0.6;
         
-        // Vẽ nến
         candleData.forEach((cd, i) => {
             let x = i * cw + cw/2;
             let yo = h - ((cd.open - minP)/(maxP - minP)*h), yc = h - ((cd.close - minP)/(maxP - minP)*h);
@@ -538,42 +600,47 @@
             
             let col = cd.close >= cd.open ? '#10b981' : '#ef4444';
             ctx.strokeStyle = col; ctx.fillStyle = col;
-            ctx.beginPath(); ctx.moveTo(x, yh); ctx.lineTo(x, yl); ctx.stroke(); // Wick
-            
+            ctx.beginPath(); ctx.moveTo(x, yh); ctx.lineTo(x, yl); ctx.stroke();
             let by = Math.min(yo, yc), bh = Math.abs(yo - yc) || 1;
-            ctx.fillRect(x - bw/2, by, bw, bh); // Body
+            ctx.fillRect(x - bw/2, by, bw, bh);
         });
 
-        // Vẽ TP / SL
-        let tp = parseFloat(document.getElementById('forex-tp').value), sl = parseFloat(document.getElementById('forex-sl').value);
-        const drawLine = (val, col, text) => {
-            if(val >= minP && val <= maxP) {
-                let y = h - ((val - minP)/(maxP - minP)*h);
-                ctx.beginPath(); ctx.setLineDash([4,4]); ctx.strokeStyle = col; ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); ctx.setLineDash([]);
-                ctx.fillStyle = col; ctx.font = '10px Arial'; ctx.fillText(text + " " + val, 5, y - 4);
-            }
+        // Vẽ đường TP / SL (Nét đứt)
+        const drawLine = (val, col, txt) => {
+            let y = h - ((val - minP)/(maxP - minP)*h);
+            ctx.beginPath(); ctx.setLineDash([4,4]); ctx.strokeStyle = col; ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); ctx.setLineDash([]);
+            ctx.fillStyle = col; ctx.font = '10px Arial'; ctx.fillText(txt + " " + val, 5, y - 4);
         };
         if(tp) drawLine(tp, '#10b981', 'TP');
         if(sl) drawLine(sl, '#ef4444', 'SL');
     }
 
-    function changeLot(d) { let i = document.getElementById('forex-lot'); i.value = Math.max(0.01, parseFloat(i.value)+d).toFixed(2); }
+    /* NHẬP KHỐI LƯỢNG GIAO DỊCH THỦ CÔNG */
+    function validateLot(el) {
+        let val = parseFloat(el.value);
+        if(isNaN(val) || val < 0.01) el.value = "0.01";
+        else el.value = val.toFixed(2);
+    }
+    function changeLot(d) { 
+        let i = document.getElementById('forex-lot'); 
+        let val = parseFloat(i.value) || 0;
+        i.value = Math.max(0.01, val + d).toFixed(2); 
+    }
     
     function placeForexOrder(type) {
         let lot = parseFloat(document.getElementById('forex-lot').value);
         let bal = Storage.get('bofe_forex_balance_'+currentUser) || 0;
-        let margin = lot * (currentPair==='BTC/USDT'? 600 : 50); 
+        let margin = lot * 50; 
         if(bal < margin) return alert("Số dư không đủ ký quỹ!");
-        
         forexPositions.push({ id: Date.now(), pair: currentPair, type: type, lot: lot, open: currentPrice, pnl: 0 });
-        alert(`Khớp lệnh ${type} ${lot} ${currentPair} giá ${currentPrice.toFixed(2)}`); renderPos();
+        alert(`Khớp lệnh ${type} ${lot} ${currentPair} giá ${currentPrice.toFixed(getDecimals(currentPair))}`); renderPos();
     }
 
     function calcPositions() {
         forexPositions.forEach(p => {
             if(p.pair === currentPair) {
                 let diff = currentPrice - p.open; if(p.type === 'SELL') diff = -diff;
-                let mul = (p.pair === 'EUR/USD') ? 100000 : 1; 
+                let mul = (['EUR/USD','GBP/USD'].includes(p.pair)) ? 100000 : 1; 
                 p.pnl = diff * p.lot * mul;
             }
         });
@@ -587,19 +654,46 @@
         forexPositions.forEach((p, i) => {
             let col = p.pnl >= 0 ? '#10b981' : '#ef4444';
             h += `<div style="background:#0f172a; padding:10px; border-radius:8px; margin-bottom:6px; display:flex; justify-content:space-between; border-left:3px solid ${col};">
-                <div><b>${p.type} ${p.pair}</b> <span style="font-size:11px; color:#94a3b8;">${p.lot} Lot</span><br><span style="font-size:11px;">Mở: ${p.open.toFixed(p.pair==='EUR/USD'?5:2)}</span></div>
-                <div style="text-align:right;"><b style="color:${col}; font-size:15px;">${p.pnl>=0?'+':''}${p.pnl.toFixed(2)}$</b><br><button onclick="closePos(${i})" style="background:#ef4444; color:#fff; border:none; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer;">Đóng</button></div>
+                <div><b>${p.type} ${p.pair}</b> <span style="font-size:11px; color:#94a3b8;">${p.lot} Lot</span><br><span style="font-size:11px;">Mở: ${p.open.toFixed(getDecimals(p.pair))}</span></div>
+                <div style="text-align:right;"><b style="color:${col}; font-size:15px;">${p.pnl>=0?'+':''}${p.pnl.toFixed(2)}$</b><br><button onclick="closePosUI(${i})" style="background:#ef4444; color:#fff; border:none; padding:4px 10px; border-radius:4px; font-size:10px; cursor:pointer;">Đóng</button></div>
             </div>`;
         }); b.innerHTML = h;
     }
 
-    function closePos(i) {
+    /* CÁC CHỨC NĂNG ĐÓNG VỊ THẾ HÀNG LOẠT */
+    function closePosCore(i) {
         let p = forexPositions[i];
         let bal = Storage.get('bofe_forex_balance_'+currentUser) || 0;
         Storage.set('bofe_forex_balance_'+currentUser, Math.max(0, bal + p.pnl));
         logHistory(`Đóng lệnh ${p.pair}`, Math.abs(p.pnl), p.pnl>=0?"Lãi":"Lỗ", p.pnl>=0?"in":"out");
-        forexPositions.splice(i,1); alert(`Đóng vị thế PnL: ${p.pnl.toFixed(2)}$`); updateUIBalances(); renderPos();
+        forexPositions.splice(i,1);
     }
+    
+    function closePosUI(i) {
+        let p = forexPositions[i];
+        closePosCore(i);
+        alert(`Đóng vị thế PnL: ${p.pnl.toFixed(2)}$`); updateUIBalances(); renderPos();
+    }
+
+    function closeAllPos() {
+        if(forexPositions.length === 0) return;
+        for(let i = forexPositions.length - 1; i >= 0; i--) closePosCore(i);
+        finishBatchClose("Đã đóng tất cả các lệnh!");
+    }
+
+    function closeProfitPos() {
+        let closed = false;
+        for(let i = forexPositions.length - 1; i >= 0; i--) { if(forexPositions[i].pnl > 0) { closePosCore(i); closed = true; } }
+        if(closed) finishBatchClose("Đã chốt tất cả lệnh LÃI!"); else alert("Không có lệnh nào đang lãi để đóng.");
+    }
+
+    function closeLossPos() {
+        let closed = false;
+        for(let i = forexPositions.length - 1; i >= 0; i--) { if(forexPositions[i].pnl < 0) { closePosCore(i); closed = true; } }
+        if(closed) finishBatchClose("Đã cắt tất cả lệnh LỖ!"); else alert("Không có lệnh nào đang lỗ để cắt.");
+    }
+
+    function finishBatchClose(msg) { updateUIBalances(); renderPos(); alert(msg); }
 
     function withdrawForexToMain() {
         let b = Storage.get('bofe_forex_balance_'+currentUser) || 0, bn = Storage.get('bofe_forex_bonus_'+currentUser) || 0;
@@ -609,7 +703,6 @@
         logHistory("RÚT SÀN CRYPTO", vnd, `Quy đổi ${w.toFixed(2)}$`, "in"); alert(`Đã rút ${w.toFixed(2)}$ = ${formatVND(vnd)}₫ về ví!`); updateUIBalances(); navigate('main-view');
     }
 
-    // Các hàm còn lại (Rút bank, Tiết kiệm...)
     function handleWithdrawBank() {
         let a = parseInt(document.getElementById('withdraw-amt').value), c = Storage.get('bofe_balance_'+currentUser) || 0;
         if(!a || a > c) return alert("Số tiền không hợp lệ!");
@@ -622,7 +715,7 @@
     function loadHistory() { let h = Storage.get('bofe_history_'+currentUser)||[], m=''; [...h].reverse().forEach(x=>{ let c=x.type==='in'?'#10b981':'#ef4444'; m+=`<div class="card" style="border-left:4px solid ${c}"><b>${x.title}</b><br><b style="color:${c}">${formatVND(x.amount)}</b><br><span style="font-size:12px;color:#94a3b8">${x.detail}</span></div>`;}); document.getElementById('history-list').innerHTML=m; }
 
     function toggleChat() { let w = document.getElementById('chat-window'); w.style.display = w.style.display === 'flex' ? 'none' : 'flex'; }
-    function sendChat() { let i = document.getElementById('chat-text'), t = i.value; if(!t) return; document.getElementById('chat-body').innerHTML += `<div class="msg msg-user">${t}</div>`; i.value = ''; setTimeout(()=> { document.getElementById('chat-body').innerHTML += `<div class="msg msg-ai">Tôi là AI. Chức năng biểu đồ nến đã được kích hoạt, bạn có thể thiết lập mức SL/TP cho BTC, ETH nhé.</div>`; }, 500); }
+    function sendChat() { let i = document.getElementById('chat-text'), t = i.value; if(!t) return; document.getElementById('chat-body').innerHTML += `<div class="msg msg-user">${t}</div>`; i.value = ''; setTimeout(()=> { document.getElementById('chat-body').innerHTML += `<div class="msg msg-ai">Tôi là AI. Chức năng nhập KLGD tay và Đóng Vị Thế Nâng Cao đã mở khóa. SL/TP cũng đã được sửa lỗi đè lên biểu đồ.</div>`; }, 500); }
 </script>
 </body>
 </html>
